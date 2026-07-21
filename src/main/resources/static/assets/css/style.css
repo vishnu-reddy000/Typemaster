@@ -872,8 +872,26 @@ main {
   }
 }
 
+#mobile-nav-extra {
+  display: none;
+}
+
 /* 10b. Mobile Devices (portrait & landscape phones < 768px) */
 @media (max-width: 768px) {
+  .navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    height: 65px;
+  }
+
+  /* On mobile header top row, hide raw inline theme selector and auth container */
+  .navbar > .container > .theme-selector-container,
+  .navbar > .container > .auth-nav-container {
+    display: none !important;
+  }
+
   .mobile-toggle {
     display: block;
   }
@@ -881,7 +899,7 @@ main {
   .nav-links {
     display: none;
     position: absolute;
-    top: 70px;
+    top: 65px;
     left: 0;
     width: 100%;
     background-color: var(--card-bg);
@@ -891,6 +909,46 @@ main {
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--shadow-lg);
     z-index: 1000;
+  }
+
+  /* Mobile menu drawer controls */
+  #mobile-nav-extra {
+    display: flex !important;
+    flex-direction: column;
+    gap: 0.85rem;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  #mobile-nav-extra .theme-dropdown {
+    width: 100%;
+    padding: 0.6rem 0.85rem !important;
+    font-size: 0.9rem !important;
+  }
+
+  #mobile-nav-extra .user-badge {
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.75rem !important;
+  }
+
+  #mobile-nav-extra .user-name-text {
+    max-width: none !important;
+    font-size: 0.95rem !important;
+  }
+
+  #mobile-nav-extra .auth-buttons {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.75rem !important;
+  }
+
+  #mobile-nav-extra .auth-buttons .btn {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem !important;
   }
   
   .nav-links.show {
@@ -1046,19 +1104,22 @@ main {
 }
 
 .typewriter-quote {
-  font-family: 'Georgia', serif;
-  font-size: 2.25rem;
+  font-family: var(--font-sans);
+  font-size: clamp(1.15rem, 4.5vw, 1.85rem);
   font-weight: 700;
-  line-height: 1.45;
-  color: #ffffff;
-  min-height: 6rem;
-  margin-bottom: 2.5rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  min-height: 4.2rem;
+  margin-bottom: 1.5rem;
   letter-spacing: -0.01em;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 0.9);
+  word-break: break-word;
+  overflow-wrap: break-word;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  text-align: center;
+  padding: 0 0.5rem;
 }
 
 .typewriter-cursor {

@@ -203,6 +203,7 @@ function initNavigation() {
   // Render Auth buttons & Theme dropdown in header
   renderAuthNavbar();
   renderThemeNavbarSelector();
+  renderMobileNavControls();
 }
 
 /**
@@ -231,7 +232,7 @@ function renderAuthNavbar() {
   if (user && user.username) {
     authContainer.innerHTML = `
       <div class="user-badge" style="display: flex; align-items: center; gap: 0.75rem;">
-        <span style="font-weight: 600; font-size: 0.9rem; color: var(--primary-color);">👤 ${escapeHtml(user.username)}</span>
+        <span class="user-name-text" style="font-weight: 600; font-size: 0.9rem; color: var(--primary-color);">👤 ${escapeHtml(user.username)}</span>
         <button onclick="logoutUser()" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;">Logout</button>
       </div>
     `;
@@ -281,6 +282,59 @@ function renderThemeNavbarSelector() {
         setTheme(e.target.value);
       });
     }
+  }
+}
+
+/**
+ * Dynamically inserts Mobile Nav Controls (Theme selector & Auth badge) inside mobile drawer menu (.nav-links).
+ */
+function renderMobileNavControls() {
+  const navLinks = $('.nav-links');
+  if (!navLinks) return;
+
+  let extraItem = $('#mobile-nav-extra');
+  if (!extraItem) {
+    extraItem = document.createElement('li');
+    extraItem.id = 'mobile-nav-extra';
+    extraItem.className = 'mobile-nav-extra';
+    navLinks.appendChild(extraItem);
+  }
+
+  const currentTheme = getActiveTheme();
+  const user = getCurrentUser();
+
+  const themeOptionsHtml = THEMES.map(t => `<option value="${t.id}" ${t.id === currentTheme ? 'selected' : ''}>${t.icon} ${t.name}</option>`).join('');
+
+  const authHtml = (user && user.username) ? `
+    <div class="user-badge" style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 0.75rem;">
+      <span class="user-name-text" style="font-weight: 600; font-size: 0.95rem; color: var(--primary-color);">👤 ${escapeHtml(user.username)}</span>
+      <button onclick="logoutUser()" class="btn btn-outline" style="padding: 0.4rem 0.9rem; font-size: 0.85rem;">Logout</button>
+    </div>
+  ` : `
+    <div class="auth-buttons" style="display: flex; align-items: center; gap: 0.75rem; width: 100%;">
+      <a href="auth.html" class="btn btn-outline" style="flex: 1; text-align: center; padding: 0.5rem; font-size: 0.85rem;">Sign In</a>
+      <a href="auth.html?mode=signup" class="btn btn-primary" style="flex: 1; text-align: center; padding: 0.5rem; font-size: 0.85rem;">Sign Up</a>
+    </div>
+  `;
+
+  extraItem.innerHTML = `
+    <div class="theme-selector-container" style="width: 100%;">
+      <select class="theme-dropdown mobile-theme-dropdown" aria-label="Select App Theme" style="width: 100%;">
+        ${themeOptionsHtml}
+      </select>
+    </div>
+    <div class="auth-nav-container" style="width: 100%;">
+      ${authHtml}
+    </div>
+  `;
+
+  const mobDropdown = extraItem.querySelector('.mobile-theme-dropdown');
+  if (mobDropdown) {
+    mobDropdown.addEventListener('change', (e) => {
+      setTheme(e.target.value);
+      const deskDropdown = $('#theme-select-dropdown');
+      if (deskDropdown) deskDropdown.value = e.target.value;
+    });
   }
 }
 

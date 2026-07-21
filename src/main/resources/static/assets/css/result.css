@@ -1,0 +1,948 @@
+/* ==========================================================================
+   TypeMaster - Result Page Stylesheet (result.css)
+   Contains styles for performance score summary, metrics, premium certificate,
+   and personal typing history.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&family=Cinzel:wght@600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+/* 1. Result Container */
+.result-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.result-card {
+  background-color: var(--card-bg) !important;
+  background-image: none !important;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-lg);
+  padding: 3rem 2.5rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+/* 2. Hero Performance Header */
+.result-header {
+  margin-bottom: 2.5rem;
+}
+
+.result-icon-badge {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  margin: 0 auto 1.25rem;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+.result-title {
+  font-family: var(--font-sans);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.result-message {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* 3. Hero WPM Banner Card */
+.wpm-hero-card {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(14, 165, 233, 0.12));
+  border: 2px solid rgba(37, 99, 235, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.wpm-hero-number {
+  font-family: var(--font-sans);
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1;
+}
+
+.wpm-hero-label {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.5rem;
+}
+
+/* 4. Detailed Metrics Grid */
+.result-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.metric-card {
+  background-color: var(--background-color);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 1.25rem;
+  transition: var(--transition-fast);
+}
+
+.metric-card:hover {
+  border-color: var(--border-focus);
+  transform: translateY(-2px);
+}
+
+.metric-value {
+  font-family: var(--font-sans);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.metric-card.accuracy .metric-value { color: var(--success-color); }
+.metric-card.mistakes .metric-value { color: var(--error-color); }
+.metric-card.characters .metric-value { color: var(--primary-color); }
+.metric-card.time .metric-value { color: var(--text-primary); }
+
+.metric-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* 5. Result Action Buttons */
+.result-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   6. PREMIUM CERTIFICATE DESIGN (Matching Provided Mockup Image)
+   ========================================================================== */
+.cert-outer-wrapper {
+  margin: 3rem 0;
+}
+
+.cert-frame {
+  position: relative;
+  background: #ffffff;
+  color: #0f172a;
+  border: 12px solid #0f2b5c;
+  outline: 3px solid #d97706;
+  outline-offset: -8px;
+  border-radius: 4px;
+  padding: 3rem 3.5rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+}
+
+/* Corner Ribbons & Geometric Decorative Accents */
+.cert-corner-ribbon-tl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 110px solid #0f2b5c;
+  border-right: 110px solid transparent;
+  z-index: 1;
+}
+
+.cert-corner-ribbon-tl-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-top: 130px solid #d97706;
+  border-right: 130px solid transparent;
+  z-index: 0;
+}
+
+.cert-corner-ribbon-br {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-bottom: 110px solid #0f2b5c;
+  border-left: 110px solid transparent;
+  z-index: 1;
+}
+
+.cert-corner-ribbon-br-accent {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-bottom: 130px solid #d97706;
+  border-left: 130px solid transparent;
+  z-index: 0;
+}
+
+/* Left Vertical Hanging Ribbon with Gold TM Seal */
+.cert-hanging-ribbon {
+  position: absolute;
+  top: 0;
+  left: 60px;
+  width: 70px;
+  height: 155px;
+  background: #0f2b5c;
+  border-left: 2px solid #d97706;
+  border-right: 2px solid #d97706;
+  z-index: 2;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding-bottom: 15px;
+}
+
+.cert-hanging-ribbon::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 35px solid transparent;
+  border-right: 35px solid transparent;
+  border-top: 20px solid #0f2b5c;
+}
+
+.cert-gold-seal {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fef08a 0%, #eab308 50%, #b45309 100%);
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #0f2b5c;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
+.cert-gold-seal img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+/* Certificate Header Layout */
+.cert-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  padding-left: 110px; /* offset for hanging ribbon */
+}
+
+.cert-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.cert-brand-logo-img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+
+.cert-brand-tagline {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #0f2b5c;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.cert-no-block {
+  text-align: right;
+}
+
+.cert-no-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cert-no-value {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #0f2b5c;
+}
+
+/* Main Title Section */
+.cert-main-title {
+  font-family: 'Cinzel', serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: #0f2b5c;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.25rem;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.05);
+}
+
+.cert-achievement-subtitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #d97706;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-bottom: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.cert-achievement-subtitle::before,
+.cert-achievement-subtitle::after {
+  content: '';
+  height: 2px;
+  width: 60px;
+  background: linear-gradient(90deg, transparent, #d97706, transparent);
+}
+
+.cert-presentation-text {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.cert-recipient-name {
+  font-family: 'Great Vibes', 'Alex Brush', cursive;
+  font-size: 4rem;
+  color: #0f2b5c;
+  margin: 0.25rem 0;
+  line-height: 1.1;
+  text-shadow: 1px 1px 2px rgba(15, 43, 92, 0.15);
+}
+
+.cert-divider-line {
+  width: 320px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #0f2b5c, transparent);
+  margin: 0.5rem auto 1.25rem;
+}
+
+.cert-body-paragraph {
+  font-size: 0.95rem;
+  color: #334155;
+  max-width: 620px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+/* 5-Metric Stats Pill Bar */
+.cert-metrics-pill-bar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.cert-pill-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.cert-pill-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -0.5rem;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background-color: #e2e8f0;
+}
+
+.cert-pill-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.cert-pill-icon.wpm { background: #2563eb; }
+.cert-pill-icon.accuracy { background: #10b981; }
+.cert-pill-icon.mistakes { background: #ef4444; }
+.cert-pill-icon.characters { background: #8b5cf6; }
+.cert-pill-icon.time { background: #f59e0b; }
+
+.cert-pill-val {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f2b5c;
+  line-height: 1.1;
+}
+
+.cert-pill-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.2rem;
+}
+
+.cert-pill-sublabel {
+  font-size: 0.6rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+/* Certificate Footer Grid */
+.cert-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  margin-top: 1.5rem;
+  gap: 1.5rem;
+}
+
+/* Left Signature */
+.cert-signature-block {
+  text-align: left;
+}
+
+.cert-signature-font {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.2rem;
+  color: #0f2b5c;
+  line-height: 1;
+}
+
+.cert-signature-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #0f2b5c;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 0.3rem;
+  border-top: 1.5px solid #0f2b5c;
+  padding-top: 0.3rem;
+  display: inline-block;
+}
+
+.cert-signature-subtext {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+/* Center Gold Crest Shield */
+.cert-crest-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cert-shield-badge {
+  background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #b45309 100%);
+  color: #0f2b5c;
+  padding: 0.6rem 1.25rem;
+  border-radius: var(--radius-full);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Right Verification & QR Code */
+.cert-qr-block {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  text-align: right;
+}
+
+.cert-date-text {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f2b5c;
+}
+
+.cert-date-label {
+  font-size: 0.65rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cert-qr-box {
+  width: 64px;
+  height: 64px;
+  background: #ffffff;
+  border: 2px solid #0f2b5c;
+  border-radius: 6px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-qr-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ==========================================================================
+   7. PERSONAL TYPING HISTORY & TAB SYSTEM
+   ========================================================================== */
+.history-tabs-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+.tab-btn-group {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.tab-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.tab-btn:hover {
+  color: var(--primary-color);
+}
+
+.tab-btn.active {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  text-align: left;
+}
+
+.leaderboard-table th {
+  background-color: var(--mockup-header-bg);
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 1rem;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.leaderboard-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: var(--background-color);
+  color: var(--text-secondary);
+}
+
+.rank-1 { background: #fef08a; color: #b45309; }
+.rank-2 { background: #e2e8f0; color: #475569; }
+.rank-3 { background: #ffedd5; color: #c2410c; }
+
+/* ==========================================================================
+   8. PRINT MEDIA RULES (Clean PDF Export)
+   ========================================================================== */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .navbar, .footer, .splash-loader, .result-card, .history-tabs-container, .leaderboard-table, .result-actions, #auth-nav-container, #theme-nav-container {
+    display: none !important;
+  }
+
+  .cert-outer-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .cert-frame {
+    box-shadow: none !important;
+    border: 12px solid #0f2b5c !important;
+    outline: 3px solid #d97706 !important;
+    page-break-inside: avoid;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Responsive Media Queries */
+@media (max-width: 840px) {
+  .cert-frame {
+    padding: 2rem 1.5rem;
+  }
+  
+  .cert-main-title {
+    font-size: 2.25rem;
+  }
+
+  .cert-recipient-name {
+    font-size: 3rem;
+  }
+
+  .cert-metrics-pill-bar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .result-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cert-metrics-pill-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .cert-footer-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .cert-signature-block, .cert-qr-block {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* ==========================================================================
+   PERSONAL BEST & KEYBOARD HEATMAP & ERROR ANALYSIS DASHBOARD
+   ========================================================================== */
+
+.analytics-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+}
+
+.analytics-title {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.pb-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+}
+
+.pb-card {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 0.75rem;
+  text-align: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.pb-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-color);
+}
+
+.pb-value {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.pb-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-top: 0.3rem;
+  letter-spacing: 0.04em;
+}
+
+.heatmap-analysis-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 1.5rem;
+}
+
+.heatmap-container, .error-analysis-container {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+}
+
+.sub-title {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.heatmap-hint {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.heatmap-keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  user-select: none;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.hm-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.hm-key {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  min-width: 2rem;
+  height: 2.1rem;
+  padding: 0 0.35rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.wide-key {
+  min-width: 3.5rem;
+}
+
+.wide-space {
+  min-width: 14rem;
+}
+
+.hm-badge {
+  font-size: 0.58rem;
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  opacity: 0.9;
+}
+
+.err-chip {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  background-color: rgba(239, 68, 68, 0.15);
+  color: var(--error-color);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.err-chip.success {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: var(--success-color);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.dist-track {
+  height: 6px;
+  background-color: var(--border-color);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: 0.2rem;
+}
+
+.dist-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.5s ease;
+}
+
+.fill-letters { background-color: var(--primary-color); }
+.fill-numbers { background-color: #f59e0b; }
+.fill-symbols { background-color: #a855f7; }
+
+@media (max-width: 900px) {
+  .pb-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .heatmap-analysis-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Achievement Badges Grid */
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+}
+
+.achieve-badge-card {
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1rem 0.5rem;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.achieve-badge-card.unlocked {
+  border-color: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+}
+
+.achieve-badge-card.locked {
+  opacity: 0.5;
+  filter: grayscale(1);
+}
+
+.achieve-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.achieve-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.achieve-desc {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  margin-top: 0.2rem;
+}
+
+.achieve-status {
+  font-size: 0.65rem;
+  font-weight: 800;
+  margin-top: 0.4rem;
+  color: var(--primary-color);
+}
+
+/* Social Share Bar */
+.share-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.share-btn {
+  font-weight: 700;
+  padding: 0.65rem 1.25rem;
+}
+
+.share-wa { border-color: #25D366; color: #25D366; }
+.share-wa:hover { background-color: #25D366; color: #ffffff; }
+
+.share-tw { border-color: #1DA1F2; color: #1DA1F2; }
+.share-tw:hover { background-color: #1DA1F2; color: #ffffff; }
+
+.share-li { border-color: #0A66C2; color: #0A66C2; }
+.share-li:hover { background-color: #0A66C2; color: #ffffff; }
+
+@media (max-width: 900px) {
+  .badges-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

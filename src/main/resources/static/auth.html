@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign In or Create an Account on TypeMaster to practice typing tests and track performance history.">
+    <title>Sign In & Sign Up - TypeMaster</title>
+
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
+    <link rel="apple-touch-icon" href="assets/images/logo.png?v=2">
+
+    <!-- Global & Auth Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body>
+    <!-- Header / Navigation Bar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo" id="brand-logo">
+                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="brand-logo-full">
+            </a>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="typing.html">Typing Test</a></li>
+                <li><a href="result.html">Results</a></li>
+            </ul>
+            <div class="auth-nav-container" id="auth-nav-container">
+                <!-- Populated dynamically by app.js -->
+            </div>
+            <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle Navigation Menu">☰</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="auth-main">
+        <div class="container auth-container">
+
+            <!-- Banner notice if redirected -->
+            <div id="auth-notice" class="auth-notice hidden">
+                <span class="notice-icon">🔒</span>
+                <span id="notice-text">Please sign in or create an account to take typing tests and view your performance history.</span>
+            </div>
+
+            <!-- Auth Card -->
+            <div class="auth-card">
+                <!-- Auth Card Brand Logo -->
+                <div class="auth-header-logo">
+                    <img src="assets/images/logo.svg" alt="TypeMaster Logo" class="auth-card-logo">
+                </div>
+
+                <!-- Tab Headers -->
+                <div class="auth-tabs">
+                    <button type="button" class="tab-btn active" id="tab-signin" onclick="switchAuthTab('signin')">Sign In</button>
+                    <button type="button" class="tab-btn" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+                </div>
+
+                <!-- Alert Message -->
+                <div id="auth-alert" class="auth-alert hidden"></div>
+
+                <!-- Sign In Form -->
+                <form id="signin-form" class="auth-form" onsubmit="handleSignIn(event)">
+                    <div class="form-header">
+                        <h2>Welcome Back</h2>
+                        <p>Sign in to access your typing test dashboard</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signin-username">Username or Email</label>
+                        <input type="text" id="signin-username" placeholder="Enter your username or email" required autocomplete="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signin-password">Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="signin-password" placeholder="Enter your password" required autocomplete="current-password">
+                            <button type="button" class="toggle-password-btn" title="Toggle password visibility" aria-label="Toggle Password Visibility" onclick="togglePasswordVisibility('signin-password', this)">
+                                <span class="eye-icon">👁️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary auth-submit-btn" id="signin-submit-btn">
+                        <span>Sign In</span> →
+                    </button>
+
+                    <div class="form-footer">
+                        Don't have an account? <a href="#" onclick="switchAuthTab('signup'); return false;">Create an account</a>
+                    </div>
+                </form>
+
+                <!-- Sign Up Form -->
+                <form id="signup-form" class="auth-form hidden" onsubmit="handleSignUp(event)">
+                    <div class="form-header">
+                        <h2>Create an Account</h2>
+                        <p>Register to start practicing typing tests and saving your results</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-username">Username</label>
+                        <input type="text" id="signup-username" placeholder="Choose a unique username" required autocomplete="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-email">Email Address</label>
+                        <input type="email" id="signup-email" placeholder="name@example.com" required autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <div class="password-input-wrapper">
+                            <input type="password" id="signup-password" placeholder="Minimum 4 characters" required autocomplete="new-password">
+                            <button type="button" class="toggle-password-btn" title="Toggle password visibility" aria-label="Toggle Password Visibility" onclick="togglePasswordVisibility('signup-password', this)">
+                                <span class="eye-icon">👁️</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary auth-submit-btn" id="signup-submit-btn">
+                        <span>Sign Up & Start</span> →
+                    </button>
+
+                    <div class="form-footer">
+                        Already registered? <a href="#" onclick="switchAuthTab('signin'); return false;">Sign in to your account</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h3>TypeMaster</h3>
+                    <p>A professional typing practice web application powered by Java Spring Boot, Spring Data JPA, and REST APIs.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="typing.html">Typing Test</a></li>
+                        <li><a href="result.html">Results</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TypeMaster. All rights reserved. Powered by Spring Boot 3 & Java 17.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App & Auth JavaScript -->
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/auth.js"></script>
+</body>
+</html>

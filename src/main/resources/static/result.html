@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TypeMaster - View your typing speed test results, WPM, accuracy, certificate, and performance history.">
+    <title>TypeMaster - Test Results</title>
+
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
+    <link rel="apple-touch-icon" href="assets/images/logo.png?v=2">
+
+    <!-- Global & Page Stylesheet Imports -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/result.css">
+</head>
+<body>
+    <!-- Test Results Loading Splash Screen -->
+    <div id="splash-loader" class="splash-loader">
+        <div class="splash-overlay"></div>
+        <div class="splash-content">
+            <div class="splash-card">
+                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="splash-logo-img">
+                <div class="typewriter-quote">
+                    "<span id="typewriter-text"></span><span class="typewriter-cursor">|</span>"
+                </div>
+                <div class="splash-progress-container">
+                    <div class="splash-progress-bar" id="splash-progress-bar"></div>
+                </div>
+                <div class="splash-percentage" id="splash-percentage">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header / Navigation Bar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo" id="brand-logo">
+                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="brand-logo-full">
+            </a>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="typing.html">Typing Test</a></li>
+                <li><a href="result.html" class="active">Results</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle Navigation Menu">☰</button>
+        </div>
+    </header>
+
+    <!-- Main Results Section -->
+    <main>
+        <div class="container result-wrapper">
+            <!-- Score Summary Card -->
+            <div class="result-card">
+                <!-- Performance Header & Badge -->
+                <div class="result-header">
+                    <div class="result-icon-badge" id="result-icon">🏆</div>
+                    <h1 class="result-title" id="result-title">Test Completed!</h1>
+                    <p class="result-message" id="result-message">
+                        Great job completing your typing test! Your score has been calculated.
+                    </p>
+                </div>
+
+                <!-- Hero Final WPM Score Card -->
+                <div class="wpm-hero-card">
+                    <div class="wpm-hero-number" id="res-wpm">0</div>
+                    <div class="wpm-hero-label">Words Per Minute (WPM)</div>
+                </div>
+
+                <!-- Detailed Metrics Grid -->
+                <div class="result-metrics-grid">
+                    <div class="metric-card accuracy">
+                        <div class="metric-value" id="res-accuracy">0%</div>
+                        <div class="metric-label">Accuracy</div>
+                    </div>
+                    <div class="metric-card mistakes">
+                        <div class="metric-value" id="res-mistakes">0</div>
+                        <div class="metric-label">Mistakes</div>
+                    </div>
+                    <div class="metric-card characters">
+                        <div class="metric-value" id="res-typed">0</div>
+                        <div class="metric-label">Chars Typed</div>
+                    </div>
+                    <div class="metric-card time">
+                        <div class="metric-value" id="res-time">00:00</div>
+                        <div class="metric-label">Time Taken</div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="result-actions">
+                    <button onclick="window.print()" class="btn btn-primary" id="print-btn">🖨️ Print / Download Certificate</button>
+                    <a href="typing.html" class="btn btn-outline" id="retry-btn">🔄 Practice Again</a>
+                    <a href="index.html" class="btn btn-outline" id="home-btn">🏠 Back to Home</a>
+                </div>
+            </div>
+
+            <!-- Official TypeMaster Premium Certificate Card (Matching Provided Mockup Image) -->
+            <div class="cert-outer-wrapper">
+                <div class="cert-frame" id="certificate-card">
+                    <!-- Geometric Corner Decorators -->
+                    <div class="cert-corner-ribbon-tl-accent"></div>
+                    <div class="cert-corner-ribbon-tl"></div>
+                    <div class="cert-corner-ribbon-br-accent"></div>
+                    <div class="cert-corner-ribbon-br"></div>
+
+                    <!-- Hanging Ribbon on Left with Gold Seal Badge -->
+                    <div class="cert-hanging-ribbon">
+                        <div class="cert-gold-seal">
+                            <img src="assets/images/logo.svg" alt="TM Seal">
+                        </div>
+                    </div>
+
+                    <!-- Certificate Header -->
+                    <div class="cert-header">
+                        <div class="cert-brand">
+                            <img src="assets/images/logo.svg" alt="TypeMaster Logo" class="cert-brand-logo-img">
+                            <div>
+                                <div style="font-weight: 800; font-size: 1.1rem; color: #0f2b5c;">TypeMaster</div>
+                                <div class="cert-brand-tagline">TYPE BETTER. EVERY DAY.</div>
+                            </div>
+                        </div>
+                        <div class="cert-no-block">
+                            <div class="cert-no-title">CERTIFICATE NO.</div>
+                            <div class="cert-no-value" id="cert-no-val">TM-2026-0721-12456</div>
+                        </div>
+                    </div>
+
+                    <!-- Main Certificate Titles -->
+                    <h1 class="cert-main-title">CERTIFICATE</h1>
+                    <div class="cert-achievement-subtitle">OF ACHIEVEMENT</div>
+
+                    <!-- Recipient Name & Subtext -->
+                    <div class="cert-presentation-text">THIS CERTIFICATE IS PROUDLY PRESENTED TO</div>
+                    <div class="cert-recipient-name" id="cert-user-name">Typist</div>
+                    <div class="cert-divider-line"></div>
+
+                    <p class="cert-body-paragraph">
+                        for successfully completing the Typing Test on <strong>TypeMaster</strong> and demonstrating excellent typing skills and accuracy.
+                    </p>
+
+                    <!-- 5-Metric Stats Pill Bar -->
+                    <div class="cert-metrics-pill-bar">
+                        <div class="cert-pill-item">
+                            <div class="cert-pill-icon wpm">⏱️</div>
+                            <div class="cert-pill-val" id="cert-wpm">0</div>
+                            <div class="cert-pill-label">WPM</div>
+                            <div class="cert-pill-sublabel">WORDS PER MINUTE</div>
+                        </div>
+                        <div class="cert-pill-item">
+                            <div class="cert-pill-icon accuracy">🎯</div>
+                            <div class="cert-pill-val" id="cert-accuracy">0%</div>
+                            <div class="cert-pill-label">ACCURACY</div>
+                            <div class="cert-pill-sublabel">OVERALL ACCURACY</div>
+                        </div>
+                        <div class="cert-pill-item">
+                            <div class="cert-pill-icon mistakes">❌</div>
+                            <div class="cert-pill-val" id="cert-mistakes">0</div>
+                            <div class="cert-pill-label">MISTAKES</div>
+                            <div class="cert-pill-sublabel">TOTAL MISTAKES</div>
+                        </div>
+                        <div class="cert-pill-item">
+                            <div class="cert-pill-icon characters">⌨️</div>
+                            <div class="cert-pill-val" id="cert-typed">0</div>
+                            <div class="cert-pill-label">CHARACTERS</div>
+                            <div class="cert-pill-sublabel">TOTAL TYPED</div>
+                        </div>
+                        <div class="cert-pill-item">
+                            <div class="cert-pill-icon time">⏳</div>
+                            <div class="cert-pill-val" id="cert-time">0s</div>
+                            <div class="cert-pill-label">TIME TAKEN</div>
+                            <div class="cert-pill-sublabel">DURATION</div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate Footer Grid -->
+                    <div class="cert-footer-grid">
+                        <div class="cert-signature-block">
+                            <div class="cert-signature-font">TypeMaster Team</div>
+                            <div class="cert-signature-title">TYPEMASTER TEAM</div>
+                            <div class="cert-signature-subtext">Keep Practicing, Keep Improving!</div>
+                        </div>
+                        <div class="cert-crest-block">
+                            <div class="cert-shield-badge">
+                                🛡️ EXCELLENT PERFORMANCE 🛡️
+                            </div>
+                        </div>
+                        <div class="cert-qr-block">
+                            <div>
+                                <div class="cert-date-text" id="cert-date-val">Today</div>
+                                <div class="cert-date-label">DATE OF COMPLETION</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ⭐ Personal Best & Lifetime Analytics Panel -->
+            <div class="analytics-card">
+                <h3 class="analytics-title">⭐ Personal Best & Lifetime Records</h3>
+                <div class="pb-grid">
+                    <div class="pb-card">
+                        <div class="pb-value" id="pb-best-wpm">0 WPM</div>
+                        <div class="pb-label">Best WPM</div>
+                    </div>
+                    <div class="pb-card">
+                        <div class="pb-value" id="pb-best-acc">100%</div>
+                        <div class="pb-label">Best Accuracy</div>
+                    </div>
+                    <div class="pb-card">
+                        <div class="pb-value" id="pb-streak">0 🔥</div>
+                        <div class="pb-label">Longest Streak</div>
+                    </div>
+                    <div class="pb-card">
+                        <div class="pb-value" id="pb-total-tests">0</div>
+                        <div class="pb-label">Total Tests Completed</div>
+                    </div>
+                    <div class="pb-card">
+                        <div class="pb-value" id="pb-avg-wpm">0 WPM</div>
+                        <div class="pb-label">Average WPM</div>
+                    </div>
+                    <div class="pb-card">
+                        <div class="pb-value" id="pb-rank">🥉 Bronze</div>
+                        <div class="pb-label">Highest Ranking</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 🏆 Achievement Badges Panel -->
+            <div class="analytics-card">
+                <h3 class="analytics-title">🏆 Achievement Badges Unlocked</h3>
+                <div class="badges-grid" id="achievement-badges-grid">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+
+            <!-- 📢 Social Result Sharing & Download Bar -->
+            <div class="analytics-card share-analytics-card">
+                <h3 class="analytics-title">📢 Share Your Typing Score</h3>
+                <div class="share-btn-group">
+                    <button class="btn btn-primary share-btn" onclick="copyResultSummary()"><span id="copy-btn-text">📋 Copy Result Summary</span></button>
+                    <button class="btn btn-outline share-btn share-wa" onclick="shareOnWhatsApp()">💬 WhatsApp</button>
+                    <button class="btn btn-outline share-btn share-tw" onclick="shareOnTwitter()">🐦 Twitter / X</button>
+                    <button class="btn btn-outline share-btn share-li" onclick="shareOnLinkedIn()">💼 LinkedIn</button>
+                    <button class="btn btn-secondary share-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+                </div>
+            </div>
+
+            <!-- 🔥 Keyboard Heatmap & Comprehensive Error Analysis Dashboard -->
+            <div class="analytics-card">
+                <h3 class="analytics-title">🔥 Post-Test Heatmap & Error Analysis</h3>
+                <div class="heatmap-analysis-grid">
+                    <!-- Left: Interactive Keyboard Heatmap -->
+                    <div class="heatmap-container">
+                        <h4 class="sub-title">⌨️ Keyboard Keypress & Error Heatmap</h4>
+                        <p class="heatmap-hint">Keys colored in gradient yellow/orange represent high frequency; glowing red keys indicate high error rates.</p>
+                        <div class="heatmap-keyboard" id="heatmap-keyboard">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Error Analysis & Personalized Recommendations -->
+                    <div class="error-analysis-container">
+                        <h4 class="sub-title">📊 Key & Accuracy Diagnostic</h4>
+                        <div id="error-diagnostic-body">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personal Typing History & Global Leaderboard Tabs Section -->
+            <div class="result-card">
+                <div class="history-tabs-container">
+                    <div class="tab-btn-group">
+                        <button class="tab-btn active" id="tab-my-history" onclick="switchHistoryTab('my-history')">📜 My Personal Typing History</button>
+                        <button class="tab-btn" id="tab-global" onclick="switchHistoryTab('global')">🏆 Global Leaderboard</button>
+                    </div>
+                </div>
+
+                <!-- Personal History View -->
+                <div id="view-my-history">
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Date & Time</th>
+                                <th>WPM</th>
+                                <th>Accuracy</th>
+                                <th>Mistakes</th>
+                                <th>Chars Typed</th>
+                                <th>Time Taken</th>
+                            </tr>
+                        </thead>
+                        <tbody id="my-history-tbody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Global Leaderboard View -->
+                <div id="view-global" style="display: none;">
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>User</th>
+                                <th>WPM</th>
+                                <th>Accuracy</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-tbody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 TypeMaster. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App JavaScript -->
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/stats.js"></script>
+    <script>
+        function formatResultTime(totalSeconds) {
+            if (!totalSeconds) return "00:00";
+            const mins = Math.floor(totalSeconds / 60);
+            const secs = totalSeconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function switchHistoryTab(tabName) {
+            const btnMy = document.getElementById('tab-my-history');
+            const btnGlobal = document.getElementById('tab-global');
+            const viewMy = document.getElementById('view-my-history');
+            const viewGlobal = document.getElementById('view-global');
+
+            if (tabName === 'my-history') {
+                btnMy.classList.add('active');
+                btnGlobal.classList.remove('active');
+                viewMy.style.display = 'block';
+                viewGlobal.style.display = 'none';
+            } else {
+                btnGlobal.classList.add('active');
+                btnMy.classList.remove('active');
+                viewGlobal.style.display = 'block';
+                viewMy.style.display = 'none';
+            }
+        }
+
+        function displayResults(data) {
+            const timeSecs = data.timeTakenSeconds || data.timeTaken || 60;
+
+            document.getElementById('res-wpm').textContent = data.wpm ?? 0;
+            document.getElementById('res-accuracy').textContent = `${data.accuracy ?? 100}%`;
+            document.getElementById('res-mistakes').textContent = data.mistakes ?? 0;
+            document.getElementById('res-typed').textContent = data.typedChars ?? 0;
+            document.getElementById('res-time').textContent = formatResultTime(timeSecs);
+
+            // Populate Official Certificate Fields
+            const user = getCurrentUser();
+            let userName = (user && user.username) ? user.username : (data.username || "Typist");
+            // Capitalize first letter of recipient name nicely
+            if (userName && userName.length > 0) {
+                userName = userName.charAt(0).toUpperCase() + userName.slice(1);
+            }
+            document.getElementById('cert-user-name').textContent = userName;
+
+            document.getElementById('cert-wpm').textContent = data.wpm ?? 0;
+            document.getElementById('cert-accuracy').textContent = `${data.accuracy ?? 100}%`;
+            document.getElementById('cert-mistakes').textContent = data.mistakes ?? 0;
+            document.getElementById('cert-typed').textContent = data.typedChars ?? 0;
+            document.getElementById('cert-time').textContent = `${timeSecs}s`;
+
+            const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            const certId = 'TM-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
+            
+            document.getElementById('cert-date-val').textContent = todayStr;
+            document.getElementById('cert-no-val').textContent = certId;
+
+            if (typeof getPerformanceFeedback === 'function') {
+                const feedback = getPerformanceFeedback(data.wpm, data.accuracy);
+                document.getElementById('result-icon').textContent = feedback.badgeIcon;
+                document.getElementById('result-title').textContent = feedback.title;
+                document.getElementById('result-message').textContent = feedback.message;
+            }
+
+            renderAchievementBadges(data.wpm, data.accuracy);
+            renderMyHistory();
+            renderGlobalLeaderboard();
+        }
+
+        function renderAchievementBadges(wpm, accuracy) {
+            const grid = document.getElementById('achievement-badges-grid');
+            if (!grid) return;
+
+            const pb = typeof getPersonalBestRecord === 'function' ? getPersonalBestRecord() : {};
+            const bestWpm = Math.max(wpm || 0, pb.bestWpm || 0);
+
+            const badgesList = [
+                { id: 'b1', name: '⚡ Speed Demon', desc: 'Reach 60+ WPM', icon: '⚡', unlocked: bestWpm >= 60 },
+                { id: 'b2', name: '🎯 Bullseye', desc: 'Maintain 98%+ Accuracy', icon: '🎯', unlocked: accuracy >= 98 },
+                { id: 'b3', name: '🚀 Master Typist', desc: 'Reach 90+ WPM', icon: '🚀', unlocked: bestWpm >= 90 },
+                { id: 'b4', name: '🔥 Streak Master', desc: 'Complete 3+ High Speed Tests', icon: '🔥', unlocked: (pb.longestStreak || 0) >= 3 },
+                { id: 'b5', name: '⌨️ Keyboard Warrior', desc: 'Complete 10+ Total Tests', icon: '⌨️', unlocked: (pb.totalTests || 0) >= 10 },
+                { id: 'b6', name: '👑 Diamond Master', desc: 'Reach 110+ WPM Speed', icon: '👑', unlocked: bestWpm >= 110 }
+            ];
+
+            grid.innerHTML = badgesList.map(b => `
+                <div class="achieve-badge-card ${b.unlocked ? 'unlocked' : 'locked'}">
+                    <div class="achieve-icon">${b.icon}</div>
+                    <div class="achieve-name">${b.name}</div>
+                    <div class="achieve-desc">${b.desc}</div>
+                    <div class="achieve-status">${b.unlocked ? 'UNLOCKED ✨' : 'LOCKED 🔒'}</div>
+                </div>
+            `).join('');
+
+            if (badgesList.some(b => b.unlocked) && typeof playSoundFX === 'function') {
+                playSoundFX('achievement');
+            }
+        }
+
+        function copyResultSummary() {
+            const wpm = document.getElementById('res-wpm') ? document.getElementById('res-wpm').textContent : '0';
+            const acc = document.getElementById('res-accuracy') ? document.getElementById('res-accuracy').textContent : '100';
+
+            const summaryText = `🚀 TypeMaster Performance Result:\n⚡ Speed: ${wpm} WPM\n🎯 Accuracy: ${acc}\nTest your typing speed live at TypeMaster!`;
+
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(summaryText).then(() => {
+                    const btnText = document.getElementById('copy-btn-text');
+                    if (btnText) {
+                        btnText.textContent = '✓ Copied to Clipboard!';
+                        setTimeout(() => { btnText.textContent = '📋 Copy Result Summary'; }, 2500);
+                    }
+                }).catch(() => alert(summaryText));
+            } else {
+                alert(summaryText);
+            }
+        }
+
+        function shareOnWhatsApp() {
+            const wpm = document.getElementById('res-wpm') ? document.getElementById('res-wpm').textContent : '0';
+            const acc = document.getElementById('res-accuracy') ? document.getElementById('res-accuracy').textContent : '100';
+            const text = encodeURIComponent(`🚀 I scored ${wpm} WPM with ${acc} accuracy on TypeMaster! Can you beat my score?`);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        function shareOnTwitter() {
+            const wpm = document.getElementById('res-wpm') ? document.getElementById('res-wpm').textContent : '0';
+            const acc = document.getElementById('res-accuracy') ? document.getElementById('res-accuracy').textContent : '100';
+            const text = encodeURIComponent(`🚀 Just scored ${wpm} WPM with ${acc} accuracy on TypeMaster! ⌨️🔥 #TypeMaster #TypingTest`);
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+        }
+
+        function shareOnLinkedIn() {
+            const text = encodeURIComponent(`I scored ${document.getElementById('res-wpm')?.textContent || 0} WPM on TypeMaster!`);
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`, '_blank');
+        }
+
+        function renderMyHistory() {
+            const user = getCurrentUser();
+            const username = user ? user.username : null;
+
+            // Fetch from API first, with fallback to local history
+            const fetchUrl = username ? `/api/results?username=${encodeURIComponent(username)}` : '/api/results';
+
+            fetch(fetchUrl)
+                .then(res => {
+                    if (!res.ok) throw new Error('API error');
+                    return res.json();
+                })
+                .then(list => {
+                    if (Array.isArray(list) && list.length > 0) {
+                        populateMyHistoryTable(list);
+                    } else {
+                        fallbackLocalHistory(username);
+                    }
+                })
+                .catch(err => {
+                    fallbackLocalHistory(username);
+                });
+        }
+
+        function fallbackLocalHistory(username) {
+            const localHistory = getUserHistory(username);
+            populateMyHistoryTable(localHistory);
+        }
+
+        function formatDateDirect(item) {
+            if (!item) return new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+            
+            const raw = item.createdAt || item.date || item.testDate || item.timestamp;
+            if (raw) {
+                const d = new Date(raw);
+                if (!isNaN(d.getTime())) {
+                    return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+                }
+            }
+            if (item.id && String(item.id).startsWith('TM-')) {
+                const ts = parseInt(String(item.id).replace('TM-', ''), 10);
+                if (!isNaN(ts)) {
+                    const d = new Date(ts);
+                    if (!isNaN(d.getTime())) {
+                        return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+                    }
+                }
+            }
+            return new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
+        }
+
+        function populateMyHistoryTable(historyList) {
+            const tbody = document.getElementById('my-history-tbody');
+            tbody.innerHTML = '';
+
+            if (!historyList || historyList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 2rem;">
+                            No test history recorded yet. Complete a test to see your history here!
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            historyList.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                const dateFormatted = formatDateDirect(item);
+
+                tr.innerHTML = `
+                    <td><strong>${index + 1}</strong></td>
+                    <td style="color: var(--text-secondary); font-weight: 500;">${dateFormatted}</td>
+                    <td style="color: var(--primary-color); font-weight: 700;">${item.wpm ?? 0} WPM</td>
+                    <td style="color: var(--success-color); font-weight: 600;">${item.accuracy ?? 100}%</td>
+                    <td style="color: var(--error-color);">${item.mistakes ?? 0}</td>
+                    <td>${item.typedChars ?? 0}</td>
+                    <td>${item.timeTakenSeconds || item.timeTaken || item.durationMinutes || 60}s</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderGlobalLeaderboard() {
+            fetchLeaderboard();
+        }
+
+        function fetchLeaderboard() {
+            fetch('/api/results')
+                .then(res => res.json())
+                .then(list => {
+                    if (!Array.isArray(list) || list.length === 0) return;
+                    const tbody = document.getElementById('leaderboard-tbody');
+                    tbody.innerHTML = '';
+                    const sorted = [...list].sort((a, b) => b.wpm - a.wpm).slice(0, 10);
+                    sorted.forEach((item, index) => {
+                        const tr = document.createElement('tr');
+                        const rankClass = index === 0 ? 'rank-1' : index === 1 ? 'rank-2' : index === 2 ? 'rank-3' : 'rank-badge';
+                        const dateFormatted = formatDateDirect(item);
+
+                        tr.innerHTML = `
+                            <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
+                            <td><strong>${escapeHtml(item.username || 'Anonymous')}</strong></td>
+                            <td style="color: var(--primary-color); font-weight: 700;">${item.wpm} WPM</td>
+                            <td>${item.accuracy}%</td>
+                            <td style="color: var(--text-secondary); font-weight: 500;">${dateFormatted}</td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                })
+                .catch(err => console.log('Leaderboard API fetch optional fallback:', err));
+        }
+
+        function renderPersonalBestPanel() {
+            const pb = typeof getPersonalBestRecord === 'function' ? getPersonalBestRecord() : null;
+            if (!pb) return;
+            document.getElementById('pb-best-wpm').textContent = `${pb.bestWpm || 0} WPM`;
+            document.getElementById('pb-best-acc').textContent = `${pb.bestAccuracy || 100}%`;
+            document.getElementById('pb-streak').textContent = `${pb.longestStreak || 0} 🔥`;
+            document.getElementById('pb-total-tests').textContent = `${pb.totalTests || 0}`;
+            document.getElementById('pb-avg-wpm').textContent = `${pb.averageWpm || 0} WPM`;
+            document.getElementById('pb-rank').textContent = pb.highestRank || '🥉 Bronze';
+        }
+
+        function renderHeatmapAndDiagnostic() {
+            let analytics = null;
+            try {
+                const raw = localStorage.getItem('typeMaster_latestAnalytics');
+                if (raw) analytics = JSON.parse(raw);
+            } catch (e) {}
+
+            renderKeyboardHeatmap(analytics);
+            renderErrorDiagnostic(analytics);
+        }
+
+        function renderKeyboardHeatmap(analytics) {
+            const container = document.getElementById('heatmap-keyboard');
+            if (!container) return;
+            container.innerHTML = '';
+
+            const keyPresses = (analytics && analytics.keyPresses) ? analytics.keyPresses : {};
+            const keyErrors = (analytics && analytics.keyErrors) ? analytics.keyErrors : {};
+
+            const maxPress = Math.max(1, ...Object.values(keyPresses));
+            const maxError = Math.max(1, ...Object.values(keyErrors));
+
+            const rows = [
+                ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'],
+                ['Tab', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']', '\\'],
+                ['Caps Lock', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', "'", 'Enter'],
+                ['Shift', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', ',', '.', '/', 'Shift'],
+                ['Space']
+            ];
+
+            rows.forEach(row => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'hm-row';
+                row.forEach(keyText => {
+                    const btn = document.createElement('div');
+                    btn.className = 'hm-key';
+
+                    const cleanKey = keyText.length === 1 ? keyText.toUpperCase() : keyText;
+                    const hits = keyPresses[cleanKey] || 0;
+                    const errs = keyErrors[cleanKey] || 0;
+
+                    if (errs > 0) {
+                        const intensity = Math.min(1, errs / maxError);
+                        btn.style.backgroundColor = `rgba(239, 68, 68, ${0.35 + intensity * 0.55})`;
+                        btn.style.borderColor = 'rgba(239, 68, 68, 0.8)';
+                        btn.style.boxShadow = `0 0 ${6 + intensity * 8}px rgba(239, 68, 68, 0.6)`;
+                        btn.style.color = '#ffffff';
+                    } else if (hits > 0) {
+                        const intensity = Math.min(1, hits / maxPress);
+                        btn.style.backgroundColor = `rgba(245, 158, 11, ${0.25 + intensity * 0.45})`;
+                        btn.style.borderColor = 'rgba(245, 158, 11, 0.6)';
+                        btn.style.color = '#ffffff';
+                    } else {
+                        btn.style.backgroundColor = 'var(--background-color)';
+                    }
+
+                    if (keyText === 'Space') btn.classList.add('wide-space');
+                    else if (['Backspace', 'Tab', 'Caps Lock', 'Enter', 'Shift'].includes(keyText)) btn.classList.add('wide-key');
+
+                    btn.innerHTML = `${keyText} ${hits > 0 || errs > 0 ? `<small class="hm-badge">${errs > 0 ? `❌${errs}` : `✓${hits}`}</small>` : ''}`;
+                    btn.title = `Key: '${keyText}' | Hits: ${hits} | Errors: ${errs}`;
+                    rowDiv.appendChild(btn);
+                });
+                container.appendChild(rowDiv);
+            });
+        }
+
+        function renderErrorDiagnostic(analytics) {
+            const body = document.getElementById('error-diagnostic-body');
+            if (!body) return;
+
+            const keyErrors = (analytics && analytics.keyErrors) ? analytics.keyErrors : {};
+            const charsByType = (analytics && analytics.charsByType) ? analytics.charsByType : { letters: 10, numbers: 0, symbols: 0 };
+
+            const sortedErrors = Object.entries(keyErrors).sort((a, b) => b[1] - a[1]);
+            const topErrors = sortedErrors.slice(0, 4);
+
+            const totalChars = (charsByType.letters || 0) + (charsByType.numbers || 0) + (charsByType.symbols || 0) || 1;
+            const lettersPct = Math.round(((charsByType.letters || 0) / totalChars) * 100);
+            const numbersPct = Math.round(((charsByType.numbers || 0) / totalChars) * 100);
+            const symbolsPct = Math.round(((charsByType.symbols || 0) / totalChars) * 100);
+
+            let recText = "Outstanding accuracy! Maintain your steady typing cadence to push your WPM higher.";
+            if (topErrors.length > 0) {
+                const keysList = topErrors.map(e => `'${e[0]}'`).join(', ');
+                recText = `Focus on slowing down for keys ${keysList}. Daily target: practice home-row finger placement.`;
+            }
+
+            body.innerHTML = `
+                <div class="diag-section">
+                    <span class="diag-label">Top Mistyped Keys:</span>
+                    <div class="top-error-chips" style="margin-top: 0.35rem; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                        ${topErrors.length > 0 ? topErrors.map(e => `<span class="err-chip"><strong>${e[0]}</strong> (${e[1]} errs)</span>`).join('') : '<span class="err-chip success">Zero Key Errors! 🎉</span>'}
+                    </div>
+                </div>
+
+                <div class="diag-section" style="margin-top: 1rem;">
+                    <span class="diag-label">Character Distribution:</span>
+                    <div class="dist-bar-group" style="margin-top: 0.35rem; display: flex; flex-direction: column; gap: 0.4rem;">
+                        <div class="dist-row" style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <span>Letters (${lettersPct}%)</span>
+                            <div class="dist-track"><div class="dist-fill fill-letters" style="width: ${lettersPct}%"></div></div>
+                        </div>
+                        <div class="dist-row" style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <span>Numbers (${numbersPct}%)</span>
+                            <div class="dist-track"><div class="dist-fill fill-numbers" style="width: ${numbersPct}%"></div></div>
+                        </div>
+                        <div class="dist-row" style="font-size: 0.8rem; color: var(--text-secondary);">
+                            <span>Symbols (${symbolsPct}%)</span>
+                            <div class="dist-track"><div class="dist-fill fill-symbols" style="width: ${symbolsPct}%"></div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="diag-section advice-card" style="margin-top: 1rem; background: var(--background-color); padding: 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <strong>💡 AI Recommendation:</strong>
+                    <p style="margin-top: 0.25rem; font-size: 0.85rem; color: var(--text-secondary);">${recText}</p>
+                </div>
+            `;
+        }
+
+        // Fetch latest result from Spring Boot REST API (/api/results/latest) with localStorage fallback
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPersonalBestPanel();
+            renderHeatmapAndDiagnostic();
+
+            const user = getCurrentUser();
+            const userParam = user && user.username ? `?username=${encodeURIComponent(user.username)}` : '';
+            fetch(`/api/results/latest${userParam}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('No backend result found');
+                    return response.json();
+                })
+                .then(data => {
+                    displayResults(data);
+                })
+                .catch(err => {
+                    console.log('Falling back to local storage:', err);
+                    const localData = getTestResult();
+                    if (localData) {
+                        displayResults(localData);
+                    } else {
+                        document.getElementById('result-message').textContent = "No recent test found. Take a test to see your performance results!";
+                    }
+                });
+        });
+    </script>
+</body>
+</html>

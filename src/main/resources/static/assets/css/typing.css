@@ -1,0 +1,814 @@
+/* ==========================================================================
+   TypeMaster - Typing Test Page Stylesheet (typing.css)
+   Styles for the timer dropdown selector, live stats bar, and typing arena using Poppins.
+   ========================================================================== */
+
+/* 1. Control Toolbar (Dropdown Timer Selector & Controls) */
+.test-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--card-bg);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.control-label {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Styled Dropdown Selector */
+.duration-select {
+  background-color: var(--card-bg);
+  border: 1.5px solid var(--border-color);
+  padding: 0.5rem 2.25rem 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+  transition: var(--transition-fast);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2525232563eb' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1.1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.duration-select:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.duration-select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18);
+}
+
+.duration-select option {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--text-primary);
+  background-color: var(--card-bg);
+  padding: 0.5rem;
+}
+
+/* 2. Live Statistics Dashboard Bar */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Live Real-Time Analytics Charts Panel */
+.charts-panel {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.chart-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+}
+
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.chart-title {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.chart-badge {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+}
+
+.chart-badge.wpm-badge {
+  color: var(--primary-color);
+  background: var(--background-color);
+}
+
+.chart-badge.accuracy-badge {
+  color: var(--success-color);
+  background: var(--background-color);
+}
+
+.chart-canvas-container {
+  width: 100%;
+  position: relative;
+}
+
+.chart-canvas-container canvas {
+  width: 100% !important;
+  height: 130px !important;
+  display: block;
+}
+
+.stat-card {
+  background-color: var(--card-bg);
+  padding: 1.25rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+  transition: var(--transition-fast);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+}
+
+.stat-card:hover {
+  border-color: var(--border-focus);
+}
+
+.stat-value {
+  font-family: var(--font-sans);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.stat-card.timer-card {
+  transition: border-color 0.35s ease, background-color 0.35s ease, box-shadow 0.35s ease;
+  position: relative;
+}
+
+.stat-card.timer-card .stat-value {
+  color: var(--primary-color);
+  display: inline-block;
+  transition: color 0.35s ease, transform 0.15s ease;
+}
+
+/* Second-by-second scale pulse on tick */
+.stat-value.timer-pulse {
+  animation: secondTickPulse 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes secondTickPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.14);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Color States as Time Decreases */
+.stat-card.timer-card.timer-normal .stat-value {
+  color: var(--primary-color);
+}
+
+.stat-card.timer-card.timer-warning {
+  border-color: rgba(245, 158, 11, 0.5);
+  background-color: rgba(245, 158, 11, 0.08);
+}
+
+.stat-card.timer-card.timer-warning .stat-value {
+  color: #f59e0b;
+}
+
+.stat-card.timer-card.timer-urgent {
+  border-color: rgba(239, 68, 68, 0.7);
+  background-color: rgba(239, 68, 68, 0.12);
+  box-shadow: 0 0 16px rgba(239, 68, 68, 0.35);
+  animation: urgentCardGlow 0.9s infinite alternate ease-in-out;
+}
+
+.stat-card.timer-card.timer-urgent .stat-value {
+  color: #ef4444;
+}
+
+@keyframes urgentCardGlow {
+  0% {
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 18px rgba(239, 68, 68, 0.55);
+  }
+}
+
+.stat-card.wpm-card .stat-value {
+  color: var(--accent-color);
+}
+
+.stat-card.raw-wpm-card .stat-value {
+  color: #a855f7;
+}
+
+.stat-card.accuracy-card .stat-value {
+  color: var(--success-color);
+}
+
+.stat-card.rank-card .stat-value {
+  color: #f59e0b;
+  font-size: 1.45rem;
+}
+
+.stat-card.consistency-card .stat-value {
+  color: #10b981;
+}
+
+.stat-card.correct-card .stat-value {
+  color: var(--success-color);
+}
+
+.stat-card.mistakes-card .stat-value {
+  color: var(--error-color);
+}
+
+.stat-card.words-card .stat-value {
+  color: #06b6d4;
+}
+
+.stat-card.remaining-card .stat-value {
+  color: var(--text-secondary);
+}
+
+.stat-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-top: 0.35rem;
+  letter-spacing: 0.05em;
+}
+
+/* 3. Typing Arena & Paragraph Container (Glassmorphism Redesign) */
+.typing-arena {
+  background-color: var(--card-bg) !important;
+  background-image: none !important;
+  border-radius: 1.25rem;
+  border: 1.5px solid var(--border-color);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.25);
+  padding: 2.5rem;
+  position: relative;
+  min-height: 230px;
+  cursor: text;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.typing-arena:focus-within,
+.typing-arena.focused {
+  border-color: var(--primary-color);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(37, 99, 235, 0.2), inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Hidden Input Field to capture typing events reliably */
+.hidden-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: text;
+  z-index: 10;
+}
+
+/* Premium Animated Progress Bar */
+.typing-progress-wrapper {
+  margin-bottom: 1.5rem;
+  user-select: none;
+}
+
+.typing-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+  font-family: var(--font-sans);
+}
+
+.typing-progress-title {
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.typing-progress-percent {
+  color: var(--primary-color);
+  font-weight: 800;
+  font-size: 0.95rem;
+  background: var(--background-color);
+  padding: 0.15rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.typing-progress-track {
+  width: 100%;
+  height: 10px;
+  background-color: var(--background-color);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.typing-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  border-radius: var(--radius-full);
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.45);
+}
+
+.typing-progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: progressShimmer 2.2s infinite linear;
+}
+
+@keyframes progressShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Character Spans Container */
+.paragraph-box {
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  line-height: 1.85;
+  color: var(--text-light);
+  user-select: none;
+  word-break: break-word;
+  white-space: pre-wrap;
+  letter-spacing: 0.02em;
+}
+
+/* Coding Practice Mode Typography */
+.paragraph-box.code-mode {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  line-height: 1.75;
+  background: var(--mockup-header-bg);
+  color: var(--text-light);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.paragraph-box.code-mode .char {
+  color: var(--text-light);
+}
+
+.paragraph-box.code-mode .char.correct {
+  color: var(--success-color);
+  background-color: var(--success-bg);
+}
+
+.paragraph-box.code-mode .char.incorrect {
+  color: var(--error-color);
+  background-color: var(--error-bg);
+  text-decoration: underline;
+  text-decoration-color: var(--error-color);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+.paragraph-box.code-mode .char.active {
+  color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 0 0 2px var(--primary-color);
+  animation: blinkHighlight 0.9s infinite ease-in-out alternate;
+}
+
+/* Base Untyped Character (Soft Gray) */
+.char {
+  position: relative;
+  border-radius: 3px;
+  padding: 0.05rem 0.06rem;
+  color: var(--text-light);
+  transition: color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+/* Correctly Typed Character (Green) */
+.char.correct {
+  color: var(--success-color);
+  background-color: var(--success-bg);
+  font-weight: 600;
+}
+
+/* Incorrectly Typed Character (Red with Underline) */
+.char.incorrect {
+  color: var(--error-color);
+  background-color: var(--error-bg);
+  text-decoration: underline;
+  text-decoration-color: var(--error-color);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}
+
+/* Current Active Character (Blue with Realistic Blinking Cursor) */
+.char.active {
+  color: var(--primary-color);
+  background-color: rgba(37, 99, 235, 0.18);
+  font-weight: 700;
+  border-radius: 3px;
+  position: relative;
+}
+
+.char.active::before {
+  content: '';
+  position: absolute;
+  left: -2px;
+  top: 10%;
+  height: 80%;
+  width: 2.5px;
+  background-color: var(--primary-color);
+  border-radius: 2px;
+  box-shadow: 0 0 8px var(--primary-color);
+  animation: blinkCursor 0.9s step-end infinite;
+  z-index: 2;
+}
+
+@keyframes blinkCursor {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* 4. Action Bar below Arena */
+.arena-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.focus-hint {
+  font-family: var(--font-sans);
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 0.75rem;
+}
+
+/* 5. Virtual Keyboard Component */
+.virtual-keyboard-wrapper {
+  margin-top: 1.75rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1rem;
+  box-shadow: var(--shadow-md);
+  backdrop-filter: var(--glass-backdrop);
+  -webkit-backdrop-filter: var(--glass-backdrop);
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  user-select: none;
+}
+
+.kb-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.key-btn {
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  height: 44px;
+  min-width: 32px;
+  flex: 1;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 2px 0 var(--border-color);
+}
+
+.key-btn span {
+  font-size: 0.62rem;
+  color: var(--text-secondary);
+  position: absolute;
+  top: 3px;
+  right: 4px;
+}
+
+.key-btn:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* Key Width Utilities */
+.wide-1-5 { flex: 1.5; }
+.wide-1-75 { flex: 1.75; }
+.wide-2 { flex: 2; }
+.wide-2-25 { flex: 2.25; }
+.wide-space { flex: 6; max-width: 420px; }
+
+/* Key Highlighting States */
+.key-btn.key-next {
+  background-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.6), 0 2px 0 var(--primary-hover) !important;
+  animation: pulseKeyTarget 1.2s infinite ease-in-out;
+  z-index: 2;
+}
+
+.key-btn.key-next span {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.key-btn.key-correct {
+  background-color: var(--success-color) !important;
+  color: #ffffff !important;
+  border-color: var(--success-color) !important;
+  transform: translateY(1px);
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.5) !important;
+}
+
+.key-btn.key-incorrect {
+  background-color: var(--error-color) !important;
+  color: #ffffff !important;
+  border-color: var(--error-color) !important;
+  transform: translateY(1px);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.5) !important;
+}
+
+@keyframes pulseKeyTarget {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+/* Responsive Media Queries */
+@media (max-width: 992px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .paragraph-box {
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+  
+  .test-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .control-group {
+    justify-content: space-between;
+  }
+
+  .duration-select {
+    width: 100%;
+  }
+}
+
+.duration-select.control-locked {
+  opacity: 0.65;
+  cursor: not-allowed;
+  background-color: var(--border-color, rgba(0, 0, 0, 0.05));
+  border-color: var(--border-color);
+}
+
+/* Action Button Ripple Animations & Hover Effects */
+.btn-ripple {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-ripple:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Optional Live Performance Graphs Toggle Container */
+.charts-toggle-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.charts-toggle-btn {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.charts-toggle-btn:hover {
+  background-color: var(--primary-light, rgba(59, 130, 246, 0.1));
+}
+
+.btn-ripple:active {
+  transform: translateY(0);
+}
+
+.arena-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+/* Paused State Glass Blur Overlay */
+.paragraph-box.paused {
+  filter: blur(8px);
+  opacity: 0.4;
+  pointer-events: none;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Distraction-Free Focus Mode Overlay */
+body.focus-mode-active .navbar,
+body.focus-mode-active .footer,
+body.focus-mode-active .test-controls,
+body.focus-mode-active .charts-panel,
+body.focus-mode-active #virtual-keyboard,
+body.focus-mode-active .stat-card:not(.wpm-card):not(.accuracy-card):not(.timer-card) {
+  display: none !important;
+}
+
+body.focus-mode-active .stats-grid {
+  grid-template-columns: repeat(3, 1fr) !important;
+  max-width: 600px;
+  margin: 0 auto 1.5rem auto;
+}
+
+body.focus-mode-active .main-content {
+  padding-top: 2rem;
+}
+
+.exit-focus-btn {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 9999;
+  background-color: var(--error-color);
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.exit-focus-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Time's Up Interactive Modal Overlay */
+.timesup-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+.timesup-modal-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  padding: 2.25rem 2rem;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.timesup-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.timesup-title {
+  font-family: var(--font-sans);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.timesup-message {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1.75rem;
+}
+
+.timesup-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timesup-btn-group .btn {
+  width: 100%;
+  padding: 0.75rem 1.25rem;
+  font-weight: 700;
+}

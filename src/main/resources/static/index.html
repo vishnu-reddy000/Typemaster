@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TypeMaster - Master your typing speed and accuracy with real-time statistics, customizable timer tests, and Spring Boot REST integration.">
+    <title>TypeMaster - Master Your Typing Speed & Accuracy</title>
+
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
+    <link rel="apple-touch-icon" href="assets/images/logo.png?v=2">
+
+    <!-- Global & Page Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/home.css">
+</head>
+<body>
+    <!-- Initial Loading Splash Screen -->
+    <div id="splash-loader" class="splash-loader">
+        <div class="splash-overlay"></div>
+        <div class="splash-content">
+            <div class="splash-card">
+                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="splash-logo-img">
+                <div class="typewriter-quote">
+                    "<span id="typewriter-text"></span><span class="typewriter-cursor">|</span>"
+                </div>
+                <div class="splash-progress-container">
+                    <div class="splash-progress-bar" id="splash-progress-bar"></div>
+                </div>
+                <div class="splash-percentage" id="splash-percentage">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header / Navigation Bar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo" id="brand-logo">
+                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="brand-logo-full">
+            </a>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="typing.html">Typing Test</a></li>
+                <li><a href="result.html">Results</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle Navigation Menu">☰</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <img src="assets/images/logo.svg" alt="TypeMaster Official Brand Logo" class="hero-brand-logo">
+                    <div class="badge badge-primary hero-badge">⚡ Powered by Spring Boot REST API</div>
+                    <h1 class="hero-title">Master Your Typing Speed <span>With Confidence</span></h1>
+                    <p class="hero-description">
+                        TypeMaster is a professional practice platform designed to boost your words per minute (WPM) and accuracy with real-time feedback, custom timers, and Spring Boot REST analytics.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="typing.html" class="btn btn-primary" id="hero-start-btn">Start Typing Now →</a>
+                        <a href="#features" class="btn btn-outline" id="hero-features-btn">Explore Features</a>
+                    </div>
+                </div>
+
+                <!-- Hero Mockup Preview -->
+                <div class="hero-mockup">
+                    <div class="mockup-header">
+                        <span class="mockup-dot dot-red"></span>
+                        <span class="mockup-dot dot-yellow"></span>
+                        <span class="mockup-dot dot-green"></span>
+                    </div>
+                    <div class="mockup-body">
+                        <div class="mockup-stats">
+                            <div class="mockup-stat-item">
+                                <div class="mockup-stat-val">68</div>
+                                <div class="mockup-stat-label">WPM</div>
+                            </div>
+                            <div class="mockup-stat-item">
+                                <div class="mockup-stat-val">98%</div>
+                                <div class="mockup-stat-label">Accuracy</div>
+                            </div>
+                            <div class="mockup-stat-item">
+                                <div class="mockup-stat-val">01:00</div>
+                                <div class="mockup-stat-label">Time</div>
+                            </div>
+                        </div>
+                        <div class="mockup-text">
+                            <span class="correct">Developing</span> <span class="correct">great</span> <span class="correct">typing</span> <span class="correct">speed</span> <span class="active">requires</span> practice and focus...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Designed for Maximum Speed</h2>
+                    <p class="section-description">Everything you need to improve your keyboard mastery step by step.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">Real-Time Analytics</h3>
+                        <p class="feature-text">Watch your Words Per Minute (WPM) and Accuracy update instantly as you type every single keypress.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⏱️</div>
+                        <h3 class="feature-title">Custom Test Timers</h3>
+                        <p class="feature-text">Select between 1, 3, 5, 7, or 9-minute countdown timers from a sleek dropdown menu.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌱</div>
+                        <h3 class="feature-title">Spring Boot Persistence</h3>
+                        <p class="feature-text">All practice test results are transmitted via REST API and persisted in an embedded H2 database.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">Performance Reports</h3>
+                        <p class="feature-text">Analyze mistakes, total characters typed, and view personalized feedback badges after every test.</p>
+        </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="footer-logo-img">
+                    <p style="font-weight: 700; color: #38bdf8; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.5rem;">TYPE BETTER. EVERY DAY.</p>
+                    <p>A professional SaaS typing practice platform powered by Java Spring Boot, Spring Data JPA, and REST analytics.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Navigation</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="typing.html">Typing Test</a></li>
+                        <li><a href="result.html">Results</a></li>
+                        <li><a href="/h2-console" target="_blank">H2 Console</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Architecture</h4>
+                    <ul class="footer-links">
+                        <li><a href="README.md">Documentation</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TypeMaster. All rights reserved. Powered by Spring Boot 3 & Java 17.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App JavaScript -->
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

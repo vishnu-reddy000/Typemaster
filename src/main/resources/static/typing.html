@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TypeMaster - Live typing test page. Test your WPM and accuracy in real time with 1, 3, 5, 7, and 9 minute dropdown timers.">
+    <title>TypeMaster - Typing Test</title>
+
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
+    <link rel="apple-touch-icon" href="assets/images/logo.png?v=2">
+
+    <!-- Global & Page Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/typing.css">
+</head>
+<body>
+    <!-- Typing Test Loading Splash Screen -->
+    <div id="splash-loader" class="splash-loader">
+        <div class="splash-overlay"></div>
+        <div class="splash-content">
+            <div class="splash-card">
+                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="splash-logo-img">
+                <div class="typewriter-quote">
+                    "<span id="typewriter-text"></span><span class="typewriter-cursor">|</span>"
+                </div>
+                <div class="splash-progress-container">
+                    <div class="splash-progress-bar" id="splash-progress-bar"></div>
+                </div>
+                <div class="splash-percentage" id="splash-percentage">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo" id="brand-logo">
+                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="brand-logo-full">
+            </a>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="typing.html" class="active">Typing Test</a></li>
+                <li><a href="result.html">Results</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle Navigation Menu">☰</button>
+        </div>
+    </header>
+
+    <!-- Main Content Arena -->
+    <main>
+        <div class="container">
+            <!-- Test Controls Toolbar -->
+            <div class="test-controls">
+                <div class="control-group">
+                    <label for="mode-select" class="control-label">Practice Mode:</label>
+                    <select id="mode-select" class="duration-select">
+                        <option value="PARAGRAPH" selected>📝 Text Paragraph</option>
+                        <option value="CODING">💻 Coding Practice</option>
+                        <option value="QUOTES">💬 Famous Quotes</option>
+                        <option value="NUMBERS">🔢 Numbers Practice</option>
+                        <option value="SYMBOLS">🔣 Symbols Practice</option>
+                        <option value="MIXED">🔀 Mixed Practice</option>
+                        <option value="INTERVIEW">🎯 Interview Questions</option>
+                        <option value="OFFICE">💼 Office Typing</option>
+                        <option value="COMPETITIVE">📚 Competitive Exams</option>
+                        <option value="EMAIL">✉️ Email Writing</option>
+                        <option value="CUSTOM">✏️ Custom Text Practice</option>
+                    </select>
+                </div>
+
+                <div class="control-group coding-control" id="language-group" style="display: none;">
+                    <label for="language-select" class="control-label">Language:</label>
+                    <select id="language-select" class="duration-select">
+                        <option value="JAVA" selected>☕ Java</option>
+                        <option value="PYTHON">🐍 Python</option>
+                        <option value="JAVASCRIPT">⚡ JavaScript</option>
+                        <option value="HTML">🌐 HTML</option>
+                        <option value="CSS">🎨 CSS</option>
+                        <option value="SQL">🗄️ SQL</option>
+                        <option value="C">⚙️ C</option>
+                        <option value="CPP">⚡ C++</option>
+                        <option value="CSHARP">🔷 C#</option>
+                        <option value="KOTLIN">🎯 Kotlin</option>
+                    </select>
+                </div>
+
+                <div class="control-group coding-control" id="topic-group" style="display: none;">
+                    <label for="topic-select" class="control-label">Topic:</label>
+                    <select id="topic-select" class="duration-select">
+                        <option value="ALL" selected>✨ All Topics</option>
+                        <option value="HELLO_WORLD">👋 Hello World (Output)</option>
+                        <option value="VARIABLES">📦 Variables & Data Types</option>
+                        <option value="ARITHMETIC">➕ Arithmetic Operations</option>
+                        <option value="TYPECASTING">🔄 Type Casting & Conversion</option>
+                    </select>
+                </div>
+
+                <div class="control-group" id="difficulty-group">
+                    <label for="difficulty-select" class="control-label">Difficulty:</label>
+                    <select id="difficulty-select" class="duration-select">
+                        <option value="EASY">🟢 Easy</option>
+                        <option value="MEDIUM" selected>🟡 Medium</option>
+                        <option value="HARD">🔴 Hard</option>
+                        <option value="EXPERT">🔥 Expert</option>
+                    </select>
+                </div>
+
+                <div class="control-group" id="duration-group">
+                    <label for="duration-select" class="control-label">Test Duration:</label>
+                    <select id="duration-select" class="duration-select" onchange="handleDurationChange(this.value)">
+                        <option value="15s">⚡ 15 Seconds</option>
+                        <option value="30s">⏱️ 30 Seconds</option>
+                        <option value="1m" selected>1 Minute</option>
+                        <option value="2m">2 Minutes</option>
+                        <option value="3m">3 Minutes</option>
+                        <option value="5m">5 Minutes</option>
+                        <option value="10m">10 Minutes</option>
+                        <option value="CUSTOM">⚙️ Custom Duration</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <span class="control-label">Status:</span>
+                    <span class="badge badge-primary" id="test-status-badge">Ready</span>
+                </div>
+            </div>
+
+            <!-- Live Dashboard Stats Grid (10 Premium Cards) -->
+            <div class="stats-grid">
+                <div class="stat-card timer-card">
+                    <div class="stat-value" id="stat-timer">01:00</div>
+                    <div class="stat-label">Time Remaining</div>
+                </div>
+                <div class="stat-card wpm-card">
+                    <div class="stat-value" id="stat-wpm">0</div>
+                    <div class="stat-label">Net WPM (Speed)</div>
+                </div>
+                <div class="stat-card raw-wpm-card">
+                    <div class="stat-value" id="stat-raw-wpm">0</div>
+                    <div class="stat-label">Raw WPM</div>
+                </div>
+                <div class="stat-card accuracy-card">
+                    <div class="stat-value" id="stat-accuracy">100%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-card rank-card">
+                    <div class="stat-value" id="stat-rank">🥉 Bronze</div>
+                    <div class="stat-label">Typing Rank</div>
+                </div>
+                <div class="stat-card consistency-card">
+                    <div class="stat-value" id="stat-consistency">100%</div>
+                    <div class="stat-label">Consistency</div>
+                </div>
+                <div class="stat-card correct-card">
+                    <div class="stat-value" id="stat-correct">0</div>
+                    <div class="stat-label">Correct Chars</div>
+                </div>
+                <div class="stat-card mistakes-card">
+                    <div class="stat-value" id="stat-mistakes">0</div>
+                    <div class="stat-label">Incorrect Chars</div>
+                </div>
+                <div class="stat-card words-card">
+                    <div class="stat-value" id="stat-words">0</div>
+                    <div class="stat-label">Words Typed</div>
+                </div>
+                <div class="stat-card remaining-card">
+                    <div class="stat-value" id="stat-remaining">0</div>
+                    <div class="stat-label">Remaining Chars</div>
+                </div>
+            </div>
+
+            <!-- Optional Live Real-Time Analytics Graphs Toggle -->
+            <div class="charts-toggle-container">
+                <button class="btn btn-outline btn-ripple charts-toggle-btn" id="toggle-charts-btn" onclick="toggleLiveCharts()">
+                    <span id="charts-toggle-icon">📊</span> <span id="charts-toggle-text">Show Live Performance Graphs</span>
+                </button>
+            </div>
+
+            <!-- Live Real-Time Analytics Graphs (WPM & Accuracy Canvas) -->
+            <div class="charts-panel" id="charts-panel" style="display: none;">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <span class="chart-title">📈 Live Speed Performance (WPM Over Time)</span>
+                        <span class="chart-badge wpm-badge" id="live-wpm-badge">0 WPM</span>
+                    </div>
+                    <div class="chart-canvas-container">
+                        <canvas id="wpm-chart" height="130"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <span class="chart-title">🎯 Live Accuracy Performance (% Over Time)</span>
+                        <span class="chart-badge accuracy-badge" id="live-accuracy-badge">100%</span>
+                    </div>
+                    <div class="chart-canvas-container">
+                        <canvas id="accuracy-chart" height="130"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Interactive Typing Arena -->
+            <div class="typing-arena" id="typing-arena" tabindex="0">
+                <!-- Hidden Input element to capture keypresses on mobile & desktop -->
+                <input type="text" id="hidden-input" class="hidden-input" autocomplete="off" aria-label="Type here to start test" autofocus>
+                
+                <!-- Premium Animated Typing Progress Bar -->
+                <div class="typing-progress-wrapper">
+                    <div class="typing-progress-header">
+                        <span class="typing-progress-title">📊 Typing Progress</span>
+                        <span class="typing-progress-percent" id="typing-progress-percent">0%</span>
+                    </div>
+                    <div class="typing-progress-track">
+                        <div class="typing-progress-fill" id="typing-progress-fill"></div>
+                    </div>
+                </div>
+
+                <!-- Character Spans Container -->
+                <div class="paragraph-box" id="paragraph-box">
+                    <span class="char active">T</span><span class="char">e</span><span class="char">c</span><span class="char">h</span><span class="char">n</span><span class="char">o</span><span class="char">l</span><span class="char">o</span><span class="char">g</span><span class="char">y</span><span class="char"> </span><span class="char">c</span><span class="char">o</span><span class="char">n</span><span class="char">t</span><span class="char">i</span><span class="char">n</span><span class="char">u</span><span class="char">e</span><span class="char">s</span><span class="char"> </span><span class="char">t</span><span class="char">o</span><span class="char"> </span><span class="char">t</span><span class="char">r</span><span class="char">a</span><span class="char">n</span><span class="char">s</span><span class="char">f</span><span class="char">o</span><span class="char">r</span><span class="char">m</span><span class="char"> </span><span class="char">t</span><span class="char">h</span><span class="char">e</span><span class="char"> </span><span class="char">w</span><span class="char">a</span><span class="char">y</span><span class="char"> </span><span class="char">w</span><span class="char">e</span><span class="char"> </span><span class="char">c</span><span class="char">o</span><span class="char">m</span><span class="char">m</span><span class="char">u</span><span class="char">n</span><span class="char">i</span><span class="char">c</span><span class="char">a</span><span class="char">t</span><span class="char">e</span><span class="char">,</span><span class="char"> </span><span class="char">l</span><span class="char">e</span><span class="char">a</span><span class="char">r</span><span class="char">n</span><span class="char">,</span><span class="char"> </span><span class="char">a</span><span class="char">n</span><span class="char">d</span><span class="char"> </span><span class="char">b</span><span class="char">u</span><span class="char">i</span><span class="char">l</span><span class="char">d</span><span class="char"> </span><span class="char">s</span><span class="char">o</span><span class="char">f</span><span class="char">t</span><span class="char">w</span><span class="char">a</span><span class="char">r</span><span class="char">e</span><span class="char"> </span><span class="char">a</span><span class="char">c</span><span class="char">r</span><span class="char">o</span><span class="char">s</span><span class="char">s</span><span class="char"> </span><span class="char">t</span><span class="char">h</span><span class="char">e</span><span class="char"> </span><span class="char">g</span><span class="char">l</span><span class="char">o</span><span class="char">b</span><span class="char">e</span><span class="char">.</span>
+                </div>
+            </div>
+
+            <p class="focus-hint">💡 Tip: Start typing anywhere to launch the test. Paragraphs are fetched live from Spring Boot backend!</p>
+
+            <!-- Responsive Interactive Virtual Keyboard Component -->
+            <div class="virtual-keyboard-wrapper" id="virtual-keyboard">
+                <!-- Row 1: Numbers & Symbols -->
+                <div class="kb-row">
+                    <button class="key-btn" data-key="`" data-shift="~">` <span>~</span></button>
+                    <button class="key-btn" data-key="1" data-shift="!">1 <span>!</span></button>
+                    <button class="key-btn" data-key="2" data-shift="@">2 <span>@</span></button>
+                    <button class="key-btn" data-key="3" data-shift="#">3 <span>#</span></button>
+                    <button class="key-btn" data-key="4" data-shift="$">4 <span>$</span></button>
+                    <button class="key-btn" data-key="5" data-shift="%">5 <span>%</span></button>
+                    <button class="key-btn" data-key="6" data-shift="^">6 <span>^</span></button>
+                    <button class="key-btn" data-key="7" data-shift="&">&amp; <span>&amp;</span></button>
+                    <button class="key-btn" data-key="8" data-shift="*">8 <span>*</span></button>
+                    <button class="key-btn" data-key="9" data-shift="(">9 <span>(</span></button>
+                    <button class="key-btn" data-key="0" data-shift=")">0 <span>)</span></button>
+                    <button class="key-btn" data-key="-" data-shift="_">- <span>_</span></button>
+                    <button class="key-btn" data-key="=" data-shift="+">= <span>+</span></button>
+                    <button class="key-btn key-backspace wide-1-5" data-key="backspace">⌫ Backspace</button>
+                </div>
+
+                <!-- Row 2: QWERTY -->
+                <div class="kb-row">
+                    <button class="key-btn key-tab wide-1-5" data-key="tab">Tab</button>
+                    <button class="key-btn" data-key="q">Q</button>
+                    <button class="key-btn" data-key="w">W</button>
+                    <button class="key-btn" data-key="e">E</button>
+                    <button class="key-btn" data-key="r">R</button>
+                    <button class="key-btn" data-key="t">T</button>
+                    <button class="key-btn" data-key="y">Y</button>
+                    <button class="key-btn" data-key="u">U</button>
+                    <button class="key-btn" data-key="i">I</button>
+                    <button class="key-btn" data-key="o">O</button>
+                    <button class="key-btn" data-key="p">P</button>
+                    <button class="key-btn" data-key="[" data-shift="{">[ <span>{</span></button>
+                    <button class="key-btn" data-key="]" data-shift="}">] <span>}</span></button>
+                    <button class="key-btn" data-key="\" data-shift="|">\ <span>|</span></button>
+                </div>
+
+                <!-- Row 3: ASDF -->
+                <div class="kb-row">
+                    <button class="key-btn key-caps wide-1-75" data-key="capslock">Caps Lock</button>
+                    <button class="key-btn" data-key="a">A</button>
+                    <button class="key-btn" data-key="s">S</button>
+                    <button class="key-btn" data-key="d">D</button>
+                    <button class="key-btn" data-key="f">F</button>
+                    <button class="key-btn" data-key="g">G</button>
+                    <button class="key-btn" data-key="h">H</button>
+                    <button class="key-btn" data-key="j">J</button>
+                    <button class="key-btn" data-key="k">K</button>
+                    <button class="key-btn" data-key="l">L</button>
+                    <button class="key-btn" data-key=";" data-shift=":">; <span>:</span></button>
+                    <button class="key-btn" data-key="'" data-shift='"'>' <span>"</span></button>
+                    <button class="key-btn key-enter wide-2" data-key="enter">↵ Enter</button>
+                </div>
+
+                <!-- Row 4: ZXCV -->
+                <div class="kb-row">
+                    <button class="key-btn key-shift wide-2-25" data-key="shift">⇧ Shift</button>
+                    <button class="key-btn" data-key="z">Z</button>
+                    <button class="key-btn" data-key="x">X</button>
+                    <button class="key-btn" data-key="c">C</button>
+                    <button class="key-btn" data-key="v">V</button>
+                    <button class="key-btn" data-key="b">B</button>
+                    <button class="key-btn" data-key="n">N</button>
+                    <button class="key-btn" data-key="m">M</button>
+                    <button class="key-btn" data-key="," data-shift="&lt;">, <span>&lt;</span></button>
+                    <button class="key-btn" data-key="." data-shift="&gt;">. <span>&gt;</span></button>
+                    <button class="key-btn" data-key="/" data-shift="?">/ <span>?</span></button>
+                    <button class="key-btn key-shift wide-2-25" data-key="shift">⇧ Shift</button>
+                </div>
+
+                <!-- Row 5: Space Bar -->
+                <div class="kb-row">
+                    <button class="key-btn key-space wide-space" data-key=" ">Space</button>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="arena-actions">
+                <button class="btn btn-primary btn-ripple" id="restart-btn">▶ Start Test</button>
+                <button class="btn btn-outline btn-ripple" id="pause-btn">⏸️ Pause Test</button>
+                <button class="btn btn-outline btn-ripple" id="new-para-btn">🔀 Random Paragraph</button>
+                <button class="btn btn-outline btn-ripple" id="focus-btn">🧘 Focus Mode</button>
+                <button class="btn btn-outline btn-ripple" id="fullscreen-btn">⛶ Fullscreen</button>
+                <button class="btn btn-outline btn-ripple" id="sound-toggle-btn" onclick="toggleSoundFX()">🔊 Sound FX: ON</button>
+            </div>
+            <button class="exit-focus-btn" id="exit-focus-btn" style="display: none;" onclick="toggleFocusMode()">✕ Exit Focus Mode</button>
+        </div>
+    </main>
+
+    <!-- Time's Up Interactive Prompt Modal -->
+    <div class="timesup-modal-overlay" id="timesup-modal" style="display: none;">
+        <div class="timesup-modal-card">
+            <div class="timesup-icon">⏱️</div>
+            <h3 class="timesup-title">Time's Up! Test Completed</h3>
+            <p class="timesup-message">Your test duration has ended. Would you like to view your performance results, continue practicing without a timer, or restart?</p>
+            <div class="timesup-btn-group">
+                <button class="btn btn-primary btn-ripple" id="timesup-results-btn">📊 View My Results</button>
+                <button class="btn btn-outline btn-ripple" id="timesup-continue-btn">▶️ Continue Typing</button>
+                <button class="btn btn-secondary btn-ripple" id="timesup-restart-btn">🔄 Restart Test</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 TypeMaster. All rights reserved. Spring Boot REST Application.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files in strict dependency order -->
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/stats.js"></script>
+    <script src="assets/js/timer.js"></script>
+    <script src="assets/js/typing.js"></script>
+</body>
+</html>

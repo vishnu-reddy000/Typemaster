@@ -1,0 +1,19 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!target/classes/architecture/
+!target/classes/annotations/
+
+# IDE files
+.idea/
+*.iws
+*.iml
+*.ipr
+.classpath
+.project
+.settings/
+.vscode/
+
+# Logs and temp
+*.log
+*.tmp
+.DS_Store

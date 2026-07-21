@@ -114,11 +114,14 @@ const TimerManager = {
   reset() {
     this.stop();
 
-    // Check if dropdown has a different selected value in DOM
+    // Check if dropdown has a selected value in DOM
     const selectEl = document.getElementById('duration-select');
-    if (selectEl && selectEl.value && selectEl.value !== 'CUSTOM' && selectEl.value !== this.config.durationKey) {
-      this.config.durationKey = selectEl.value;
-      this.config.maxSeconds = this.parseDurationToSeconds(selectEl.value);
+    if (selectEl && selectEl.value && selectEl.value !== 'CUSTOM') {
+      const valFromDom = selectEl.value || (selectEl.options && selectEl.options[selectEl.selectedIndex] ? selectEl.options[selectEl.selectedIndex].value : null);
+      if (valFromDom) {
+        this.config.durationKey = String(valFromDom);
+        this.config.maxSeconds = this.parseDurationToSeconds(valFromDom);
+      }
     }
 
     this.state.timeRemaining = this.config.maxSeconds;

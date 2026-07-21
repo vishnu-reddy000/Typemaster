@@ -120,11 +120,17 @@ function initTypingEngine() {
   }
 
   handleModeUI();
+  const durationSelectEl = document.getElementById('duration-select');
   const savedDuration = localStorage.getItem('typeMaster_selectedDuration');
   if (savedDuration && durationSelectEl) {
     durationSelectEl.value = savedDuration;
   }
-  const initialVal = durationSelectEl ? durationSelectEl.value : '1m';
+  if (durationSelectEl) {
+    durationSelectEl.addEventListener('change', (e) => {
+      handleDurationChange(e.target.value);
+    });
+  }
+  const initialVal = (durationSelectEl && durationSelectEl.value) ? durationSelectEl.value : '1m';
   setTimerDuration(initialVal);
   initVirtualKeyboard();
   resetAnalyticsCharts();
@@ -892,7 +898,9 @@ function handleDurationChange(val) {
     return;
   }
 
-  if (val === 'CUSTOM') {
+  const selectedVal = val || (durationSelectEl ? durationSelectEl.value : '1m');
+
+  if (selectedVal === 'CUSTOM') {
     const customSecs = prompt("Enter custom test duration in seconds (10 to 600 seconds):", "45");
     if (customSecs) {
       const parsed = parseInt(customSecs, 10);
@@ -906,7 +914,13 @@ function handleDurationChange(val) {
       if (durationSelectEl) durationSelectEl.value = '1m';
     }
   } else {
-    TimerManager.setDuration(val);
+    TimerManager.setDuration(selectedVal);
+  }
+
+  // Force immediate update of #stat-timer DOM element
+  const timerEl = document.getElementById('stat-timer');
+  if (timerEl) {
+    timerEl.textContent = TimerManager.formatTime(TimerManager.getMaxSeconds());
   }
 
   restartTest();

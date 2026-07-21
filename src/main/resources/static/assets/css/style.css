@@ -936,10 +936,9 @@ main {
     gap: 2rem;
   }
 
-  .virtual-keyboard-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.5rem;
+  .virtual-keyboard-wrapper,
+  #virtual-keyboard {
+    display: none !important;
   }
 
   .cert-outer-wrapper {

@@ -533,6 +533,13 @@
   user-select: none;
 }
 
+@media (max-width: 1024px) {
+  .virtual-keyboard-wrapper,
+  #virtual-keyboard {
+    display: none !important;
+  }
+}
+
 .kb-row {
   display: flex;
   justify-content: center;

@@ -3,6 +3,7 @@ package com.typemaster.controller;
 import com.typemaster.dto.AuthResponse;
 import com.typemaster.dto.LoginRequest;
 import com.typemaster.dto.RegisterRequest;
+import com.typemaster.dto.PasswordChangeRequest;
 import com.typemaster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,6 +48,19 @@ public class AuthController {
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+    }
+
+    /**
+     * POST /api/auth/change-password
+     */
+    @PostMapping("/change-password")
+    public ResponseEntity<AuthResponse> changePassword(@RequestBody PasswordChangeRequest request) {
+        AuthResponse response = userService.changePassword(request.getUsername(), request.getOldPassword(), request.getNewPassword());
+        if (response.isSuccess()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
 }

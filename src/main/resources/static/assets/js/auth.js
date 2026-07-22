@@ -20,10 +20,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // If user is already logged in, redirect to typing.html
+    // If user is already logged in, redirect to settings.html
     const currentUser = JSON.parse(localStorage.getItem("typeMaster_user"));
     if (currentUser && currentUser.username) {
-        window.location.href = "typing.html";
+        window.location.href = "settings.html";
     }
 });
 
@@ -96,7 +96,7 @@ async function handleSignIn(event) {
             // Redirect after short delay
             setTimeout(() => {
                 const urlParams = new URLSearchParams(window.location.search);
-                const redirect = urlParams.get("redirect") || "typing.html";
+                const redirect = urlParams.get("redirect") || "settings.html";
                 window.location.href = redirect;
             }, 800);
         } else {

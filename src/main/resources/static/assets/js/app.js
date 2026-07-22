@@ -169,7 +169,7 @@ function enforceAuthGuard() {
   // Guest users are allowed to access all pages including typing test and results.
   // Authentication is now optional and only needed to persist history to database.
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-  const protectedPages = [];
+  const protectedPages = ['settings.html', 'settings'];
 
   const user = getCurrentUser();
 
@@ -181,9 +181,29 @@ function enforceAuthGuard() {
 /**
  * Initializes global navigation listeners (mobile toggle, active link highlight, user profile controls).
  */
+function injectSettingsLink() {
+  const user = getCurrentUser();
+  const navMenu = document.getElementById('nav-menu');
+  if (navMenu && user && user.username) {
+    if (!navMenu.querySelector('a[href="settings.html"]') && !navMenu.querySelector('a[href="settings"]')) {
+      const blogLink = navMenu.querySelector('a[href="blog.html"]') || navMenu.querySelector('a[href="blog"]');
+      const settingsLi = document.createElement('li');
+      settingsLi.innerHTML = '<a href="settings.html">Settings</a>';
+      if (blogLink && blogLink.parentElement) {
+        navMenu.insertBefore(settingsLi, blogLink.parentElement.nextSibling);
+      } else {
+        navMenu.appendChild(settingsLi);
+      }
+    }
+  }
+}
+
 function initNavigation() {
   const mobileToggle = $('.mobile-toggle');
   const navLinks = $('.nav-links');
+
+  // Inject Settings menu link for logged-in users before menu highlight
+  injectSettingsLink();
 
   if (mobileToggle && navLinks) {
     mobileToggle.addEventListener('click', () => {
@@ -195,7 +215,8 @@ function initNavigation() {
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
   $$('.nav-links a').forEach(link => {
     const href = link.getAttribute('href');
-    if (href === currentPath || (currentPath === '' && href === 'index.html')) {
+    if (href === currentPath || (currentPath === '' && href === 'index.html') || 
+        (href === 'settings.html' && currentPath === 'settings')) {
       link.classList.add('active');
     } else {
       link.classList.remove('active');
@@ -233,9 +254,10 @@ function renderAuthNavbar() {
 
   if (user && user.username) {
     authContainer.innerHTML = `
-      <div class="user-badge" style="display: flex; align-items: center; gap: 0.75rem;">
+      <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
         <span class="user-name-text" style="font-weight: 600; font-size: 0.9rem; color: var(--primary-color);">👤 ${escapeHtml(user.username)}</span>
-        <button onclick="logoutUser()" class="btn btn-outline" style="padding: 0.35rem 0.75rem; font-size: 0.82rem;">Logout</button>
+        <a href="settings.html" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;">⚙️ Settings</a>
+        <button onclick="logoutUser()" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">Logout</button>
       </div>
     `;
   } else {

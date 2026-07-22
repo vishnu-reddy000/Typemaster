@@ -58,4 +58,9 @@ public class PageController {
     public String blogAlias() {
         return "forward:/blog.html";
     }
+
+    @GetMapping("/settings")
+    public String settingsAlias() {
+        return "forward:/settings.html";
+    }
 }

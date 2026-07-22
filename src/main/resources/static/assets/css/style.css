@@ -1108,7 +1108,7 @@ main {
   font-size: clamp(1.15rem, 4.5vw, 1.85rem);
   font-weight: 700;
   line-height: 1.5;
-  color: var(--text-primary);
+  color: #ffffff !important;
   min-height: 4.2rem;
   margin-bottom: 1.5rem;
   letter-spacing: -0.01em;

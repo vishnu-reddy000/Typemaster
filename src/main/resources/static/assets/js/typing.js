@@ -782,17 +782,21 @@ async function finishTest() {
     updatePersonalBestRecord(finalWpm, finalAccuracy);
   }
 
-  // 2. Post test results to Spring Boot REST API
-  try {
-    await fetch('/api/results', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(testResults)
-    });
-  } catch (err) {
-    console.log('Failed to post test results:', err);
+  // 2. Post test results to Spring Boot REST API (only for registered users)
+  if (user && user.username) {
+    try {
+      await fetch('/api/results', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(testResults)
+      });
+    } catch (err) {
+      console.log('Failed to post test results:', err);
+    }
+  } else {
+    console.log('Guest mode test finished. Score saved in localStorage only.');
   }
 
   if (typeof playSoundFX === 'function') playSoundFX('completion');

@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TypeMaster - Live typing test page. Test your WPM and accuracy in real time with 1, 3, 5, 7, and 9 minute dropdown timers.">
-    <title>TypeMaster - Typing Test</title>
+    <meta name="description" content="TypeMaster - Live typing test page. Test your WPM and accuracy in real time with custom dropdown timers, layout themes, and coding challenges.">
+    <meta name="keywords" content="typing practice online, coding typing test, standard typing speed, check WPM, typing game, keypress diagnostic">
+    <link rel="canonical" href="https://typemaster.com/typing">
+    <title>TypeMaster - Typing Test Practice Arena</title>
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="TypeMaster - Typing Test Practice Arena">
+    <meta property="og:description" content="Evaluate your WPM speed, mistakes, and accuracy in real-time. Practice coding scripts, symbols, quotes, and standard articles.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://typemaster.com/typing">
+    <meta property="og:image" content="https://typemaster.com/assets/images/logo.png">
 
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
@@ -15,22 +24,6 @@
     <link rel="stylesheet" href="assets/css/typing.css">
 </head>
 <body>
-    <!-- Typing Test Loading Splash Screen -->
-    <div id="splash-loader" class="splash-loader">
-        <div class="splash-overlay"></div>
-        <div class="splash-content">
-            <div class="splash-card">
-                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="splash-logo-img">
-                <div class="typewriter-quote">
-                    "<span id="typewriter-text"></span><span class="typewriter-cursor">|</span>"
-                </div>
-                <div class="splash-progress-container">
-                    <div class="splash-progress-bar" id="splash-progress-bar"></div>
-                </div>
-                <div class="splash-percentage" id="splash-percentage">0%</div>
-            </div>
-        </div>
-    </div>
 
     <!-- Navigation Bar -->
     <header class="navbar">
@@ -41,7 +34,10 @@
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="typing.html" class="active">Typing Test</a></li>
-                <li><a href="result.html">Results</a></li>
+                <li><a href="result.html">Leaderboard</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
             <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle Navigation Menu">☰</button>
         </div>
@@ -50,6 +46,11 @@
     <!-- Main Content Arena -->
     <main>
         <div class="container">
+            <!-- SEO H1 Page Heading -->
+            <div style="text-align: center; margin-bottom: 2rem; margin-top: 1rem;">
+                <h1 style="font-size: 2rem; font-weight: 800; color: var(--text-primary);">TypeMaster Interactive Typing Arena</h1>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.25rem;">Select your parameters and start typing to evaluate your WPM</p>
+            </div>
             <!-- Test Controls Toolbar -->
             <div class="test-controls">
                 <div class="control-group">
@@ -329,7 +330,39 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 TypeMaster. All rights reserved. Spring Boot REST Application.</p>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="footer-logo-img">
+                    <p style="font-weight: 700; color: #38bdf8; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.5rem;">TYPE BETTER. EVERY DAY.</p>
+                    <p>A professional SaaS typing practice platform powered by Java Spring Boot, Spring Data JPA, and REST analytics.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="typing.html">Typing Test</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TypeMaster. All rights reserved. Powered by Spring Boot 3 & Java 17.</p>
+            </div>
         </div>
     </footer>
 

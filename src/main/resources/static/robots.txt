@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /h2-console
+Disallow: /api/results/latest
+Disallow: /api/auth/
+
+Sitemap: https://typemaster.com/sitemap.xml

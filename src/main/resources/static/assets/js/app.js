@@ -166,8 +166,10 @@ function logoutUser() {
  * Enforces route protection for pages requiring authentication.
  */
 function enforceAuthGuard() {
+  // Guest users are allowed to access all pages including typing test and results.
+  // Authentication is now optional and only needed to persist history to database.
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-  const protectedPages = ['typing.html', 'typing', 'result.html', 'result'];
+  const protectedPages = [];
 
   const user = getCurrentUser();
 

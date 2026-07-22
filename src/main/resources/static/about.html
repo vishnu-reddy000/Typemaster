@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="About TypeMaster - Learn about our mission, vision, and story of building the ultimate typing practice and metrics speed testing platform.">
+    <meta name="keywords" content="about typemaster, typing test, WPM, typing speed, touch typing, developer speed">
+    <link rel="canonical" href="https://typemaster.com/about">
+    <title>About Us - TypeMaster</title>
+
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
+    <link rel="apple-touch-icon" href="assets/images/logo.png?v=2">
+
+    <!-- Global & Page Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .about-hero {
+            padding: 5rem 1rem 3rem;
+            text-align: center;
+            background: var(--body-bg-radial);
+        }
+        .about-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        .about-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .about-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+        }
+        [data-theme="glassmorphism"] .about-card {
+            background: var(--glass-card-bg, rgba(255, 255, 255, 0.45));
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-card-border, rgba(255, 255, 255, 0.3));
+        }
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+        .about-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .about-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+        .benefits-section {
+            padding: 4rem 1rem;
+            background: var(--background-color);
+            border-top: 1px solid var(--border-color);
+        }
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+        .benefit-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            transition: var(--transition-normal);
+        }
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.25rem;
+            display: inline-block;
+        }
+        .benefit-item h4 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+        .benefit-item p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .benefit-item:hover {
+            border-color: var(--primary-color);
+            transform: scale(1.02);
+        }
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header / Navigation Bar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo" id="brand-logo">
+                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon">
+            </a>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="typing.html">Typing Test</a></li>
+                <li><a href="result.html">Leaderboard</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle Navigation Menu">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- About Hero Section -->
+        <section class="about-hero">
+            <div class="container">
+                <h1 class="about-title">Our Story & Mission</h1>
+                <p class="about-subtitle">TypeMaster was built with a simple goal in mind: to provide the ultimate tool for developers, students, and professionals to measure, analyze, and supercharge their typing capabilities.</p>
+            </div>
+        </section>
+
+        <!-- Story, Mission, Vision -->
+        <section class="container" style="padding-bottom: 4rem;">
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3><span>📖</span> The TypeMaster Story</h3>
+                    <p>
+                        TypeMaster started as a small helper tool built by software developers who realized how much of their daily coding routine was bottlenecked by keypress speeds and typographical errors. What began as a local scratch script to evaluate finger movements has grown into a feature-rich, high-performance web platform utilizing real-time JavaScript analytics and Spring Boot microservice security. We believe that typing speed is not just a gaming metric—it is a critical multiplier for professional productivity.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <h3><span>🎯</span> Our Core Mission</h3>
+                    <p>
+                        Our mission is to help everyone achieve absolute keyboard mastery. We provide granular feedback—like custom heatmaps, key diagnostic analysis, error detection, and consistency rates—to identify exactly where your speed bottlenecks lie. We aim to offer an accessible, free, and premium training environment for learners across all typing levels.
+                    </p>
+                </div>
+                <div class="about-card" style="grid-column: 1 / -1;">
+                    <h3><span>👁️</span> Vision for the Future</h3>
+                    <p>
+                        We envision TypeMaster as the standard for keyboard diagnostics. By blending gamified challenges, multiple practice categories (such as developer programming snippets, standard text paragraphs, quotes, and emails), and robust leaderboard rankings, we are building a global community of high-speed typists who can express their ideas, design architectures, and compile software at the speed of thought.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section class="benefits-section">
+            <div class="container">
+                <div class="section-header" style="text-align: center; margin-bottom: 2rem;">
+                    <h2 class="section-title" style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;">Why Improve Your Typing Speed?</h2>
+                    <p class="section-description" style="color: var(--text-secondary);">Boosting your WPM unlocks immediate advantages in the digital workspace.</p>
+                </div>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <span class="benefit-icon">⏱️</span>
+                        <h4>Save Thousands of Hours</h4>
+                        <p>Improving your speed from 30 WPM to 60 WPM cuts your typing time in half, saving you hours every single week.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">🚀</span>
+                        <h4>Boost Brain-Flow State</h4>
+                        <p>When you touch-type without looking down, your brain focuses completely on logical architectures and problem solving rather than key hunting.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">💻</span>
+                        <h4>Better Developer Experience</h4>
+                        <p>Write boilerplate code, configure script operations, and type console commands in rapid succession with zero friction.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <span class="benefit-icon">💼</span>
+                        <h4>Elite Career Competency</h4>
+                        <p>Fast, accurate typing is highly prized in administration, engineering, technical writing, support roles, and customer operations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="footer-logo-img">
+                    <p style="font-weight: 700; color: #38bdf8; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.5rem;">TYPE BETTER. EVERY DAY.</p>
+                    <p>A professional SaaS typing practice platform powered by Java Spring Boot, Spring Data JPA, and REST analytics.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="typing.html">Typing Test</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TypeMaster. All rights reserved. Powered by Spring Boot 3 & Java 17.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App JavaScript -->
+    <script src="assets/js/app.js"></script>
+</body>
+</html>

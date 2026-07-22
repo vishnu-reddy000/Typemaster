@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TypeMaster Learning Hub - Read our premium articles on how to improve typing speed, calculate WPM, touch type for beginners, and master developer keyboard shortcuts.">
+    <meta name="keywords" content="typing blog, increase typing speed, touch typing tutorial, what is WPM, programmer typing tips">
+    <link rel="canonical" href="https://typemaster.com/blog">
+    <title>Learning Blog - TypeMaster</title>
+
+    <!-- Favicon & Touch Icons -->
+    <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
+    <link rel="apple-touch-icon" href="assets/images/logo.png?v=2">
+
+    <!-- Global & Page Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        .blog-hero {
+            padding: 5rem 1rem 3rem;
+            text-align: center;
+            background: var(--body-bg-radial);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .blog-title {
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        .blog-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Grid of Blog Cards */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+            margin-bottom: 5rem;
+        }
+        .blog-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-normal);
+            display: flex;
+            flex-direction: column;
+        }
+        [data-theme="glassmorphism"] .blog-card {
+            background: var(--glass-card-bg, rgba(255, 255, 255, 0.45));
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-card-border, rgba(255, 255, 255, 0.3));
+        }
+        .blog-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-color);
+        }
+        .blog-img-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+        .blog-card:nth-child(2n) .blog-img-placeholder {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        .blog-card:nth-child(3n) .blog-img-placeholder {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        .blog-card:nth-child(4n) .blog-img-placeholder {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        }
+        .blog-meta {
+            padding: 1.5rem 1.5rem 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        .category-tag {
+            background: var(--active-char-bg, rgba(37, 99, 235, 0.1));
+            color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        .blog-body {
+            padding: 0.75rem 1.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .blog-post-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        .blog-excerpt {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        .blog-btn-container {
+            margin-top: auto;
+        }
+        
+        /* Full Article Post Mode */
+        .article-view-container {
+            display: none;
+            max-width: 800px;
+            margin: 3rem auto 5rem;
+            padding: 0 1rem;
+        }
+        .back-to-blog-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+        .back-to-blog-btn:hover {
+            color: var(--primary-hover);
+            transform: translateX(-3px);
+        }
+        .full-article-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 3.5rem;
+            box-shadow: var(--shadow-md);
+        }
+        [data-theme="glassmorphism"] .full-article-card {
+            background: var(--glass-card-bg, rgba(255, 255, 255, 0.45));
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-card-border, rgba(255, 255, 255, 0.3));
+        }
+        .full-article-header {
+            margin-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+        .article-title-text {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.3;
+            margin-top: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .full-article-body h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .full-article-body p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+        .full-article-body ul {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .full-article-body li {
+            margin-bottom: 0.5rem;
+        }
+        .full-article-body code {
+            font-family: var(--font-mono);
+            background: var(--background-color);
+            padding: 0.2rem 0.4rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .blog-title {
+                font-size: 2.2rem;
+            }
+            .full-article-card {
+                padding: 2rem 1.5rem;
+            }
+            .article-title-text {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header / Navigation Bar -->
+    <header class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo" id="brand-logo">
+                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon">
+            </a>
+            <ul class="nav-links" id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="typing.html">Typing Test</a></li>
+                <li><a href="result.html">Leaderboard</a></li>
+                <li><a href="blog.html" class="active">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle Navigation Menu">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Blog Hero Section -->
+        <section class="blog-hero" id="blog-hero-section">
+            <div class="container">
+                <h1 class="blog-title">Keyboard Mastery Hub</h1>
+                <p class="blog-subtitle">Discover expert guides, training diagnostics, calculations tutorials, and technical keyboard shortcuts to skyrocket your productivity.</p>
+            </div>
+        </section>
+
+        <!-- Grid Container for Cards -->
+        <section class="container" id="cards-grid-container">
+            <div class="blog-grid">
+                <!-- Article 1 -->
+                <div class="blog-card">
+                    <div class="blog-img-placeholder">SPEED ⚡</div>
+                    <div class="blog-meta">
+                        <span class="category-tag">Tutorial</span>
+                        <span>5 Min Read</span>
+                    </div>
+                    <div class="blog-body">
+                        <h3 class="blog-post-title">How To Improve Typing Speed Fast</h3>
+                        <p class="blog-excerpt">Uncover the top habits of high-speed typists. Learn how to combine correct posture, finger placement, and daily routines to raise your WPM scores rapidly.</p>
+                        <div class="blog-btn-container">
+                            <a href="#speed-fast" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="blog-card">
+                    <div class="blog-img-placeholder">WPM 📊</div>
+                    <div class="blog-meta">
+                        <span class="category-tag">Theory</span>
+                        <span>4 Min Read</span>
+                    </div>
+                    <div class="blog-body">
+                        <h3 class="blog-post-title">What Is WPM And How Is It Calculated</h3>
+                        <p class="blog-excerpt">Ever wondered how typing speed tests figure out your scores? Learn about the exact differences between Net WPM, Raw WPM, accuracy percentages, and mistake penalties.</p>
+                        <div class="blog-btn-container">
+                            <a href="#wpm-calculation" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="blog-card">
+                    <div class="blog-img-placeholder">BEGINNERS 🌱</div>
+                    <div class="blog-meta">
+                        <span class="category-tag">Guides</span>
+                        <span>6 Min Read</span>
+                    </div>
+                    <div class="blog-body">
+                        <h3 class="blog-post-title">Touch Typing Guide For Beginners</h3>
+                        <p class="blog-excerpt">Stop hunting and pecking! Follow our step-by-step beginner guide to learn the homing bumps on J and F keys and build muscle memory to touch type without looking down.</p>
+                        <div class="blog-btn-container">
+                            <a href="#touch-typing" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 4 -->
+                <div class="blog-card">
+                    <div class="blog-img-placeholder">IDE 💻</div>
+                    <div class="blog-meta">
+                        <span class="category-tag">Developers</span>
+                        <span>5 Min Read</span>
+                    </div>
+                    <div class="blog-body">
+                        <h3 class="blog-post-title">Keyboard Shortcuts Every Developer Should Know</h3>
+                        <p class="blog-excerpt">Boost your coding performance. Master these essential editor shortcuts, navigation hotkeys, and shell commands to write scripts and build apps with zero friction.</p>
+                        <div class="blog-btn-container">
+                            <a href="#dev-shortcuts" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 5 -->
+                <div class="blog-card">
+                    <div class="blog-img-placeholder">STUDENTS 🎓</div>
+                    <div class="blog-meta">
+                        <span class="category-tag">Students</span>
+                        <span>4 Min Read</span>
+                    </div>
+                    <div class="blog-body">
+                        <h3 class="blog-post-title">Best Typing Practices For Students</h3>
+                        <p class="blog-excerpt">Accelerate thesis preparation, term papers, and test-taking. Learn how students can establish rhythmic muscle memory and manage study schedules through gamified tests.</p>
+                        <div class="blog-btn-container">
+                            <a href="#student-typing" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 6 -->
+                <div class="blog-card">
+                    <div class="blog-img-placeholder">CODING ☕</div>
+                    <div class="blog-meta">
+                        <span class="category-tag">Developers</span>
+                        <span>5 Min Read</span>
+                    </div>
+                    <div class="blog-body">
+                        <h3 class="blog-post-title">How Programmers Can Type Faster</h3>
+                        <p class="blog-excerpt">Typing code is vastly different from typing standard English sentences. Discover key placement guides for braces, bracket tags, and symbol sequences to double typing speeds.</p>
+                        <div class="blog-btn-container">
+                            <a href="#programmer-speed" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Article 7 -->
+                <div class="blog-card">
+                    <div class="blog-img-placeholder">DIAGNOSTIC 🛡️</div>
+                    <div class="blog-meta">
+                        <span class="category-tag">Guides</span>
+                        <span>5 Min Read</span>
+                    </div>
+                    <div class="blog-body">
+                        <h3 class="blog-post-title">Common Typing Mistakes And Solutions</h3>
+                        <p class="blog-excerpt">Are mistakes bottlenecking your performance? Analyze where common errors occur—like row jumping or tense hands—and follow concrete steps to fix them today.</p>
+                        <div class="blog-btn-container">
+                            <a href="#common-mistakes" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Full Article Viewing Container -->
+        <section class="article-view-container" id="article-view-container">
+            <a href="#" class="back-to-blog-btn" onclick="exitArticleView(event)">← Back to Learning Blog</a>
+            
+            <div class="full-article-card" id="article-content-card">
+                <!-- Dynamically populated article markup is mirrored here for users, but all content exists in static HTML blocks below for search spider crawlers indexing! -->
+            </div>
+        </section>
+
+        <!-- HIDDEN ARCHIVE CONTENT SECTION (Guarantees SEO Crawlers index everything instantly) -->
+        <div id="seo-articles-archive" style="display: none;">
+            <!-- Article 1 Content -->
+            <article id="art-speed-fast">
+                <div class="full-article-header">
+                    <span class="category-tag">Tutorial</span> • <span>5 Min Read</span>
+                    <h2 class="article-title-text">How To Improve Typing Speed Fast</h2>
+                </div>
+                <div class="full-article-body">
+                    <p>Improving your typing speed is not about frantic finger-flailing; it is a discipline built on muscle memory, motor control, and persistent habits. If you type with a "hunt and peck" technique using just two fingers, your speed will always peak around 35-40 Words Per Minute (WPM). To reach professional levels of 70-100 WPM, you must transition to standard touch typing.</p>
+                    
+                    <h2>1. Master the Home Row Setup</h2>
+                    <p>Place your fingers on the baseline home row. Your left fingers should rest on <code>A</code>, <code>S</code>, <code>D</code>, and <code>F</code>. Your right fingers should rest on <code>J</code>, <code>K</code>, <code>L</code>, and <code>;</code>. Your thumbs should float above the spacebar. Feel the small raised guide bumps on the <code>F</code> and <code>J</code> keys—these tactile markers help you orient your hands without looking down.</p>
+                    
+                    <h2>2. Prioritize Accuracy Over Speed</h2>
+                    <p>This is the golden rule of speed improvement. Many typing learners rush to type fast, which generates mistakes. Correcting errors requires you to hit Backspace, re-type the keys, and breaks your motor cadence. By slowing down to maintain 98%+ accuracy, your hands build correct paths. As paths solidify, your speed will increase naturally without additional effort.</p>
+                    
+                    <h2>3. Keep Posture Straight and relaxed</h2>
+                    <p>Sit straight with feet flat on the floor and elbows bent at a 90-degree angle. Place your keyboard at a height that allows your wrists to stay straight. Do not rest your palms heavily on the desk while typing—hovering slightly reduces wrist tension and unlocks finger mobility across the entire keyboard.</p>
+                </div>
+            </article>
+
+            <!-- Article 2 Content -->
+            <article id="art-wpm-calculation">
+                <div class="full-article-header">
+                    <span class="category-tag">Theory</span> • <span>4 Min Read</span>
+                    <h2 class="article-title-text">What Is WPM And How Is It Calculated</h2>
+                </div>
+                <div class="full-article-body">
+                    <p>Words Per Minute (WPM) is the universal metric used to gauge typing speed. However, because actual words range in length (e.g. "a" vs. "architecture"), typing speed measurements rely on a standardized unit to evaluate performance fairly.</p>
+                    
+                    <h2>1. The Standard Word Unit</h2>
+                    <p>In typing diagnostics, a "word" is defined as exactly <strong>5 characters</strong>, including letters, numbers, punctuation marks, and spaces. For example, the phrase <code>quick red fox</code> has 13 characters. In WPM calculations, this counts as 2.6 standard words (13 divided by 5).</p>
+                    
+                    <h2>2. Raw WPM vs. Net WPM</h2>
+                    <p>Our analytics engine calculates metrics as follows:</p>
+                    <ul>
+                        <li><strong>Raw WPM:</strong> The total number of characters typed in a minute divided by 5. This tells you your raw speed, regardless of errors. <code>Raw WPM = (Total Typed Characters / 5) / (Time in Minutes)</code>.</li>
+                        <li><strong>Net WPM:</strong> Hitting the incorrect keys triggers penalties. Net WPM counts only correct character inputs. This is the official score displayed on our certificate. <code>Net WPM = (Correct Characters / 5) / (Time in Minutes)</code>.</li>
+                    </ul>
+                    
+                    <h2>3. The Value of Consistency</h2>
+                    <p>TypeMaster tracks accuracy and consistency. If you type in fast bursts but pause frequently to correct mistakes, your speed drops. Practicing a steady, rhythmic typing cadence maintains your motor momentum, lowering mistakes and producing high Net WPM scores.</p>
+                </div>
+            </article>
+
+            <!-- Article 3 Content -->
+            <article id="art-touch-typing">
+                <div class="full-article-header">
+                    <span class="category-tag">Guides</span> • <span>6 Min Read</span>
+                    <h2 class="article-title-text">Touch Typing Guide For Beginners</h2>
+                </div>
+                <div class="full-article-body">
+                    <p>Touch typing is the method of typing using muscle memory, without needing to look at your keyboard keys. This skill turns typing from a conscious effort into an automated response, reducing fatigue and letting your mind focus entirely on composing content.</p>
+                    
+                    <h2>1. Trust Finger Mapping</h2>
+                    <p>Each finger is responsible for a specific diagonal column of keys. For instance, your left index finger handles <code>F</code>, <code>G</code>, <code>R</code>, <code>T</code>, <code>V</code>, and <code>B</code>. Your right pinky finger handles <code>;</code>, <code>P</code>, <code>[</code>, <code>'</code>, and the Enter/Shift buttons. Memorizing this layout takes time, but it ensures that you reach the nearest keys using the shortest distance possible.</p>
+                    
+                    <h2>2. Avoid looking Down</h2>
+                    <p>Looking at your hands prevents your brain from building muscle memory. If you forget where a key is, look at a virtual keyboard diagram on the screen instead of looking down at your hands. This trains your brain to associate the finger movement with the visual screen feedback.</p>
+                    
+                    <h2>3. Establish a Cadence</h2>
+                    <p>Focus on maintaining a uniform rhythm. Hitting keys in a rhythmic pattern is much faster and safer than typing simple words quickly and stuttering on complex key sequences. Use a metronome approach—tap tap tap tap—to build steady coordination before trying to push your speed.</p>
+                </div>
+            </article>
+
+            <!-- Article 4 Content -->
+            <article id="art-dev-shortcuts">
+                <div class="full-article-header">
+                    <span class="category-tag">Developers</span> • <span>5 Min Read</span>
+                    <h2 class="article-title-text">Keyboard Shortcuts Every Developer Should Know</h2>
+                </div>
+                <div class="full-article-body">
+                    <p>For developers, coding efficiency depends heavily on keyboard optimization. Moving your hand from the keyboard to the mouse breaks your focus. Mastering IDE navigation shortcuts keeps your hands on the home row and speeds up your development workflow.</p>
+                    
+                    <h2>1. Text Manipulation Shortcuts</h2>
+                    <p>These commands are standard across code editors like VS Code, Eclipse, and IntelliJ:</p>
+                    <ul>
+                        <li><strong>Delete Current Line:</strong> <code>Ctrl + Shift + K</code> (or <code>Cmd + Shift + K</code> on macOS) removes a line instantly without requiring selection.</li>
+                        <li><strong>Select Next Match:</strong> <code>Ctrl + D</code> finds the next instance of your selected text, making bulk edits easy.</li>
+                        <li><strong>Move Line Up/Down:</strong> <code>Alt + Up/Down Arrow</code> shifts the current line of code without needing to cut and paste.</li>
+                    </ul>
+                    
+                    <h2>2. Cursor Travel Optimization</h2>
+                    <p>Instead of pressing the arrow keys repeatedly, navigate text using these commands:</p>
+                    <ul>
+                        <li><strong>Jump Entire Words:</strong> Hold <code>Ctrl</code> (or <code>Alt</code>) while pressing the left/right arrows to move your cursor word-by-word.</li>
+                        <li><strong>Jump to Line Ends:</strong> Press <code>Home</code> or <code>End</code> to jump the cursor directly to the start or end of the line.</li>
+                        <li><strong>Select Words:</strong> Add <code>Shift</code> to the commands above to quickly select chunks of text as you navigate.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <!-- Article 5 Content -->
+            <article id="art-student-typing">
+                <div class="full-article-header">
+                    <span class="category-tag">Students</span> • <span>4 Min Read</span>
+                    <h2 class="article-title-text">Best Typing Practices For Students</h2>
+                </div>
+                <div class="full-article-body">
+                    <p>As academic workloads digitize, typing speed becomes a key factor in student performance. Improving your typing speed saves time when drafting essays, preparing reports, and taking timed online examinations.</p>
+                    
+                    <h2>1. Establish a Daily Practice Routine</h2>
+                    <p>Consistency is key. Ten minutes of focused practice daily on TypeMaster is much more effective than a two-hour marathon once a week. Set aside a short slot before starting your study sessions to warm up your fingers.</p>
+                    
+                    <h2>2. Maintain ergonomic postures</h2>
+                    <p>Late-night writing sessions at a desk can lead to neck and wrist strain. Avoid typing in bed or on couches. Sit at a desk with your back supported, shoulders relaxed, and maintain a safe screen viewing distance of at least 20 inches to prevent eye strain.</p>
+                    
+                    <h2>3. Proofread in Batches</h2>
+                    <p>Avoid correcting spelling errors as soon as they happen while drafting. Stopping to edit every typo disrupts your train of thought. Focus on getting your ideas down first, then run a separate editing and proofreading pass once your draft is complete.</p>
+                </div>
+            </article>
+
+            <!-- Article 6 Content -->
+            <article id="art-programmer-speed">
+                <div class="full-article-header">
+                    <span class="category-tag">Developers</span> • <span>5 Min Read</span>
+                    <h2 class="article-title-text">How Programmers Can Type Faster</h2>
+                </div>
+                <div class="full-article-body">
+                    <p>Writing software is different from drafting essays. Code contains few standard English words and relies heavily on parentheses, braces, special symbols, and strict indentations. To type code quickly, you must master the specialized keys on your keyboard.</p>
+                    
+                    <h2>1. Master the Symbol Keys</h2>
+                    <p>As a developer, keys like <code>{ }</code>, <code>[ ]</code>, <code>( )</code>, <code>< ></code>, <code>=</code>, <code>;</code>, <code>&</code>, and <code>|</code> are tools you use constantly. Learn to reach these keys with your pinky fingers without looking down. TypeMaster's <strong>Coding Practice Mode</strong> is designed specifically to help you build muscle memory for these special character combinations.</p>
+                    
+                    <h2>2. Minimize Mouse Usage</h2>
+                    <p>Learn to navigate your editor, run build scripts, and interact with terminals using keyboard shortcuts. Practice command-line interface (CLI) commands for tools like Git. Keeping your hands on the keyboard keeps your focus locked on code design.</p>
+                    
+                    <h2>3. Use Code Snippets and Auto-Complete</h2>
+                    <p>Don't re-type boilerplate code. Use IDE auto-complete features like IntelliSense or copilot assists, and set up custom templates for common loops and classes. Let automation handle the bulk text so your typing speed can focus on unique logic details.</p>
+                </div>
+            </article>
+
+            <!-- Article 7 Content -->
+            <article id="art-common-mistakes">
+                <div class="full-article-header">
+                    <span class="category-tag">Guides</span> • <span>5 Min Read</span>
+                    <h2 class="article-title-text">Common Typing Mistakes And Solutions</h2>
+                </div>
+                <div class="full-article-body">
+                    <p>If your typing speed has plateaued around 50 WPM, it's likely due to bad habits that create speed bottlenecks. Identifying and correcting these issues is key to breaking through and reaching higher speed brackets.</p>
+                    
+                    <h2>1. Hitting Backspace Constantly</h2>
+                    <p><strong>The Mistake:</strong> Hitting the wrong keys and immediately pressing Backspace to correct them breaks your typing rhythm.</p>
+                    <p><strong>The Solution:</strong> Slow down by 10-15 WPM to focus purely on accuracy. Force yourself to type at a steady pace where you make zero errors. Once your accuracy stabilizes above 98%, your speed will recover and surpass your previous limits.</p>
+                    
+                    <h2>2. Relying on Visual Confirmation</h2>
+                    <p><strong>The Mistake:</strong> Looking down at your fingers to verify their position ruins your typing flow.</p>
+                    <p><strong>The Solution:</strong> Cover your keyboard with a clean cloth or print out a layout map to place next to your screen. Build confidence in your finger placement and trust your tactile memory.</p>
+                    
+                    <h2>3. Typing with Tense Hands</h2>
+                    <p><strong>The Mistake:</strong> Clenching your hands and typing with rigid fingers creates strain and slows down key traversal.</p>
+                    <p><strong>The Solution:</strong> Focus on relaxing your hands. Keep your fingers curved naturally over the keys, similar to holding a tennis ball. Shake out your wrists during rest periods to prevent muscle fatigue.</p>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="footer-logo-img">
+                    <p style="font-weight: 700; color: #38bdf8; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.5rem;">TYPE BETTER. EVERY DAY.</p>
+                    <p>A professional SaaS typing practice platform powered by Java Spring Boot, Spring Data JPA, and REST analytics.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="typing.html">Typing Test</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 TypeMaster. All rights reserved. Powered by Spring Boot 3 & Java 17.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- App JavaScript -->
+    <script src="assets/js/app.js"></script>
+    <script>
+        function checkHashRoute() {
+            const hash = window.location.hash.trim().toLowerCase();
+            const cardsGrid = document.getElementById('cards-grid-container');
+            const blogHero = document.getElementById('blog-hero-section');
+            const articleContainer = document.getElementById('article-view-container');
+            const articleCard = document.getElementById('article-content-card');
+
+            if (!hash || hash === '#') {
+                // Show grid, hide full article
+                cardsGrid.style.display = 'block';
+                blogHero.style.display = 'block';
+                articleContainer.style.display = 'none';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Determine target article mapping
+                let targetId = '';
+                if (hash === '#speed-fast') targetId = 'art-speed-fast';
+                else if (hash === '#wpm-calculation') targetId = 'art-wpm-calculation';
+                else if (hash === '#touch-typing') targetId = 'art-touch-typing';
+                else if (hash === '#dev-shortcuts') targetId = 'art-dev-shortcuts';
+                else if (hash === '#student-typing') targetId = 'art-student-typing';
+                else if (hash === '#programmer-speed') targetId = 'art-programmer-speed';
+                else if (hash === '#common-mistakes') targetId = 'art-common-mistakes';
+
+                if (targetId) {
+                    const articleTemplate = document.getElementById(targetId);
+                    if (articleTemplate) {
+                        articleCard.innerHTML = articleTemplate.innerHTML;
+                        
+                        // Show full article, hide grid
+                        cardsGrid.style.display = 'none';
+                        blogHero.style.display = 'none';
+                        articleContainer.style.display = 'block';
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                }
+            }
+        }
+
+        function exitArticleView(event) {
+            event.preventDefault();
+            window.location.hash = '';
+        }
+
+        // Listen for back/forward routing changes
+        window.addEventListener('hashchange', checkHashRoute);
+        document.addEventListener('DOMContentLoaded', checkHashRoute);
+    </script>
+</body>
+</html>

@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="TypeMaster - View your typing speed test results, WPM, accuracy, certificate, and performance history.">
-    <title>TypeMaster - Test Results</title>
+    <meta name="description" content="TypeMaster - View your typing speed test results, WPM, accuracy, cert levels, keyboard heatmaps, diagnostics, and personal history logs.">
+    <meta name="keywords" content="typing test results, typing certificate, check WPM score, error diagnosis, keyboard heatmap, typemaster leaderboard">
+    <link rel="canonical" href="https://typemaster.com/result">
+    <title>TypeMaster - Test Results & Analytics Dashboard</title>
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="TypeMaster - Test Results & Analytics Dashboard">
+    <meta property="og:description" content="Check WPM performance metrics, unlock badges, print skill certificates, and review your key hit accuracy heatmaps.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://typemaster.com/result">
+    <meta property="og:image" content="https://typemaster.com/assets/images/logo.png">
 
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
@@ -41,7 +50,10 @@
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="typing.html">Typing Test</a></li>
-                <li><a href="result.html" class="active">Results</a></li>
+                <li><a href="result.html" class="active">Leaderboard</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
             </ul>
             <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle Navigation Menu">☰</button>
         </div>
@@ -127,7 +139,7 @@
                     </div>
 
                     <!-- Main Certificate Titles -->
-                    <h1 class="cert-main-title">CERTIFICATE</h1>
+                    <h2 class="cert-main-title">CERTIFICATE</h2>
                     <div class="cert-achievement-subtitle">OF ACHIEVEMENT</div>
 
                     <!-- Recipient Name & Subtext -->
@@ -322,8 +334,38 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="footer-logo-img">
+                    <p style="font-weight: 700; color: #38bdf8; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.5rem;">TYPE BETTER. EVERY DAY.</p>
+                    <p>A professional SaaS typing practice platform powered by Java Spring Boot, Spring Data JPA, and REST analytics.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="typing.html">Typing Test</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="privacy.html">Privacy Policy</a></li>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
+                        <li><a href="disclaimer.html">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 TypeMaster. All rights reserved.</p>
+                <p>&copy; 2026 TypeMaster. All rights reserved. Powered by Spring Boot 3 & Java 17.</p>
             </div>
         </div>
     </footer>
@@ -472,8 +514,13 @@
             const user = getCurrentUser();
             const username = user ? user.username : null;
 
-            // Fetch from API first, with fallback to local history
-            const fetchUrl = username ? `/api/results?username=${encodeURIComponent(username)}` : '/api/results';
+            if (!username) {
+                fallbackLocalHistory(null);
+                return;
+            }
+
+            // Fetch from API first for registered user
+            const fetchUrl = `/api/results?username=${encodeURIComponent(username)}`;
 
             fetch(fetchUrl)
                 .then(res => {
@@ -719,25 +766,36 @@
             renderHeatmapAndDiagnostic();
 
             const user = getCurrentUser();
-            const userParam = user && user.username ? `?username=${encodeURIComponent(user.username)}` : '';
-            fetch(`/api/results/latest${userParam}`)
-                .then(response => {
-                    if (!response.ok) throw new Error('No backend result found');
-                    return response.json();
-                })
-                .then(data => {
-                    displayResults(data);
-                })
-                .catch(err => {
-                    console.log('Falling back to local storage:', err);
-                    const localData = getTestResult();
-                    if (localData) {
-                        displayResults(localData);
-                    } else {
-                        document.getElementById('result-message').textContent = "No recent test found. Take a test to see your performance results!";
-                    }
-                });
+            if (user && user.username) {
+                const userParam = `?username=${encodeURIComponent(user.username)}`;
+                fetch(`/api/results/latest${userParam}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error('No backend result found');
+                        return response.json();
+                    })
+                    .then(data => {
+                        displayResults(data);
+                    })
+                    .catch(err => {
+                        console.log('Falling back to local storage:', err);
+                        loadLatestResultLocal();
+                    });
+            } else {
+                loadLatestResultLocal();
+            }
         });
+
+        function loadLatestResultLocal() {
+            const localData = getTestResult();
+            if (localData) {
+                displayResults(localData);
+            } else {
+                const msgEl = document.getElementById('result-message');
+                if (msgEl) {
+                    msgEl.textContent = "No recent test found. Take a test to see your performance results!";
+                }
+            }
+        }
     </script>
 </body>
 </html>

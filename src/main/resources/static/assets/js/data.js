@@ -5,11 +5,31 @@
  */
 
 const FALLBACK_PARAGRAPHS = {
-  1: "The quick brown fox jumps over the lazy dog. Programming is the art of telling a computer what to do through clear, logical, and structured instructions. Developing great typing speed requires regular practice, focus, and patience.",
-  3: "Technology continues to transform the way we communicate, learn, and build software across the globe. Writing clean code and maintaining high accuracy while typing enables software developers to express their complex thoughts rapidly and efficiently. Success in software development comes from continuous learning, curiosity, and persistent daily effort.",
-  5: "The evolution of modern computing has revolutionized every facet of human activity, from scientific research to creative arts and global communication networks. At the core of every software application lies a carefully constructed sequence of instructions written by developers who bridge the gap between human ideas and machine execution.",
-  7: "Software engineering is both an intellectual discipline and a craft that requires constant refinement. In the modern tech landscape, applications must be fast, reliable, accessible, and maintainable. Achieving these qualities demands a thorough understanding of core web fundamentals.",
-  9: "In the modern digital era, the ability to build elegant, high-performing web applications is one of the most versatile and impactful skills a developer can acquire. The web platform has evolved from static document sharing into a sophisticated runtime environment capable of powering complex, real-time applications directly inside the browser."
+  1: [
+    "The quick brown fox jumps over the lazy dog. Programming is the art of telling a computer what to do through clear, logical, and structured instructions. Developing great typing speed requires regular practice, focus, and patience.",
+    "Web development combines creativity with technical problem solving. HTML provides the structural backbone of every web page, CSS brings visual beauty through colors and layouts, and JavaScript delivers dynamic interactivity that powers modern applications.",
+    "Consistency and accuracy are the secrets to becoming a faster typist. When practicing keyboarding skills, focus on keeping your posture straight and your hands relaxed over the home row keys without looking down.",
+    "Database management systems organize large volumes of information for efficient retrieval. Using relational tables, primary keys, and SQL queries, applications store user profiles and application state securely.",
+    "Version control systems like Git allow developers to track code changes and collaborate effortlessly with teams. Branching, committing, and merging code ensures seamless feature additions without breaking production."
+  ],
+  3: [
+    "Technology continues to transform the way we communicate, learn, and build software across the globe. Writing clean code and maintaining high accuracy while typing enables software developers to express their complex thoughts rapidly and efficiently. Success in software development comes from continuous learning, curiosity, and persistent daily effort. Building real-world projects from scratch helps reinforce fundamental engineering concepts, improve problem solving abilities, and build lasting professional confidence.",
+    "The rise of cloud computing has reshaped how modern digital platforms deploy and scale infrastructure. Engineers can now provision servers, manage distributed databases, and route network traffic dynamically in seconds. Embracing automated testing, continuous delivery pipelines, and microservice architectures empowers organizations to iterate quickly while maintaining high reliability and performance across peak traffic loads.",
+    "User experience design plays a critical role in determining the success of web applications. Beyond visual aesthetics, intuitive navigation, responsive design layouts, and accessible UI components ensure every visitor can accomplish their goals effortlessly. A seamless interaction between front-end interfaces and back-end APIs creates an enjoyable, frictionless digital environment."
+  ],
+  5: [
+    "The evolution of modern computing has revolutionized every facet of human activity, from scientific research to creative arts and global communication networks. At the core of every software application lies a carefully constructed sequence of instructions written by developers who bridge the gap between human ideas and machine execution. Learning to write software is a journey of continuous discovery. Touch typing enables software engineers to maintain an uninterrupted flow state. When your fingers move across the keyboard effortlessly, your brain remains entirely focused on logical problem solving and architectural design.",
+    "Artificial intelligence and machine learning algorithms are rapidly transforming how industries analyze massive datasets and automate complex decision-making processes. From predictive data analytics and natural language processing to computer vision, modern intelligent systems extract valuable insights from raw data. Mastering fundamental computer science principles, linear algebra, and data structures equips developers with the tools required to construct scalable ML models.",
+    "Cybersecurity remains a paramount priority in an interconnected world where digital assets face evolving security threats. Implementing zero-trust security architectures, robust cryptographic encryption, and multi-factor authentication protects confidential user data from unauthorized access. Developers must prioritize secure coding practices, conduct routine vulnerability audits, and implement proper input sanitization to safeguard applications against malicious cyber attacks."
+  ],
+  7: [
+    "Software engineering is both an intellectual discipline and a craft that requires constant refinement. In the modern tech landscape, applications must be fast, reliable, accessible, and maintainable. Achieving these qualities demands a thorough understanding of core web fundamentals. HTML5 provides the semantic foundation, giving structural meaning to content. CSS3 brings those structures to life through flexible layouts and fluid typography. JavaScript adds behavior and interactive user experiences. Touch typing is an essential habit that reduces cognitive load, allowing programmers to type at the speed of thought without stopping to verify keystrokes.",
+    "Distributed systems engineering presents unique challenges involving network latency, data consistency, and fault tolerance. As application workloads expand globally, system architects employ techniques such as data partitioning, caching strategies, and asynchronous event streaming to handle high concurrency. Understanding trade-offs between immediate consistency and eventual consistency enables engineers to design resilient architectures capable of sustaining continuous uptime despite unexpected hardware failures."
+  ],
+  9: [
+    "In the modern digital era, the ability to build elegant, high-performing web applications is one of the most versatile and impactful skills a developer can acquire. The web platform has evolved from static document sharing into a sophisticated runtime environment capable of powering complex, real-time applications directly inside the browser. Semantic HTML forms the backbone of web accessibility, CSS3 delivers expressive visual design systems, and JavaScript provides programmatic logic. Touch typing allows developers to translate creative ideas into source code without delay, keeping productivity high and minimizing physical strain during long development sessions.",
+    "Open source software development has democratized access to world-class tools, libraries, and frameworks, enabling developers across the globe to collaborate on revolutionary technological solutions. From operating system kernels like Linux to popular web development frameworks, open source projects thrive on community contributions, transparent peer reviews, and shared knowledge. Participating in open source projects sharpens coding expertise, fosters global networking, and drives innovation forward for the public good."
+  ]
 };
 
 const FALLBACK_CODING_SNIPPETS = {
@@ -174,7 +194,7 @@ async function fetchPracticeMaterial(minutes = 1, mode = 'PARAGRAPH', language =
 
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 600);
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
     const url = `/api/paragraphs?duration=${numMins}&mode=${mode}&language=${language}&topic=${topic}&difficulty=${difficulty}`;
     const response = await fetch(url, { signal: controller.signal });
     clearTimeout(timeoutId);
@@ -195,18 +215,25 @@ async function fetchPracticeMaterial(minutes = 1, mode = 'PARAGRAPH', language =
 function getFallbackMaterial(minutes = 1, mode = 'PARAGRAPH', language = 'JAVA', topic = 'ALL', difficulty = 'MEDIUM') {
   if (mode === 'CODING') {
     const langObj = FALLBACK_CODING_SNIPPETS[language] || FALLBACK_CODING_SNIPPETS.JAVA;
-    let baseSnippet = "System.out.println(\"Hello, World!\");";
+    const availableSnippets = [];
     if (topic && topic !== 'ALL' && langObj[topic]) {
-      baseSnippet = langObj[topic];
+      availableSnippets.push(langObj[topic]);
     } else {
-      baseSnippet = langObj.HELLO_WORLD || langObj.VARIABLES || baseSnippet;
+      if (langObj.HELLO_WORLD) availableSnippets.push(langObj.HELLO_WORLD);
+      if (langObj.VARIABLES) availableSnippets.push(langObj.VARIABLES);
+      if (langObj.ARITHMETIC) availableSnippets.push(langObj.ARITHMETIC);
+      if (langObj.TYPECASTING) availableSnippets.push(langObj.TYPECASTING);
+    }
+    if (availableSnippets.length === 0) {
+      availableSnippets.push("System.out.println(\"Hello, World!\");");
     }
 
     const numBlocks = typeof minutes === 'number' ? Math.max(1, minutes) : 1;
     let result = [];
     for (let i = 0; i < numBlocks; i++) {
-      if (i > 0) result.push(`\n// --- Program Block ${i + 1} ---\n`);
-      result.push(baseSnippet);
+      if (i > 0) result.push(`\n\n// --- Program Block ${i + 1} ---\n`);
+      const snippet = availableSnippets[i % availableSnippets.length];
+      result.push(snippet);
     }
     return result.join('');
   }
@@ -227,7 +254,12 @@ function getFallbackMaterial(minutes = 1, mode = 'PARAGRAPH', language = 'JAVA',
     return dataset[randomIndex];
   }
 
-  return FALLBACK_PARAGRAPHS[minutes] || FALLBACK_PARAGRAPHS[1] || FALLBACK_PARAGRAPHS[3];
+  const targetKey = (typeof minutes === 'number' && minutes < 1) ? 1 : (Math.round(minutes) || 1);
+  const pool = FALLBACK_PARAGRAPHS[targetKey] || FALLBACK_PARAGRAPHS[1] || FALLBACK_PARAGRAPHS[3];
+  if (Array.isArray(pool)) {
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+  return pool;
 }
 
 /**

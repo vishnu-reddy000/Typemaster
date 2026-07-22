@@ -55,45 +55,64 @@ function initTypingEngine() {
         }
       }
       handleModeUI();
-      loadNewParagraph();
+      restartTest();
     });
   }
 
   if (languageSelectEl) {
     languageSelectEl.addEventListener('change', () => {
-      loadNewParagraph();
+      restartTest();
     });
   }
 
   if (topicSelectEl) {
     topicSelectEl.addEventListener('change', () => {
-      loadNewParagraph();
+      restartTest();
     });
   }
 
   if (typingArenaEl) {
     typingArenaEl.addEventListener('click', () => {
-      hiddenInputEl.focus();
+      if (hiddenInputEl) hiddenInputEl.focus();
+    });
+  }
+
+  if (paragraphBoxEl) {
+    paragraphBoxEl.addEventListener('click', () => {
+      if (hiddenInputEl) hiddenInputEl.focus();
     });
   }
 
   hiddenInputEl.addEventListener('input', handleTypingInput);
-  hiddenInputEl.addEventListener('keydown', (e) => {
-    if (e.key === 'Backspace') {
-      handleBackspace();
-    } else if (e.key === 'Enter') {
-      handleEnterKey();
+
+  // Global keydown capture: Auto-focus hiddenInputEl whenever user types anywhere on page
+  document.addEventListener('keydown', (e) => {
+    const activeEl = document.activeElement;
+    if (activeEl && (activeEl.tagName === 'INPUT' && activeEl.id !== 'hidden-input' || activeEl.tagName === 'SELECT' || activeEl.tagName === 'TEXTAREA')) {
+      return;
+    }
+
+    if (e.altKey || e.ctrlKey || e.metaKey || e.key === 'Tab' || e.key === 'Escape' || e.key.startsWith('F')) {
+      return;
+    }
+
+    if (hiddenInputEl) {
+      if (document.activeElement !== hiddenInputEl) {
+        hiddenInputEl.focus();
+      }
+
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        handleBackspace();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        handleEnterKey();
+      }
     }
   });
 
   if (restartBtnEl) {
-    restartBtnEl.addEventListener('click', () => {
-      if (isTestStarted) {
-        restartTest();
-      } else {
-        if (hiddenInputEl) hiddenInputEl.focus();
-      }
-    });
+    restartBtnEl.addEventListener('click', startTestExplicitly);
   }
   if (newParaBtnEl) newParaBtnEl.addEventListener('click', loadNewParagraph);
 
@@ -115,13 +134,17 @@ function initTypingEngine() {
   const difficultySelectEl = document.getElementById('difficulty-select');
   if (difficultySelectEl) {
     difficultySelectEl.addEventListener('change', () => {
-      loadNewParagraph();
+      restartTest();
     });
   }
 
   handleModeUI();
-  const durationSelectEl = document.getElementById('duration-select');
-  const savedDuration = localStorage.getItem('typeMaster_selectedDuration');
+  durationSelectEl = document.getElementById('duration-select');
+  let savedDuration = null;
+  try {
+    savedDuration = localStorage.getItem('typeMaster_selectedDuration');
+  } catch (e) {}
+
   if (savedDuration && durationSelectEl) {
     durationSelectEl.value = savedDuration;
   }
@@ -154,6 +177,7 @@ function handleModeUI() {
 }
 
 async function loadNewParagraph() {
+  resetTestState();
   const currentDurationMins = getTimerDurationMinutes();
   const mode = modeSelectEl ? modeSelectEl.value : 'PARAGRAPH';
   const language = languageSelectEl ? languageSelectEl.value : 'JAVA';
@@ -163,12 +187,16 @@ async function loadNewParagraph() {
 
   // 1. Render fallback snippet instantly so text is NEVER blank
   if (typeof getFallbackMaterial === 'function') {
-    currentParagraph = getFallbackMaterial(currentDurationMins, mode, language, topic, difficulty);
+    let newMaterial = getFallbackMaterial(currentDurationMins, mode, language, topic, difficulty);
+    // Attempt 1 retry if exact same paragraph selected
+    if (newMaterial === currentParagraph) {
+      newMaterial = getFallbackMaterial(currentDurationMins, mode, language, topic, difficulty);
+    }
+    currentParagraph = newMaterial;
   } else {
     currentParagraph = "The quick brown fox jumps over the lazy dog. Practice typing every day to master your speed and accuracy.";
   }
   renderParagraph();
-  resetTestState();
 
   // 2. Optionally fetch live API content in background
   if (typeof fetchPracticeMaterial === 'function') {
@@ -523,6 +551,34 @@ function initVirtualKeyboard() {
     }
   });
 
+  // Physical keyboard keydown pressed highlight
+  document.addEventListener('keydown', (e) => {
+    let keyName = e.key.toLowerCase();
+    if (keyName === ' ') keyName = ' ';
+
+    let keyBtn = document.querySelector(`.key-btn[data-key="${cssEscape(keyName)}"]`) ||
+                 document.querySelector(`.key-btn[data-shift="${cssEscape(e.key)}"]`);
+
+    if (keyBtn) {
+      keyBtn.classList.add('key-pressed');
+    }
+  });
+
+  // Physical keyboard keyup release highlight
+  document.addEventListener('keyup', (e) => {
+    let keyName = e.key.toLowerCase();
+    if (keyName === ' ') keyName = ' ';
+
+    let keyBtn = document.querySelector(`.key-btn[data-key="${cssEscape(keyName)}"]`) ||
+                 document.querySelector(`.key-btn[data-shift="${cssEscape(e.key)}"]`);
+
+    if (keyBtn) {
+      keyBtn.classList.remove('key-pressed');
+    } else {
+      document.querySelectorAll('.key-pressed').forEach(btn => btn.classList.remove('key-pressed'));
+    }
+  });
+
   highlightNextKey();
 }
 
@@ -612,8 +668,19 @@ function drawCanvasChart(canvasId, dataPoints, themeVarName, fallbackColor, maxY
   });
 
   const gradient = ctx.createLinearGradient(0, paddingY, 0, height);
-  gradient.addColorStop(0, strokeColor.replace('rgb', 'rgba').replace(')', ', 0.35)').replace('#', 'rgba(') + (strokeColor.startsWith('#') ? '0.25)' : ''));
-  gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  try {
+    let fillColor = fillGradientColor || 'rgba(37, 99, 235, 0.25)';
+    if (!fillGradientColor && strokeColor) {
+      if (strokeColor === '#10b981') fillColor = 'rgba(16, 185, 129, 0.25)';
+      else if (strokeColor === '#ef4444') fillColor = 'rgba(239, 68, 68, 0.25)';
+      else if (strokeColor === '#f59e0b') fillColor = 'rgba(245, 158, 11, 0.25)';
+    }
+    gradient.addColorStop(0, fillColor);
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  } catch (e) {
+    gradient.addColorStop(0, 'rgba(37, 99, 235, 0.2)');
+    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  }
 
   ctx.beginPath();
   ctx.moveTo(points[0].x, points[0].y);
@@ -724,6 +791,10 @@ async function finishTest() {
       },
       body: JSON.stringify(testResults)
     });
+  } catch (err) {
+    console.log('Failed to post test results:', err);
+  }
+
   if (typeof playSoundFX === 'function') playSoundFX('completion');
 
   showTimesUpModal();
@@ -878,7 +949,11 @@ function resetTestState() {
     typedChars: 0
   });
   updateProgressBar();
-  resetAnalyticsCharts();
+  try {
+    resetAnalyticsCharts();
+  } catch (e) {
+    console.log('Analytics chart reset ignored:', e);
+  }
 
   if (restartBtnEl) restartBtnEl.innerHTML = '▶ Start Test';
   const statusBadge = document.getElementById('test-status-badge');
@@ -890,14 +965,30 @@ function resetTestState() {
   if (hiddenInputEl) hiddenInputEl.focus();
 }
 
-function handleDurationChange(val) {
-  const durationSelectEl = document.getElementById('duration-select');
+function startTestExplicitly() {
   if (isTestStarted && !isTestFinished) {
-    alert("Test is currently in progress! Please restart the test to change duration.");
-    if (durationSelectEl) durationSelectEl.value = TimerManager.config.durationKey;
+    restartTest();
     return;
   }
 
+  restartTest();
+
+  if (!isTestStarted) {
+    isTestStarted = true;
+    startTimer(onTimerTick, finishTest);
+    if (restartBtnEl) restartBtnEl.innerHTML = '↻ Restart Test';
+    const statusBadge = document.getElementById('test-status-badge');
+    if (statusBadge) {
+      statusBadge.textContent = 'In Progress';
+      statusBadge.className = 'badge badge-warning';
+    }
+  }
+
+  if (hiddenInputEl) hiddenInputEl.focus();
+}
+
+function handleDurationChange(val) {
+  const durationSelectEl = document.getElementById('duration-select');
   const selectedVal = val || (durationSelectEl ? durationSelectEl.value : '1m');
 
   if (selectedVal === 'CUSTOM') {
@@ -915,6 +1006,7 @@ function handleDurationChange(val) {
     }
   } else {
     TimerManager.setDuration(selectedVal);
+    if (durationSelectEl) durationSelectEl.value = selectedVal;
   }
 
   // Force immediate update of #stat-timer DOM element
@@ -926,6 +1018,8 @@ function handleDurationChange(val) {
   restartTest();
 }
 window.handleDurationChange = handleDurationChange;
+window.restartTest = restartTest;
+window.handleModeUI = handleModeUI;
 
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('paragraph-box') || window.location.pathname.includes('typing')) {

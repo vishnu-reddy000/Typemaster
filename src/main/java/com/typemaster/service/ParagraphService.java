@@ -39,12 +39,15 @@ public class ParagraphService {
             List<Paragraph> matches;
             if (targetTopic != null) {
                 matches = paragraphRepository.findByTypeAndLanguageAndTopic("CODING", targetLang, targetTopic);
+                if (matches.isEmpty()) {
+                    matches = paragraphRepository.findByTypeAndLanguage("CODING", targetLang);
+                }
             } else {
                 matches = paragraphRepository.findByTypeAndLanguage("CODING", targetLang);
             }
 
             if (matches.isEmpty()) {
-                matches = paragraphRepository.findByType("CODING");
+                matches = paragraphRepository.findByTypeAndLanguage("CODING", "JAVA");
             }
 
             StringBuilder scaledCode = new StringBuilder();
@@ -92,7 +95,9 @@ public class ParagraphService {
                 return new ParagraphDTO(0L, "The quick brown fox jumps over the lazy dog. Touch typing enables software developers to maintain an uninterrupted flow state and write code efficiently.", duration, "PARAGRAPH", "ENGLISH", "GENERAL");
             }
 
-            Paragraph selected = matches.get(random.nextInt(matches.size()));
+            List<Paragraph> pool = new ArrayList<>(matches);
+            Collections.shuffle(pool, random);
+            Paragraph selected = pool.get(0);
             return new ParagraphDTO(selected.getId(), selected.getContent(), selected.getDurationMinutes(), "PARAGRAPH", "ENGLISH", "GENERAL");
         }
     }

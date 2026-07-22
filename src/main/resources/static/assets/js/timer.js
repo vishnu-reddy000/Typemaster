@@ -74,10 +74,19 @@ const TimerManager = {
       this.config.durationKey = String(durationKey);
       this.config.maxSeconds = this.parseDurationToSeconds(durationKey);
     }
+
     try {
       localStorage.setItem('typeMaster_selectedDuration', this.config.durationKey);
     } catch(e) {}
-    this.reset();
+
+    const selectEl = document.getElementById('duration-select');
+    if (selectEl && selectEl.value !== this.config.durationKey) {
+      selectEl.value = this.config.durationKey;
+    }
+
+    this.state.timeRemaining = this.config.maxSeconds;
+    this.state.timeElapsed = 0;
+    this.updateUI();
   },
 
   /**
@@ -114,13 +123,18 @@ const TimerManager = {
   reset() {
     this.stop();
 
-    // Check if dropdown has a selected value in DOM
     const selectEl = document.getElementById('duration-select');
-    if (selectEl && selectEl.value && selectEl.value !== 'CUSTOM') {
-      const valFromDom = selectEl.value || (selectEl.options && selectEl.options[selectEl.selectedIndex] ? selectEl.options[selectEl.selectedIndex].value : null);
-      if (valFromDom) {
-        this.config.durationKey = String(valFromDom);
-        this.config.maxSeconds = this.parseDurationToSeconds(valFromDom);
+    if (selectEl) {
+      if (selectEl.value && selectEl.value !== this.config.durationKey) {
+        if (selectEl.value === 'CUSTOM') {
+          this.config.durationKey = 'CUSTOM';
+          this.config.maxSeconds = this.config.customSeconds || 45;
+        } else {
+          this.config.durationKey = String(selectEl.value);
+          this.config.maxSeconds = this.parseDurationToSeconds(selectEl.value);
+        }
+      } else {
+        selectEl.value = this.config.durationKey;
       }
     }
 
@@ -136,6 +150,13 @@ const TimerManager = {
     this.stop();
     this.state.isRunning = true;
     this.lockDurationDropdown(true);
+
+    if (this.state.timeRemaining <= 0) {
+      this.state.timeRemaining = this.config.maxSeconds;
+      this.state.timeElapsed = 0;
+    }
+
+    this.updateUI();
 
     this.state.intervalId = setInterval(() => {
       if (this.state.timeRemaining <= 0) {

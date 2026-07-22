@@ -424,7 +424,20 @@ function initSplashScreen() {
   let charIndex = 0;
   typewriterTextEl.textContent = "";
 
-  // Typewriter effect synchronized with progress bar
+  const dismissSplash = () => {
+    if (splashLoader && !splashLoader.classList.contains('fade-out')) {
+      splashLoader.style.pointerEvents = 'none';
+      splashLoader.classList.add('fade-out');
+      setTimeout(() => {
+        splashLoader.style.display = 'none';
+      }, 300);
+    }
+  };
+
+  splashLoader.addEventListener('click', dismissSplash);
+  document.addEventListener('keydown', dismissSplash, { once: true });
+
+  // Fast Typewriter effect synchronized with progress bar
   const typingInterval = setInterval(() => {
     if (charIndex < fullQuote.length) {
       typewriterTextEl.textContent += fullQuote.charAt(charIndex);
@@ -438,15 +451,9 @@ function initSplashScreen() {
       if (progressBarEl) progressBarEl.style.width = '100%';
       if (percentageEl) percentageEl.textContent = '100%';
 
-      // Pause briefly so user can read complete quote & see background image clearly
-      setTimeout(() => {
-        splashLoader.classList.add('fade-out');
-        setTimeout(() => {
-          splashLoader.style.display = 'none';
-        }, 850);
-      }, 800);
+      setTimeout(dismissSplash, 400);
     }
-  }, 70);
+  }, 40);
 }
 
 /**

@@ -4,7 +4,7 @@
    ========================================================================== */
 
 /* 1. Google Fonts Import - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap');
 
 /* 2. CSS Custom Properties / Design Tokens */
 :root {
@@ -302,38 +302,46 @@
   --dropdown-option-text: #f8fafc;
 }
 
-/* 9. Sunset Rose Theme (Exact Image Palette: #B5B0C5, #EF9980, #CC8E8C, #A08190, #F5E0CC) */
+/* 9. Sunset Rose Theme (Tidal Portfolio Elegant Natural Palette: Deep Forest Teal, Soft Warm Cream, Sand Gold) */
 [data-theme="sunset"],
 [data-theme="sunset-rose"] {
-  --primary-color: #ef9980;       /* Warm Coral Sunset Peach */
-  --primary-hover: #cc8e8c;       /* Muted Dusty Rose Gold */
-  --primary-btn-text: #231924;    /* Dark Dusk Mauve Text */
-  --primary-gradient: linear-gradient(135deg, #ef9980 0%, #cc8e8c 50%, #a08190 100%);
-  --secondary-color: #f5e0cc;     /* Warm Sunset Cream */
-  --accent-color: #b5b0c5;        /* Soft Sky Lavender Lilac */
-  --background-color: #231924;   /* Deep Sunset Dusk Dark */
-  --body-bg-radial: radial-gradient(circle at 50% -10%, #3a2b3b 0%, #231924 60%, #150d16 100%);
-  --card-bg: rgba(43, 34, 42, 0.85);
-  --text-primary: #f5e0cc;       /* Warm Sunset Cream White */
-  --text-secondary: #b5b0c5;     /* Soft Sky Lavender */
-  --text-light: #ef9980;        /* Warm Coral Sunset Highlight */
-  --border-color: rgba(239, 153, 128, 0.35); /* Warm Coral Border Accent */
-  --border-focus: #ef9980;
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 25px -4px rgba(0, 0, 0, 0.6), 0 0 20px rgba(239, 153, 128, 0.2);
-  --shadow-lg: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(239, 153, 128, 0.3);
-  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #3a2b3b 0%, #231924 60%, #150d16 100%);
-  --mockup-header-bg: rgba(35, 25, 36, 0.9);
-  --glass-backdrop: blur(18px) saturate(170%);
-  --theme-nav-bg: rgba(35, 25, 36, 0.9);
-  --dropdown-option-bg: #2b222a;
-  --dropdown-option-text: #f5e0cc;
-  --key-bg: rgba(255, 255, 255, 0.08);
-  --key-text: #f5e0cc;
-  --key-border: rgba(239, 153, 128, 0.25);
-  --active-char-bg: rgba(239, 153, 128, 0.25);
-  --active-char-border: #ef9980;
-  --active-char-glow: rgba(239, 153, 128, 0.7);
+  --primary-color: #2a4b49;       /* Deep Forest Teal */
+  --primary-hover: #3d6662;       /* Muted Sage Teal */
+  --primary-btn-text: #ffffff;    /* Pure White Text on dark button */
+  --primary-gradient: linear-gradient(135deg, #2a4b49 0%, #3d6662 50%, #c2b09a 100%);
+  --secondary-color: #faf8f5;     /* Soft Premium Warm White */
+  --accent-color: #c2b09a;        /* Elegant Sand Gold */
+  --background-color: #f7f4ee;    /* Soft Warm Cream Sand Background */
+  --body-bg-radial: radial-gradient(circle at 50% -10%, #fbfaf8 0%, #f7f4ee 80%, #ebe8df 100%);
+  --card-bg: #ffffff;             /* Clean Pure White Cards */
+  --text-primary: #1c302d;       /* Deep Charcoal Teal */
+  --text-secondary: #526b67;     /* Muted Greyish Teal */
+  --text-light: #c2b09a;        /* Sand Gold Highlight */
+  --border-color: #dcd8cf;       /* Muted Warm Sand Border */
+  --border-focus: #2a4b49;       /* Deep Teal Focus */
+  --shadow-sm: 0 4px 10px rgba(42, 75, 73, 0.05);
+  --shadow-md: 0 8px 20px -4px rgba(42, 75, 73, 0.1), 0 0 15px rgba(194, 176, 154, 0.1);
+  --shadow-lg: 0 20px 40px -10px rgba(42, 75, 73, 0.15), 0 0 25px rgba(194, 176, 154, 0.2);
+  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #fbfaf8 0%, #f7f4ee 80%, #ebe8df 100%);
+  --mockup-header-bg: #ebe8df;
+  --glass-backdrop: blur(12px) saturate(120%);
+  --theme-nav-bg: #faf8f5;
+  --dropdown-option-bg: #faf8f5;
+  --dropdown-option-text: #1c302d;
+  --key-bg: #ffffff;
+  --key-text: #1c302d;
+  --key-border: #dcd8cf;
+  --active-char-bg: rgba(42, 75, 73, 0.15);
+  --active-char-border: #2a4b49;
+  --active-char-glow: rgba(42, 75, 73, 0.4);
+}
+
+[data-theme="sunset"] h1,
+[data-theme="sunset"] h2,
+[data-theme="sunset"] h3,
+[data-theme="sunset"] .logo {
+  font-family: 'Playfair Display', 'Cinzel', Georgia, serif !important;
+  letter-spacing: 0.01em;
 }
 
 /* Theme Selector UI Controls */

@@ -19,6 +19,10 @@ public interface TestResultRepository extends JpaRepository<TestResult, Long> {
 
     java.util.List<TestResult> findByUsernameOrderByCreatedAtDesc(String username);
 
+    java.util.List<TestResult> findByCreatedAtAfter(java.time.LocalDateTime dateTime);
+
+    void deleteByCreatedAtBefore(java.time.LocalDateTime dateTime);
+
     @Query("SELECT AVG(t.wpm) FROM TestResult t")
     Double getAverageWpm();
 }

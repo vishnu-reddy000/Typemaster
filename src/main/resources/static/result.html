@@ -185,6 +185,14 @@
                         </div>
                     </div>
 
+                    <!-- Certificate Unlocked Badges Section -->
+                    <div class="cert-badges-section" id="cert-badges-section" style="display: none;">
+                        <div class="cert-badges-title">🏅 UNLOCKED ACHIEVEMENT BADGES</div>
+                        <div class="cert-badges-list" id="cert-badges-list">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
                     <!-- Certificate Footer Grid -->
                     <div class="cert-footer-grid">
                         <div class="cert-signature-block">
@@ -459,7 +467,13 @@
             document.getElementById('cert-time').textContent = `${timeSecs}s`;
 
             const todayStr = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-            const certId = 'TM-' + new Date().getFullYear() + '-' + Math.floor(100000 + Math.random() * 900000);
+            
+            // Format certificate ID sequentially starting from TM-[Year]-000001 using the database auto-increment ID
+            let certNum = "000001";
+            if (data && data.id) {
+                certNum = String(data.id).padStart(6, '0');
+            }
+            const certId = `TM-${new Date().getFullYear()}-${certNum}`;
             
             document.getElementById('cert-date-val').textContent = todayStr;
             document.getElementById('cert-no-val').textContent = certId;
@@ -503,6 +517,24 @@
 
             if (badgesList.some(b => b.unlocked) && typeof playSoundFX === 'function') {
                 playSoundFX('achievement');
+            }
+
+            // Populate badges inside Certificate Card
+            const certBadgesSection = document.getElementById('cert-badges-section');
+            const certBadgesList = document.getElementById('cert-badges-list');
+            if (certBadgesSection && certBadgesList) {
+                const unlockedBadges = badgesList.filter(b => b.unlocked);
+                if (unlockedBadges.length > 0) {
+                    certBadgesSection.style.display = 'block';
+                    certBadgesList.innerHTML = unlockedBadges.map(b => `
+                        <div class="cert-badge-item">
+                            <span class="cert-badge-icon">${b.icon}</span>
+                            <span>${b.name.replace(b.icon + ' ', '')}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    certBadgesSection.style.display = 'none';
+                }
             }
         }
 

@@ -78,9 +78,21 @@ public class TestResultService {
                     .map(this::mapToDTO)
                     .collect(Collectors.toList());
         }
-        return testResultRepository.findAll().stream()
+        java.time.LocalDateTime oneWeekAgo = java.time.LocalDateTime.now().minusWeeks(1);
+        return testResultRepository.findByCreatedAtAfter(oneWeekAgo).stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Deletes test results older than 1 week from the database.
+     * Scheduled to run daily at midnight.
+     */
+    @org.springframework.scheduling.annotation.Scheduled(cron = "0 0 0 * * ?")
+    @org.springframework.transaction.annotation.Transactional
+    public void deleteOldResults() {
+        java.time.LocalDateTime oneWeekAgo = java.time.LocalDateTime.now().minusWeeks(1);
+        testResultRepository.deleteByCreatedAtBefore(oneWeekAgo);
     }
 
     private TestResultDTO mapToDTO(TestResult entity) {

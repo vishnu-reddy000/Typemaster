@@ -169,7 +169,7 @@ function enforceAuthGuard() {
   // Guest users are allowed to access all pages including typing test and results.
   // Authentication is now optional and only needed to persist history to database.
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-  const protectedPages = ['settings.html', 'settings'];
+  const protectedPages = ['settings.html', 'settings', 'typing.html', 'typing', 'result.html', 'result'];
 
   const user = getCurrentUser();
 

@@ -120,9 +120,6 @@ public class UserService {
         if (username == null || username.trim().isEmpty()) {
             return new AuthResponse(false, "Username is required.");
         }
-        if (oldPassword == null || oldPassword.isEmpty()) {
-            return new AuthResponse(false, "Old password is required.");
-        }
         if (newPassword == null || newPassword.length() < 4) {
             return new AuthResponse(false, "New password must be at least 4 characters long.");
         }
@@ -133,19 +130,6 @@ public class UserService {
         }
 
         User user = userOpt.get();
-        boolean matches = false;
-
-        if (user.getPassword() != null && user.getPassword().startsWith("$2a$")) {
-            matches = passwordEncoder.matches(oldPassword, user.getPassword());
-        } else {
-            if (user.getPassword() != null && user.getPassword().equals(oldPassword)) {
-                matches = true;
-            }
-        }
-
-        if (!matches) {
-            return new AuthResponse(false, "Incorrect old password.");
-        }
 
         // Set the new password hashed with BCrypt
         user.setPassword(passwordEncoder.encode(newPassword));

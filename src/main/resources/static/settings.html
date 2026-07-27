@@ -162,6 +162,37 @@
             border: 1px solid var(--error-color);
         }
 
+        /* Password Input Eye Toggle */
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        .password-input-wrapper input {
+            padding-right: 2.75rem;
+        }
+        .toggle-password-btn {
+            position: absolute;
+            right: 6px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px 8px;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition-fast);
+            user-select: none;
+        }
+        .toggle-password-btn:hover {
+            background: rgba(0, 0, 0, 0.06);
+            color: var(--text-primary);
+        }
+
         @media (max-width: 768px) {
             .settings-grid {
                 grid-template-columns: 1fr;
@@ -219,17 +250,6 @@
                             <div class="profile-info-value" id="profile-email">Loading...</div>
                         </div>
                     </div>
-
-                    <!-- Theme Config Card -->
-                    <div class="settings-card">
-                        <h2>🎨 App Themes</h2>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem;">
-                            Select a background theme to apply it instantly across all pages.
-                        </p>
-                        <div class="theme-select-grid" id="theme-selectors-container">
-                            <!-- Populated dynamically by script -->
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Right: Password Settings Card -->
@@ -237,16 +257,22 @@
                     <h2>🔒 Change Password</h2>
                     <form id="password-change-form">
                         <div class="form-group">
-                            <label for="old-password">Current Password</label>
-                            <input type="password" id="old-password" required placeholder="Enter current password">
-                        </div>
-                        <div class="form-group">
                             <label for="new-password">New Password</label>
-                            <input type="password" id="new-password" required placeholder="Enter new password (min. 4 characters)">
+                            <div class="password-input-wrapper">
+                                <input type="password" id="new-password" required placeholder="Enter new password (min. 4 characters)">
+                                <button type="button" class="toggle-password-btn" title="Show password" aria-label="Toggle Password Visibility" onclick="togglePasswordVisibility('new-password', this)">
+                                    <span class="eye-icon">👁️</span>
+                                </button>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="confirm-password">Confirm New Password</label>
-                            <input type="password" id="confirm-password" required placeholder="Confirm new password">
+                            <div class="password-input-wrapper">
+                                <input type="password" id="confirm-password" required placeholder="Confirm new password">
+                                <button type="button" class="toggle-password-btn" title="Show password" aria-label="Toggle Password Visibility" onclick="togglePasswordVisibility('confirm-password', this)">
+                                    <span class="eye-icon">👁️</span>
+                                </button>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.85rem; margin-top: 1rem;">Update Password →</button>
                     </form>
@@ -308,44 +334,25 @@
             document.getElementById("profile-username").textContent = user.username;
             document.getElementById("profile-email").textContent = user.email || "Not Provided";
 
-            // Render Theme Choices
-            const themeContainer = document.getElementById("theme-selectors-container");
-            const activeTheme = getActiveTheme();
-
-            const availableThemes = [
-                { id: 'light', name: 'Light', icon: '☀️' },
-                { id: 'dark', name: 'Dark', icon: '🌑' },
-                { id: 'dracula', name: 'Dracula', icon: '🧛' },
-                { id: 'nord', name: 'Nord', icon: '❄️' },
-                { id: 'glassmorphism', name: 'Glass', icon: '💎' }
-            ];
-
-            if (themeContainer) {
-                themeContainer.innerHTML = availableThemes.map(t => `
-                    <div class="theme-select-card ${t.id === activeTheme ? 'active' : ''}" data-theme-id="${t.id}" onclick="applySettingsTheme('${t.id}')">
-                        <div class="theme-select-icon">${t.icon}</div>
-                        <div class="theme-select-name">${t.name}</div>
-                    </div>
-                `).join('');
-            }
-
             // Setup Password Form
             const form = document.getElementById("password-change-form");
             form.addEventListener("submit", handlePasswordUpdate);
         });
 
-        function applySettingsTheme(themeId) {
-            // Apply theme globally
-            setTheme(themeId);
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
 
-            // Sync visual states on this page
-            document.querySelectorAll(".theme-select-card").forEach(card => {
-                if (card.dataset.themeId === themeId) {
-                    card.classList.add("active");
-                } else {
-                    card.classList.remove("active");
-                }
-            });
+            const eyeIcon = btn.querySelector('.eye-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                if (eyeIcon) eyeIcon.textContent = '🙈';
+                btn.setAttribute('title', 'Hide password');
+            } else {
+                input.type = 'password';
+                if (eyeIcon) eyeIcon.textContent = '👁️';
+                btn.setAttribute('title', 'Show password');
+            }
         }
 
         async function handlePasswordUpdate(e) {
@@ -354,7 +361,6 @@
             alertBox.style.display = "none";
             alertBox.className = "settings-alert";
 
-            const oldPassword = document.getElementById("old-password").value;
             const newPassword = document.getElementById("new-password").value;
             const confirmPassword = document.getElementById("confirm-password").value;
             const user = getCurrentUser();
@@ -384,7 +390,7 @@
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         username: user.username,
-                        oldPassword: oldPassword,
+                        oldPassword: "",
                         newPassword: newPassword
                     })
                 });

@@ -89,37 +89,37 @@
   --active-char-glow: rgba(37, 99, 235, 0.4);
 }
 
-/* 2. Dark Theme (AURA MONEY High-End Aesthetic) */
+/* 2. Dark Theme (HYKROX Neon Glowing Cyan & Deep Pitch Black Aesthetic) */
 [data-theme="dark"] {
-  --primary-color: #f59e0b;
-  --primary-hover: #d97706;
-  --primary-btn-text: #0b0d19;
-  --primary-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  --secondary-color: #ffffff;
-  --accent-color: #38bdf8;
-  --background-color: #0b0d19;
-  --body-bg-radial: radial-gradient(circle at 50% -10%, #1c213d 0%, #0d0f1b 50%, #06070d 100%);
-  --card-bg: rgba(18, 21, 40, 0.82);
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --text-light: #64748b;
-  --border-color: rgba(255, 255, 255, 0.14);
-  --border-focus: #f59e0b;
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.15);
-  --shadow-lg: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(245, 158, 11, 0.2);
-  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #1c213d 0%, #0d0f1b 55%, #06070d 100%);
-  --mockup-header-bg: rgba(11, 13, 25, 0.9);
-  --glass-backdrop: blur(16px);
-  --theme-nav-bg: rgba(11, 13, 25, 0.85);
-  --dropdown-option-bg: #121528;
+  --primary-color: #00e5ff;       /* Glowing Neon Cyan */
+  --primary-hover: #00b0ff;       /* Deeper Cyan */
+  --primary-btn-text: #050505;    /* Dark Text on glowing button */
+  --primary-gradient: linear-gradient(135deg, #00e5ff 0%, #00b0ff 50%, #0ea5e9 100%);
+  --secondary-color: #ffffff;     /* White highlight */
+  --accent-color: #00e5ff;        /* Neon Cyan */
+  --background-color: #080808;    /* Deep Pitch Black */
+  --body-bg-radial: radial-gradient(circle at 50% -10%, #002d33 0%, #080808 65%, #030304 100%);
+  --card-bg: rgba(18, 18, 18, 0.85); /* Dark charcoal black cards */
+  --text-primary: #ffffff;       /* Pure White Text */
+  --text-secondary: #9ca3af;     /* Muted slate gray */
+  --text-light: #00e5ff;        /* Neon Cyan Highlight text */
+  --border-color: rgba(255, 255, 255, 0.12); /* Subtle dark border */
+  --border-focus: #00e5ff;       /* Neon Cyan focus */
+  --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 229, 255, 0.15);
+  --shadow-lg: 0 20px 50px -10px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 229, 255, 0.25);
+  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #002d33 0%, #080808 65%, #030304 100%);
+  --mockup-header-bg: rgba(10, 10, 10, 0.95);
+  --glass-backdrop: blur(16px) saturate(180%);
+  --theme-nav-bg: rgba(10, 10, 10, 0.85);
+  --dropdown-option-bg: #121212;
   --dropdown-option-text: #ffffff;
-  --key-bg: rgba(255, 255, 255, 0.07);
+  --key-bg: rgba(255, 255, 255, 0.06);
   --key-text: #ffffff;
-  --key-border: rgba(255, 255, 255, 0.12);
-  --active-char-bg: rgba(245, 158, 11, 0.25);
-  --active-char-border: #f59e0b;
-  --active-char-glow: rgba(245, 158, 11, 0.7);
+  --key-border: rgba(255, 255, 255, 0.1);
+  --active-char-bg: rgba(0, 229, 255, 0.15);
+  --active-char-border: #00e5ff;
+  --active-char-glow: rgba(0, 229, 255, 0.55);
 }
 
 /* 3. Glassmorphism Theme (ZENITH Light Futuristic Glass Aesthetic) */
@@ -156,104 +156,102 @@
 }
 
 /* 4. Emerald Pro Theme (Opulent Emerald Marble & Metallic Gold Aesthetic) */
+/* 4. Emerald Pro Theme (Café Noir, Kombu Green, Moss Green, Tan, Bone Luxury Organic Aesthetic) */
 [data-theme="emerald-pro"] {
-  --primary-color: #d4af37;       /* Metallic Gold */
-  --primary-hover: #b8860b;       /* Deep Antique Gold */
-  --primary-btn-text: #01231a;    /* Deep Emerald Dark Text */
-  --primary-gradient: linear-gradient(135deg, #d4af37 0%, #b8860b 50%, #996515 100%);
-  --secondary-color: #fef08a;     /* Champagne Warm Gold */
-  --accent-color: #34d399;        /* Mint Jade */
-  --background-color: #01231a;   /* Deep Dark Emerald Marble */
-  --body-bg-radial: radial-gradient(circle at 50% -10%, #04382b 0%, #01231a 60%, #01150f 100%);
-  --card-bg: rgba(4, 56, 43, 0.85);
-  --text-primary: #fef3c7;       /* Warm Champagne White */
-  --text-secondary: #a7f3d0;     /* Soft Mint Jade */
-  --text-light: #d4af37;        /* Metallic Gold Subtext */
-  --border-color: rgba(212, 175, 55, 0.35); /* Elegant Metallic Gold Border */
-  --border-focus: #d4af37;
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 25px -4px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.15);
-  --shadow-lg: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(212, 175, 55, 0.25);
-  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #04382b 0%, #01231a 60%, #01150f 100%);
-  --mockup-header-bg: rgba(1, 35, 26, 0.9);
-  --glass-backdrop: blur(18px) saturate(180%);
-  --theme-nav-bg: rgba(1, 35, 26, 0.9);
-  --dropdown-option-bg: #032b20;
-  --dropdown-option-text: #fef3c7;
-  --key-bg: rgba(255, 255, 255, 0.07);
-  --key-text: #fef3c7;
-  --key-border: rgba(212, 175, 55, 0.25);
-  --active-char-bg: rgba(212, 175, 55, 0.25);
-  --active-char-border: #d4af37;
-  --active-char-glow: rgba(212, 175, 55, 0.7);
+  --primary-color: #354024;       /* Kombu Green */
+  --primary-hover: #889063;       /* Moss Green */
+  --primary-btn-text: #ffffff;    /* Pure White Text on dark button */
+  --primary-gradient: linear-gradient(135deg, #354024 0%, #889063 50%, #4c3d19 100%);
+  --secondary-color: #faf6f0;     /* Off-White Cream */
+  --accent-color: #cfbb99;        /* Warm Tan Sand */
+  --background-color: #e5d7c4;    /* Bone Light Sand Background */
+  --body-bg-radial: radial-gradient(circle at 50% -10%, #efe7dc 0%, #e5d7c4 80%, #d8caa7 100%);
+  --card-bg: #ffffff;             /* Clean Pure White Cards */
+  --text-primary: #354024;       /* Kombu Green Primary Text */
+  --text-secondary: #5c6352;     /* Muted Grey Green */
+  --text-light: #4c3d19;        /* Café Noir Accent/Highlight Text */
+  --border-color: #cfbb99;       /* Tan Border */
+  --border-focus: #354024;       /* Kombu Green Focus */
+  --shadow-sm: 0 4px 10px rgba(53, 64, 36, 0.05);
+  --shadow-md: 0 8px 20px -4px rgba(53, 64, 36, 0.1), 0 0 15px rgba(207, 187, 153, 0.1);
+  --shadow-lg: 0 20px 40px -10px rgba(53, 64, 36, 0.15), 0 0 25px rgba(207, 187, 153, 0.25);
+  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #efe7dc 0%, #e5d7c4 80%, #d8caa7 100%);
+  --mockup-header-bg: #dcd8cf;
+  --glass-backdrop: blur(12px) saturate(120%);
+  --theme-nav-bg: #faf6f0;
+  --dropdown-option-bg: #faf6f0;
+  --dropdown-option-text: #354024;
+  --key-bg: #ffffff;
+  --key-text: #354024;
+  --key-border: #cfbb99;
+  --active-char-bg: rgba(136, 144, 99, 0.2);
+  --active-char-border: #889063;
+  --active-char-glow: rgba(136, 144, 99, 0.45);
 }
-
-/* 5. Focus Mode Theme (Cozy Roasted Espresso & Warm Amber Café Aesthetic) */
+/* 5. Focus Mode Theme (Terracotta Blush & Warm Chocolate Café Aesthetic) */
 [data-theme="focus-mode"] {
-  --primary-color: #f59e0b;       /* Warm Amber Gold */
-  --primary-hover: #d97706;       /* Deep Roasted Amber */
-  --primary-btn-text: #1c1917;    /* Warm Espresso Dark Text */
-  --primary-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%);
-  --secondary-color: #fef3c7;     /* Warm Cream Ivory */
-  --accent-color: #d97706;        /* Toasted Bronze */
-  --background-color: #1c1917;   /* Warm Stone Charcoal Espresso */
-  --body-bg-radial: radial-gradient(circle at 50% -10%, #2e2620 0%, #1c1917 60%, #12100e 100%);
-  --card-bg: rgba(41, 37, 36, 0.85);
-  --text-primary: #fafaf9;       /* Warm Toasted Cream */
-  --text-secondary: #d6d3d1;     /* Warm Soft Stone */
-  --text-light: #f59e0b;        /* Roasted Amber Highlight */
-  --border-color: rgba(217, 119, 6, 0.3); /* Cozy Warm Bronze Border */
-  --border-focus: #f59e0b;
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 25px -4px rgba(0, 0, 0, 0.6), 0 0 20px rgba(245, 158, 11, 0.15);
-  --shadow-lg: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(245, 158, 11, 0.25);
-  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #2e2620 0%, #1c1917 60%, #12100e 100%);
-  --mockup-header-bg: rgba(28, 25, 23, 0.9);
-  --glass-backdrop: blur(18px) saturate(170%);
-  --theme-nav-bg: rgba(28, 25, 23, 0.9);
-  --dropdown-option-bg: #292524;
-  --dropdown-option-text: #fafaf9;
-  --key-bg: rgba(255, 255, 255, 0.08);
-  --key-text: #fafaf9;
-  --key-border: rgba(245, 158, 11, 0.25);
-  --active-char-bg: rgba(245, 158, 11, 0.25);
-  --active-char-border: #f59e0b;
-  --active-char-glow: rgba(245, 158, 11, 0.7);
-}
-
-/* 6. Ocean Blue Theme (umbrella YACHT Deep Oceanic Water & Electric Coral Aesthetic) */
-[data-theme="ocean-blue"] {
-  --primary-color: #ef4444;       /* Vibrant Electric Coral Red */
-  --primary-hover: #dc2626;       /* Deep Marine Coral */
+  --primary-color: #cc6c4c;       /* Terracotta / Burnt Orange */
+  --primary-hover: #a85233;       /* Deep Burnt Orange */
   --primary-btn-text: #ffffff;    /* Pure White Text */
-  --primary-gradient: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%);
-  --secondary-color: #f0f9ff;     /* Ocean Foam White */
-  --accent-color: #38bdf8;        /* Neon Sky Cyan */
-  --background-color: #032b43;   /* Deep Luxury Marine Ocean Dark */
-  --body-bg-radial: radial-gradient(circle at 50% -10%, #085878 0%, #032b43 60%, #011624 100%);
-  --card-bg: rgba(5, 68, 94, 0.85);
-  --text-primary: #f0f9ff;       /* Crisp Ocean Foam White */
-  --text-secondary: #7dd3fc;     /* Soft Sky Cyan */
-  --text-light: #ef4444;        /* Electric Coral Highlight */
-  --border-color: rgba(56, 189, 248, 0.35); /* Electric Cyan Border */
-  --border-focus: #38bdf8;
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 8px 25px -4px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.18);
-  --shadow-lg: 0 20px 50px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(239, 68, 68, 0.25);
-  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #085878 0%, #032b43 60%, #011624 100%);
-  --mockup-header-bg: rgba(3, 43, 67, 0.9);
-  --glass-backdrop: blur(18px) saturate(180%);
-  --theme-nav-bg: rgba(3, 43, 67, 0.9);
-  --dropdown-option-bg: #05445e;
-  --dropdown-option-text: #f0f9ff;
-  --key-bg: rgba(255, 255, 255, 0.08);
-  --key-text: #f0f9ff;
-  --key-border: rgba(56, 189, 248, 0.25);
-  --active-char-bg: rgba(6, 182, 212, 0.25);
-  --active-char-border: #06b6d4;
-  --active-char-glow: rgba(6, 182, 212, 0.7);
+  --primary-gradient: linear-gradient(135deg, #cc6c4c 0%, #dca58a 50%, #352119 100%);
+  --secondary-color: #fbf5f2;     /* Warm Creamy Peach */
+  --accent-color: #dfa082;        /* Blush Gold */
+  --background-color: #f4e3d9;    /* Blush Peach Sand Background */
+  --body-bg-radial: radial-gradient(circle at 50% -10%, #faf3ee 0%, #f4e3d9 70%, #ebd4c6 100%);
+  --card-bg: #ffffff;             /* Crisp White Cards */
+  --text-primary: #352119;       /* Deep Chocolate Brown */
+  --text-secondary: #7c655c;     /* Muted Warm Taupe */
+  --text-light: #dfa082;        /* Blush Gold highlight */
+  --border-color: #e5cebf;       /* Soft Terracotta Border */
+  --border-focus: #cc6c4c;       /* Terracotta Focus */
+  --shadow-sm: 0 4px 10px rgba(53, 33, 25, 0.04);
+  --shadow-md: 0 8px 22px -4px rgba(53, 33, 25, 0.08), 0 0 15px rgba(223, 160, 130, 0.1);
+  --shadow-lg: 0 20px 45px -10px rgba(53, 33, 25, 0.12), 0 0 25px rgba(223, 160, 130, 0.18);
+  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #faf3ee 0%, #f4e3d9 70%, #ebd4c6 100%);
+  --mockup-header-bg: #e8d0c2;
+  --glass-backdrop: blur(12px) saturate(120%);
+  --theme-nav-bg: #fbf5f2;
+  --dropdown-option-bg: #fbf5f2;
+  --dropdown-option-text: #352119;
+  --key-bg: #ffffff;
+  --key-text: #352119;
+  --key-border: #e5cebf;
+  --active-char-bg: rgba(204, 108, 76, 0.15);
+  --active-char-border: #cc6c4c;
+  --active-char-glow: rgba(204, 108, 76, 0.4);
 }
-
+/* 6. Ocean Blue Theme (Clean Mineral Water & Sand Gold Aesthetic) */
+[data-theme="ocean-blue"] {
+  --primary-color: #0c82cf;       /* Clear Water Blue */
+  --primary-hover: #005fa3;       /* Deep Ocean Blue */
+  --primary-btn-text: #ffffff;    /* Pure White Text */
+  --primary-gradient: linear-gradient(135deg, #0c82cf 0%, #005fa3 50%, #063c62 100%);
+  --secondary-color: #f4f9fc;     /* Soft Light Ice Blue */
+  --accent-color: #d6b06e;        /* Sand Gold highlight */
+  --background-color: #ffffff;    /* Pure Crisp Clean White */
+  --body-bg-radial: radial-gradient(circle at 50% -10%, #ffffff 0%, #f4f9fc 70%, #dbeefa 100%);
+  --card-bg: #ffffff;             /* Crisp White Cards */
+  --text-primary: #063c62;       /* Deep Water Navy Text */
+  --text-secondary: #4b6b88;     /* Muted Slate Blue */
+  --text-light: #d6b06e;        /* Sand Gold Highlight Text */
+  --border-color: #d4e5f2;       /* Soft Ice Blue Border */
+  --border-focus: #0c82cf;       /* Clear Water Blue Focus */
+  --shadow-sm: 0 4px 10px rgba(6, 60, 98, 0.04);
+  --shadow-md: 0 8px 22px -4px rgba(6, 60, 98, 0.08), 0 0 15px rgba(214, 176, 110, 0.1);
+  --shadow-lg: 0 20px 45px -10px rgba(6, 60, 98, 0.12), 0 0 25px rgba(214, 176, 110, 0.18);
+  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #ffffff 0%, #f4f9fc 70%, #dbeefa 100%);
+  --mockup-header-bg: #e8f4fa;
+  --glass-backdrop: blur(12px) saturate(120%);
+  --theme-nav-bg: #f4f9fc;
+  --dropdown-option-bg: #f4f9fc;
+  --dropdown-option-text: #063c62;
+  --key-bg: #ffffff;
+  --key-text: #063c62;
+  --key-border: #d4e5f2;
+  --active-char-bg: rgba(12, 130, 207, 0.15);
+  --active-char-border: #0c82cf;
+  --active-char-glow: rgba(12, 130, 207, 0.4);
+}
 /* 7. Neon Cyber Theme */
 [data-theme="neon"] {
   --primary-color: #f43f5e;
@@ -335,15 +333,6 @@
   --active-char-border: #2a4b49;
   --active-char-glow: rgba(42, 75, 73, 0.4);
 }
-
-[data-theme="sunset"] h1,
-[data-theme="sunset"] h2,
-[data-theme="sunset"] h3,
-[data-theme="sunset"] .logo {
-  font-family: 'Playfair Display', 'Cinzel', Georgia, serif !important;
-  letter-spacing: 0.01em;
-}
-
 /* Theme Selector UI Controls */
 .theme-selector-container {
   display: flex;

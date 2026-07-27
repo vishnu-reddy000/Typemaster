@@ -801,7 +801,8 @@ async function finishTest() {
 
   if (typeof playSoundFX === 'function') playSoundFX('completion');
 
-  showTimesUpModal();
+  // Automatically redirect directly to the results/leaderboard page upon test completion
+  window.location.href = 'result.html';
 }
 
 let isUntimedPracticeMode = false;

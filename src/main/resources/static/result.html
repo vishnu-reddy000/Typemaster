@@ -327,6 +327,7 @@
                                 <th>User</th>
                                 <th>WPM</th>
                                 <th>Accuracy</th>
+                                <th>Duration</th>
                                 <th>Date</th>
                             </tr>
                         </thead>
@@ -686,6 +687,7 @@
                             <td><strong>${escapeHtml(item.username || 'Anonymous')}</strong></td>
                             <td style="color: var(--primary-color); font-weight: 700;">${item.wpm} WPM</td>
                             <td>${item.accuracy}%</td>
+                            <td>${item.timeTakenSeconds || item.timeTaken || 60}s</td>
                             <td style="color: var(--text-secondary); font-weight: 500;">${dateFormatted}</td>
                         `;
                         tbody.appendChild(tr);

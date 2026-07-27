@@ -96,6 +96,7 @@
   --primary-btn-text: #050505;    /* Dark Text on glowing button */
   --primary-gradient: linear-gradient(135deg, #00e5ff 0%, #00b0ff 50%, #0ea5e9 100%);
   --secondary-color: #ffffff;     /* White highlight */
+  --secondary-btn-text: #080808;  /* Dark Text for secondary button */
   --accent-color: #00e5ff;        /* Neon Cyan */
   --background-color: #080808;    /* Deep Pitch Black */
   --body-bg-radial: radial-gradient(circle at 50% -10%, #002d33 0%, #080808 65%, #030304 100%);
@@ -163,6 +164,7 @@
   --primary-btn-text: #ffffff;    /* Pure White Text on dark button */
   --primary-gradient: linear-gradient(135deg, #354024 0%, #889063 50%, #4c3d19 100%);
   --secondary-color: #faf6f0;     /* Off-White Cream */
+  --secondary-btn-text: #354024;  /* Dark Text on secondary button */
   --accent-color: #cfbb99;        /* Warm Tan Sand */
   --background-color: #e5d7c4;    /* Bone Light Sand Background */
   --body-bg-radial: radial-gradient(circle at 50% -10%, #efe7dc 0%, #e5d7c4 80%, #d8caa7 100%);
@@ -195,6 +197,7 @@
   --primary-btn-text: #ffffff;    /* Pure White Text */
   --primary-gradient: linear-gradient(135deg, #cc6c4c 0%, #dca58a 50%, #352119 100%);
   --secondary-color: #fbf5f2;     /* Warm Creamy Peach */
+  --secondary-btn-text: #352119;  /* Dark text on secondary button */
   --accent-color: #dfa082;        /* Blush Gold */
   --background-color: #f4e3d9;    /* Blush Peach Sand Background */
   --body-bg-radial: radial-gradient(circle at 50% -10%, #faf3ee 0%, #f4e3d9 70%, #ebd4c6 100%);
@@ -227,6 +230,7 @@
   --primary-btn-text: #ffffff;    /* Pure White Text */
   --primary-gradient: linear-gradient(135deg, #0c82cf 0%, #005fa3 50%, #063c62 100%);
   --secondary-color: #f4f9fc;     /* Soft Light Ice Blue */
+  --secondary-btn-text: #063c62;  /* Dark text on secondary button */
   --accent-color: #d6b06e;        /* Sand Gold highlight */
   --background-color: #ffffff;    /* Pure Crisp Clean White */
   --body-bg-radial: radial-gradient(circle at 50% -10%, #ffffff 0%, #f4f9fc 70%, #dbeefa 100%);
@@ -257,6 +261,7 @@
   --primary-color: #f43f5e;
   --primary-hover: #fb7185;
   --secondary-color: #fff1f2;
+  --secondary-btn-text: #090514;
   --accent-color: #10b981;
   --background-color: #090514;
   --card-bg: #130c25;
@@ -281,6 +286,7 @@
   --primary-color: #64748b;
   --primary-hover: #94a3b8;
   --secondary-color: #f8fafc;
+  --secondary-btn-text: #09090b;
   --accent-color: #cbd5e1;
   --background-color: #09090b;
   --card-bg: #18181b;
@@ -308,6 +314,7 @@
   --primary-btn-text: #ffffff;    /* Pure White Text on dark button */
   --primary-gradient: linear-gradient(135deg, #2a4b49 0%, #3d6662 50%, #c2b09a 100%);
   --secondary-color: #faf8f5;     /* Soft Premium Warm White */
+  --secondary-btn-text: #1c302d;  /* Dark text on secondary button */
   --accent-color: #c2b09a;        /* Elegant Sand Gold */
   --background-color: #f7f4ee;    /* Soft Warm Cream Sand Background */
   --body-bg-radial: radial-gradient(circle at 50% -10%, #fbfaf8 0%, #f7f4ee 80%, #ebe8df 100%);
@@ -677,7 +684,7 @@ main {
 
 .btn-primary {
   background-color: var(--primary-color);
-  color: #ffffff;
+  color: var(--primary-btn-text, #ffffff);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
@@ -693,7 +700,7 @@ main {
 
 .btn-secondary {
   background-color: var(--secondary-color);
-  color: #ffffff;
+  color: var(--secondary-btn-text, #ffffff);
 }
 
 .btn-secondary:hover {

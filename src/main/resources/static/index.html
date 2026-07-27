@@ -307,19 +307,19 @@
             <div class="container">
                 <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; text-align: center;">
                     <div class="stat-counter-card">
-                        <div style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">10K+</div>
+                        <div id="stat-tests-completed" style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">10K+</div>
                         <div style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Tests Completed</div>
                     </div>
                     <div class="stat-counter-card">
-                        <div style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">5K+</div>
+                        <div id="stat-registered-users" style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">5K+</div>
                         <div style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Registered Users</div>
                     </div>
                     <div class="stat-counter-card">
-                        <div style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">120+</div>
+                        <div id="stat-countries" style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">120+</div>
                         <div style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Countries Practicing</div>
                     </div>
                     <div class="stat-counter-card">
-                        <div style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">85 WPM</div>
+                        <div id="stat-avg-wpm" style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">85 WPM</div>
                         <div style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Average Peak WPM</div>
                     </div>
                 </div>
@@ -390,6 +390,37 @@
                 icon.style.transform = 'rotate(180deg)';
             }
         }
+
+        async function fetchSystemStats() {
+            try {
+                const response = await fetch('/api/results/summary-stats');
+                if (response.ok) {
+                    const data = await response.json();
+                    
+                    document.getElementById('stat-tests-completed').textContent = formatStatNumber(data.totalTests);
+                    document.getElementById('stat-registered-users').textContent = formatStatNumber(data.totalUsers);
+                    document.getElementById('stat-countries').textContent = formatStatNumber(data.totalCountries);
+                    document.getElementById('stat-avg-wpm').textContent = Math.round(data.averageWpm) + ' WPM';
+                }
+            } catch (error) {
+                console.error('Failed to fetch system stats:', error);
+            }
+        }
+
+        function formatStatNumber(num) {
+            if (num === 0) return '0';
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M+';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K+';
+            }
+            return num + '+';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchSystemStats();
+        });
     </script>
 </body>
 </html>

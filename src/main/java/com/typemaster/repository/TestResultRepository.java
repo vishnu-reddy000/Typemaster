@@ -2,6 +2,7 @@ package com.typemaster.repository;
 
 import com.typemaster.model.TestResult;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -17,4 +18,7 @@ public interface TestResultRepository extends JpaRepository<TestResult, Long> {
     Optional<TestResult> findTopByUsernameOrderByCreatedAtDesc(String username);
 
     java.util.List<TestResult> findByUsernameOrderByCreatedAtDesc(String username);
+
+    @Query("SELECT AVG(t.wpm) FROM TestResult t")
+    Double getAverageWpm();
 }

@@ -67,4 +67,13 @@ public class TestResultController {
     public ResponseEntity<List<TestResultDTO>> getAllResults(@RequestParam(name = "username", required = false) String username) {
         return ResponseEntity.ok(testResultService.getAllResults(username));
     }
+
+    /**
+     * Endpoint to retrieve system-wide summary stats for home page.
+     * GET /api/results/summary-stats
+     */
+    @GetMapping("/summary-stats")
+    public ResponseEntity<com.typemaster.dto.SystemStatsDTO> getSystemStats() {
+        return ResponseEntity.ok(testResultService.getSystemStats());
+    }
 }

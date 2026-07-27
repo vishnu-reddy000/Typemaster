@@ -63,29 +63,27 @@
             box-shadow: var(--shadow-lg);
             border-color: var(--primary-color);
         }
-        .blog-img-placeholder {
+        .blog-img-container {
             height: 200px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            overflow: hidden;
+            position: relative;
+            background: var(--background-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #ffffff;
-            font-size: 3rem;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            position: relative;
+            border-bottom: 1px solid var(--border-color);
         }
-        .blog-card:nth-child(2n) .blog-img-placeholder {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        .blog-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-normal);
         }
-        .blog-card:nth-child(3n) .blog-img-placeholder {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        }
-        .blog-card:nth-child(4n) .blog-img-placeholder {
-            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        .blog-card:hover .blog-card-img {
+            transform: scale(1.05);
         }
         .blog-meta {
-            padding: 1.5rem 1.5rem 0.5rem;
+            padding: 1.25rem 1.5rem 0.5rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -93,13 +91,46 @@
             color: var(--text-light);
         }
         .category-tag {
-            background: var(--active-char-bg, rgba(37, 99, 235, 0.1));
+            background: var(--active-char-bg, rgba(37, 99, 235, 0.08));
             color: var(--primary-color);
             padding: 0.25rem 0.75rem;
             border-radius: var(--radius-full);
             font-weight: 600;
             font-size: 0.75rem;
             text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .category-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #00e676; /* vibrant neon green dot */
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .blog-stats-bar {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            border-top: 1px dashed var(--border-color);
+            font-size: 0.8rem;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        .blog-read-link {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: var(--transition-fast);
+            display: inline-block;
+        }
+        .blog-read-link:hover {
+            color: var(--primary-color);
+            transform: translateX(3px);
         }
         .blog-body {
             padding: 0.75rem 1.5rem 1.5rem;
@@ -249,112 +280,161 @@
             <div class="blog-grid">
                 <!-- Article 1 -->
                 <div class="blog-card">
-                    <div class="blog-img-placeholder">SPEED ⚡</div>
+                    <div class="blog-img-container">
+                        <img src="assets/images/blog/speed_improvement.png" alt="Speed illustration" class="blog-card-img">
+                    </div>
                     <div class="blog-meta">
-                        <span class="category-tag">Tutorial</span>
-                        <span>5 Min Read</span>
+                        <span class="category-tag"><span class="category-dot"></span>Tutorial</span>
+                        <span>⏱️ 5 Min Read</span>
                     </div>
                     <div class="blog-body">
                         <h3 class="blog-post-title">How To Improve Typing Speed Fast</h3>
                         <p class="blog-excerpt">Uncover the top habits of high-speed typists. Learn how to combine correct posture, finger placement, and daily routines to raise your WPM scores rapidly.</p>
-                        <div class="blog-btn-container">
-                            <a href="#speed-fast" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        <div class="blog-stats-bar">
+                            <span>👁️ 12.4K</span>
+                            <span>❤️ 892</span>
+                            <span>📅 Jul 27, 2026</span>
+                        </div>
+                        <div class="blog-btn-container" style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; text-align: center; margin-top: auto;">
+                            <a href="#speed-fast" class="blog-read-link">Read Article →</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Article 2 -->
                 <div class="blog-card">
-                    <div class="blog-img-placeholder">WPM 📊</div>
+                    <div class="blog-img-container">
+                        <img src="assets/images/blog/wpm_analytics.png" alt="WPM calculation illustration" class="blog-card-img">
+                    </div>
                     <div class="blog-meta">
-                        <span class="category-tag">Theory</span>
-                        <span>4 Min Read</span>
+                        <span class="category-tag"><span class="category-dot" style="background-color: #f59e0b;"></span>Theory</span>
+                        <span>⏱️ 4 Min Read</span>
                     </div>
                     <div class="blog-body">
                         <h3 class="blog-post-title">What Is WPM And How Is It Calculated</h3>
                         <p class="blog-excerpt">Ever wondered how typing speed tests figure out your scores? Learn about the exact differences between Net WPM, Raw WPM, accuracy percentages, and mistake penalties.</p>
-                        <div class="blog-btn-container">
-                            <a href="#wpm-calculation" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        <div class="blog-stats-bar">
+                            <span>👁️ 8.9K</span>
+                            <span>❤️ 624</span>
+                            <span>📅 Jul 26, 2026</span>
+                        </div>
+                        <div class="blog-btn-container" style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; text-align: center; margin-top: auto;">
+                            <a href="#wpm-calculation" class="blog-read-link">Read Article →</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Article 3 -->
                 <div class="blog-card">
-                    <div class="blog-img-placeholder">BEGINNERS 🌱</div>
+                    <div class="blog-img-container">
+                        <img src="assets/images/blog/touch_typing_hands.png" alt="Touch typing illustration" class="blog-card-img">
+                    </div>
                     <div class="blog-meta">
-                        <span class="category-tag">Guides</span>
-                        <span>6 Min Read</span>
+                        <span class="category-tag"><span class="category-dot" style="background-color: #0ea5e9;"></span>Guides</span>
+                        <span>⏱️ 6 Min Read</span>
                     </div>
                     <div class="blog-body">
                         <h3 class="blog-post-title">Touch Typing Guide For Beginners</h3>
                         <p class="blog-excerpt">Stop hunting and pecking! Follow our step-by-step beginner guide to learn the homing bumps on J and F keys and build muscle memory to touch type without looking down.</p>
-                        <div class="blog-btn-container">
-                            <a href="#touch-typing" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        <div class="blog-stats-bar">
+                            <span>👁️ 15.1K</span>
+                            <span>❤️ 1.1K</span>
+                            <span>📅 Jul 25, 2026</span>
+                        </div>
+                        <div class="blog-btn-container" style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; text-align: center; margin-top: auto;">
+                            <a href="#touch-typing" class="blog-read-link">Read Article →</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Article 4 -->
                 <div class="blog-card">
-                    <div class="blog-img-placeholder">IDE 💻</div>
+                    <div class="blog-img-container">
+                        <img src="assets/images/blog/keyboard_shortcuts.png" alt="Keyboard shortcuts illustration" class="blog-card-img">
+                    </div>
                     <div class="blog-meta">
-                        <span class="category-tag">Developers</span>
-                        <span>5 Min Read</span>
+                        <span class="category-tag"><span class="category-dot" style="background-color: #ec4899;"></span>Developers</span>
+                        <span>⏱️ 5 Min Read</span>
                     </div>
                     <div class="blog-body">
                         <h3 class="blog-post-title">Keyboard Shortcuts Every Developer Should Know</h3>
                         <p class="blog-excerpt">Boost your coding performance. Master these essential editor shortcuts, navigation hotkeys, and shell commands to write scripts and build apps with zero friction.</p>
-                        <div class="blog-btn-container">
-                            <a href="#dev-shortcuts" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        <div class="blog-stats-bar">
+                            <span>👁️ 11.2K</span>
+                            <span>❤️ 940</span>
+                            <span>📅 Jul 24, 2026</span>
+                        </div>
+                        <div class="blog-btn-container" style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; text-align: center; margin-top: auto;">
+                            <a href="#dev-shortcuts" class="blog-read-link">Read Article →</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Article 5 -->
                 <div class="blog-card">
-                    <div class="blog-img-placeholder">STUDENTS 🎓</div>
+                    <div class="blog-img-container">
+                        <img src="assets/images/blog/student_typing.png" alt="Student typing practice" class="blog-card-img">
+                    </div>
                     <div class="blog-meta">
-                        <span class="category-tag">Students</span>
-                        <span>4 Min Read</span>
+                        <span class="category-tag"><span class="category-dot" style="background-color: #8b5cf6;"></span>Students</span>
+                        <span>⏱️ 4 Min Read</span>
                     </div>
                     <div class="blog-body">
                         <h3 class="blog-post-title">Best Typing Practices For Students</h3>
                         <p class="blog-excerpt">Accelerate thesis preparation, term papers, and test-taking. Learn how students can establish rhythmic muscle memory and manage study schedules through gamified tests.</p>
-                        <div class="blog-btn-container">
-                            <a href="#student-typing" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        <div class="blog-stats-bar">
+                            <span>👁️ 6.3K</span>
+                            <span>❤️ 480</span>
+                            <span>📅 Jul 23, 2026</span>
+                        </div>
+                        <div class="blog-btn-container" style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; text-align: center; margin-top: auto;">
+                            <a href="#student-typing" class="blog-read-link">Read Article →</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Article 6 -->
                 <div class="blog-card">
-                    <div class="blog-img-placeholder">CODING ☕</div>
+                    <div class="blog-img-container">
+                        <img src="assets/images/blog/developer_coding.png" alt="Developer coding keyboard speed" class="blog-card-img">
+                    </div>
                     <div class="blog-meta">
-                        <span class="category-tag">Developers</span>
-                        <span>5 Min Read</span>
+                        <span class="category-tag"><span class="category-dot" style="background-color: #ec4899;"></span>Developers</span>
+                        <span>⏱️ 5 Min Read</span>
                     </div>
                     <div class="blog-body">
                         <h3 class="blog-post-title">How Programmers Can Type Faster</h3>
                         <p class="blog-excerpt">Typing code is vastly different from typing standard English sentences. Discover key placement guides for braces, bracket tags, and symbol sequences to double typing speeds.</p>
-                        <div class="blog-btn-container">
-                            <a href="#programmer-speed" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        <div class="blog-stats-bar">
+                            <span>👁️ 14.8K</span>
+                            <span>❤️ 1.2K</span>
+                            <span>📅 Jul 22, 2026</span>
+                        </div>
+                        <div class="blog-btn-container" style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; text-align: center; margin-top: auto;">
+                            <a href="#programmer-speed" class="blog-read-link">Read Article →</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Article 7 -->
                 <div class="blog-card">
-                    <div class="blog-img-placeholder">DIAGNOSTIC 🛡️</div>
+                    <div class="blog-img-container">
+                        <img src="assets/images/blog/typing_errors_shield.png" alt="Typing errors diagnostic shield" class="blog-card-img">
+                    </div>
                     <div class="blog-meta">
-                        <span class="category-tag">Guides</span>
-                        <span>5 Min Read</span>
+                        <span class="category-tag"><span class="category-dot" style="background-color: #0ea5e9;"></span>Guides</span>
+                        <span>⏱️ 5 Min Read</span>
                     </div>
                     <div class="blog-body">
                         <h3 class="blog-post-title">Common Typing Mistakes And Solutions</h3>
                         <p class="blog-excerpt">Are mistakes bottlenecking your performance? Analyze where common errors occur—like row jumping or tense hands—and follow concrete steps to fix them today.</p>
-                        <div class="blog-btn-container">
-                            <a href="#common-mistakes" class="btn btn-outline" style="width: 100%; text-align: center; justify-content: center;">Read Article →</a>
+                        <div class="blog-stats-bar">
+                            <span>👁️ 9.5K</span>
+                            <span>❤️ 756</span>
+                            <span>📅 Jul 21, 2026</span>
+                        </div>
+                        <div class="blog-btn-container" style="border-top: 1px solid var(--border-color); padding-top: 0.75rem; text-align: center; margin-top: auto;">
+                            <a href="#common-mistakes" class="blog-read-link">Read Article →</a>
                         </div>
                     </div>
                 </div>

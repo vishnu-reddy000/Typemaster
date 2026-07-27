@@ -49,10 +49,8 @@ function initTypingEngine() {
     modeSelectEl.addEventListener('change', (e) => {
       const val = e.target.value;
       if (val === 'CUSTOM' && typeof setCustomPracticeText === 'function') {
-        const userText = prompt("Enter your custom text for typing practice:", getCustomPracticeText());
-        if (userText && userText.trim().length > 0) {
-          setCustomPracticeText(userText);
-        }
+        showCustomTextModal();
+        return;
       }
       handleModeUI();
       restartTest();
@@ -997,18 +995,8 @@ function handleDurationChange(val) {
   const selectedVal = val || (durationSelectEl ? durationSelectEl.value : '1m');
 
   if (selectedVal === 'CUSTOM') {
-    const customSecs = prompt("Enter custom test duration in seconds (10 to 600 seconds):", "45");
-    if (customSecs) {
-      const parsed = parseInt(customSecs, 10);
-      if (!isNaN(parsed) && parsed >= 5) {
-        TimerManager.setDuration('CUSTOM', parsed);
-      } else {
-        TimerManager.setDuration('CUSTOM', 45);
-      }
-    } else {
-      TimerManager.setDuration('1m');
-      if (durationSelectEl) durationSelectEl.value = '1m';
-    }
+    showCustomDurationModal();
+    return;
   } else {
     TimerManager.setDuration(selectedVal);
     if (durationSelectEl) durationSelectEl.value = selectedVal;
@@ -1026,8 +1014,106 @@ window.handleDurationChange = handleDurationChange;
 window.restartTest = restartTest;
 window.handleModeUI = handleModeUI;
 
+function showCustomTextModal() {
+  const modal = document.getElementById('custom-text-modal');
+  const input = document.getElementById('custom-text-input');
+  if (modal && input) {
+    input.value = typeof getCustomPracticeText === 'function' ? getCustomPracticeText() : '';
+    modal.style.display = 'flex';
+    input.focus();
+  }
+}
+
+function hideCustomTextModal() {
+  const modal = document.getElementById('custom-text-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function showCustomDurationModal() {
+  const modal = document.getElementById('custom-duration-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function hideCustomDurationModal() {
+  const modal = document.getElementById('custom-duration-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function initCustomModals() {
+  const textCancel = document.getElementById('custom-text-cancel-btn');
+  const textSave = document.getElementById('custom-text-save-btn');
+  const textInput = document.getElementById('custom-text-input');
+
+  if (textCancel) {
+    textCancel.addEventListener('click', () => {
+      hideCustomTextModal();
+      const modeSelectEl = document.getElementById('mode-select');
+      if (modeSelectEl) {
+        modeSelectEl.value = 'SENTENCES';
+        handleModeUI();
+        restartTest();
+      }
+    });
+  }
+
+  if (textSave) {
+    textSave.addEventListener('click', () => {
+      if (textInput && typeof setCustomPracticeText === 'function') {
+        const val = textInput.value;
+        if (val && val.trim().length > 0) {
+          setCustomPracticeText(val);
+        }
+      }
+      hideCustomTextModal();
+      handleModeUI();
+      restartTest();
+    });
+  }
+
+  const durCancel = document.getElementById('custom-duration-cancel-btn');
+  const durSave = document.getElementById('custom-duration-save-btn');
+  const durInput = document.getElementById('custom-duration-input');
+
+  if (durCancel) {
+    durCancel.addEventListener('click', () => {
+      hideCustomDurationModal();
+      const durationSelectEl = document.getElementById('duration-select');
+      if (durationSelectEl) {
+        durationSelectEl.value = '1m';
+        TimerManager.setDuration('1m');
+      }
+      restartTest();
+    });
+  }
+
+  if (durSave) {
+    durSave.addEventListener('click', () => {
+      if (durInput) {
+        const parsed = parseInt(durInput.value, 10);
+        if (!isNaN(parsed) && parsed >= 5) {
+          TimerManager.setDuration('CUSTOM', parsed);
+          const durationSelectEl = document.getElementById('duration-select');
+          if (durationSelectEl) durationSelectEl.value = 'CUSTOM';
+        } else {
+          TimerManager.setDuration('1m');
+          const durationSelectEl = document.getElementById('duration-select');
+          if (durationSelectEl) durationSelectEl.value = '1m';
+        }
+      }
+      hideCustomDurationModal();
+      
+      const timerEl = document.getElementById('stat-timer');
+      if (timerEl) {
+        timerEl.textContent = TimerManager.formatTime(TimerManager.getMaxSeconds());
+      }
+      restartTest();
+    });
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('paragraph-box') || window.location.pathname.includes('typing')) {
     initTypingEngine();
+    initCustomModals();
   }
 });

@@ -8,6 +8,11 @@
     <link rel="canonical" href="https://typemaster.com/">
     <title>TypeMaster - Master Your Typing Speed & Accuracy</title>
 
+    <!-- Google Fonts: Inter and Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <!-- Open Graph Metadata -->
     <meta property="og:title" content="TypeMaster - Master Your Typing Speed & Accuracy">
     <meta property="og:description" content="Track your WPM and accuracy in real time with our premium typing speed practice application. Powered by Spring Boot Rest APIs.">
@@ -74,7 +79,14 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/home.css">
 </head>
-<body>
+<body class="landing-page-body">
+    <!-- Floating Animated Background Gradient Blobs -->
+    <div class="bg-blobs-container">
+        <div class="bg-blob bg-blob-1"></div>
+        <div class="bg-blob bg-blob-2"></div>
+        <div class="bg-blob bg-blob-3"></div>
+    </div>
+
     <!-- Initial Loading Splash Screen -->
     <div id="splash-loader" class="splash-loader">
         <div class="splash-overlay"></div>
@@ -116,47 +128,98 @@
         <section class="hero">
             <div class="container hero-grid">
                 <div class="hero-content">
-                    <img src="assets/images/logo.svg" alt="TypeMaster Official Brand Logo" class="hero-brand-logo">
-                    <div class="badge badge-primary hero-badge">⚡ Powered by Spring Boot REST API</div>
+                    <div class="hero-badge">
+                        <span>⚡</span> Powered by Spring Boot REST API
+                    </div>
                     <h1 class="hero-title">Master Your Typing Speed <span>With Confidence</span></h1>
                     <p class="hero-description">
                         TypeMaster is a professional practice platform designed to boost your words per minute (WPM) and accuracy with real-time feedback, custom timers, and Spring Boot REST analytics.
                     </p>
                     <div class="hero-actions">
-                        <a href="typing.html" class="btn btn-primary" id="hero-start-btn">Start Typing Now →</a>
-                        <a href="#features" class="btn btn-outline" id="hero-features-btn">Explore Features</a>
+                        <a href="typing.html" class="btn-hero-primary" id="hero-start-btn">Start Typing Now →</a>
+                        <a href="#features" class="btn-hero-secondary" id="hero-features-btn">Explore Features</a>
+                    </div>
+                    
+                    <!-- Hero Social Proof Stack -->
+                    <div class="hero-social-proof">
+                        <div class="hero-avatar-stack">
+                            <div class="preview-avatar" style="background-color: var(--secondary-color);">JS</div>
+                            <div class="preview-avatar" style="background-color: var(--accent-color); margin-left: -8px;">VR</div>
+                            <div class="preview-avatar" style="background-color: var(--success-color); margin-left: -8px;">AK</div>
+                        </div>
+                        <div class="hero-proof-text">
+                            Joined by <strong>5,000+ developers & students</strong> globally.
+                        </div>
                     </div>
                 </div>
 
-                <!-- Hero Mockup Preview -->
+                <!-- Hero Interactive Mockup Preview -->
                 <div class="hero-mockup">
                     <div class="mockup-header">
-                        <span class="mockup-dot dot-red"></span>
-                        <span class="mockup-dot dot-yellow"></span>
-                        <span class="mockup-dot dot-green"></span>
+                        <div class="mockup-dots">
+                            <span class="mockup-dot dot-red"></span>
+                            <span class="mockup-dot dot-yellow"></span>
+                            <span class="mockup-dot dot-green"></span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--text-light); font-weight: 700;">typing_arena.js</div>
                     </div>
                     <div class="mockup-body">
                         <div class="mockup-stats">
                             <div class="mockup-stat-item">
-                                <div class="mockup-stat-val">68</div>
+                                <div class="mockup-stat-val">82</div>
                                 <div class="mockup-stat-label">WPM</div>
                             </div>
                             <div class="mockup-stat-item">
-                                <div class="mockup-stat-val">98%</div>
+                                <div class="mockup-stat-val">99%</div>
                                 <div class="mockup-stat-label">Accuracy</div>
                             </div>
                             <div class="mockup-stat-item">
-                                <div class="mockup-stat-val">01:00</div>
+                                <div class="mockup-stat-val">00:15</div>
                                 <div class="mockup-stat-label">Time</div>
                             </div>
                         </div>
                         <div class="mockup-text">
-                            <span class="correct">Developing</span> <span class="correct">great</span> <span class="correct">typing</span> <span class="correct">speed</span> <span class="active">requires</span> practice and focus...
+                            <span class="correct">Developing</span> <span class="correct">great</span> <span class="correct">typing</span> <span class="correct">speed</span> <span class="active">requires</span> practice, rhythm, and accuracy...
+                        </div>
+                    </div>
+                    
+                    <!-- Floating Badge Card Overlay -->
+                    <div class="mockup-floating-badge">
+                        <div style="font-size: 1.5rem;">🏆</div>
+                        <div>
+                            <div style="font-weight: 800; font-size: 0.85rem; color: var(--text-primary);">Speed Demon Unlocked</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary);">Peak score exceeded 80 WPM</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Stats Counter Section (Directly below Hero) -->
+        <section class="stats-counter">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-counter-card">
+                        <div id="stat-tests-completed" class="stat-counter-num">10K+</div>
+                        <div class="stat-counter-label">Tests Completed</div>
+                    </div>
+                    <div class="stat-counter-card">
+                        <div id="stat-registered-users" class="stat-counter-num">5K+</div>
+                        <div class="stat-counter-label">Registered Users</div>
+                    </div>
+                    <div class="stat-counter-card">
+                        <div id="stat-countries" class="stat-counter-num">120+</div>
+                        <div class="stat-counter-label">Countries Active</div>
+                    </div>
+                    <div class="stat-counter-card">
+                        <div id="stat-avg-wpm" class="stat-counter-num">85 WPM</div>
+                        <div class="stat-counter-label">Average Peak WPM</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
 
         <!-- Features Section -->
         <section class="features" id="features">
@@ -166,161 +229,279 @@
                     <p class="section-description">Everything you need to improve your keyboard mastery step by step.</p>
                 </div>
                 <div class="features-grid">
+                    <!-- Feature 1 -->
                     <div class="feature-card">
                         <div class="feature-icon">⚡</div>
                         <h3 class="feature-title">Real-Time Analytics</h3>
                         <p class="feature-text">Watch your Words Per Minute (WPM) and Accuracy update instantly as you type every single keypress.</p>
+                        <a href="typing.html" class="feature-link">Test it live →</a>
                     </div>
+                    <!-- Feature 2 -->
                     <div class="feature-card">
                         <div class="feature-icon">⏱️</div>
                         <h3 class="feature-title">Custom Test Timers</h3>
-                        <p class="feature-text">Select between 1, 3, 5, 7, or 9-minute countdown timers from a sleek dropdown menu.</p>
+                        <p class="feature-text">Select between 15, 30, or custom practice seconds from a sleek dropdown parameter menu.</p>
+                        <a href="typing.html" class="feature-link">Set duration →</a>
                     </div>
+                    <!-- Feature 3 -->
                     <div class="feature-card">
                         <div class="feature-icon">🌱</div>
-                        <h3 class="feature-title">Spring Boot Persistence</h3>
+                        <h3 class="feature-title">Spring Boot REST</h3>
                         <p class="feature-text">All practice test results are transmitted via REST API and persisted in an embedded H2 database.</p>
+                        <a href="about.html" class="feature-link">Read tech stack →</a>
                     </div>
+                    <!-- Feature 4 -->
                     <div class="feature-card">
                         <div class="feature-icon">📊</div>
                         <h3 class="feature-title">Performance Reports</h3>
                         <p class="feature-text">Analyze mistakes, total characters typed, and view personalized feedback badges after every test.</p>
-        </div>
-        </section>
-
-        <!-- Why Improve Section -->
-        <section class="why-improve" id="why-improve" style="padding: 4rem 1rem; border-top: 1px solid var(--border-color);">
-            <div class="container">
-                <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
-                    <h2 class="section-title">Why Improve Your Typing Speed?</h2>
-                    <p class="section-description" style="color: var(--text-secondary);">A faster WPM rate is a superpower in the modern information era.</p>
-                </div>
-                <div class="benefits-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
-                    <div class="benefit-item" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem; text-align: center; transition: var(--transition-normal); box-shadow: var(--shadow-sm);">
-                        <span class="benefit-icon" style="font-size: 2.5rem; margin-bottom: 1rem; display: inline-block;">⏱️</span>
-                        <h4 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Save Time</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Increase typing speeds to cut drafting time in half, reclaiming dozens of hours every month.</p>
-                    </div>
-                    <div class="benefit-item" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem; text-align: center; transition: var(--transition-normal); box-shadow: var(--shadow-sm);">
-                        <span class="benefit-icon" style="font-size: 2.5rem; margin-bottom: 1rem; display: inline-block;">📈</span>
-                        <h4 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Improve Productivity</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Express written thoughts rapidly, eliminating speed bottlenecks in communications and writing.</p>
-                    </div>
-                    <div class="benefit-item" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem; text-align: center; transition: var(--transition-normal); box-shadow: var(--shadow-sm);">
-                        <span class="benefit-icon" style="font-size: 2.5rem; margin-bottom: 1rem; display: inline-block;">💻</span>
-                        <h4 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Better Coding Experience</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Write boilerplate structures and syntax commands instantly, keeping your focus on software logic.</p>
-                    </div>
-                    <div class="benefit-item" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 2rem; text-align: center; transition: var(--transition-normal); box-shadow: var(--shadow-sm);">
-                        <span class="benefit-icon" style="font-size: 2.5rem; margin-bottom: 1rem; display: inline-block;">💼</span>
-                        <h4 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Better Career Skills</h4>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Stand out in job markets with high-precision typing certificates and elite documentation speed.</p>
+                        <a href="result.html" class="feature-link">Explore reports →</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- How It Works Section -->
-        <section class="how-works" id="how-works" style="background: var(--background-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 4rem 1rem;">
+        <!-- Why Choose Timeline Section -->
+        <section class="timeline-section">
             <div class="container">
-                <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
-                    <h2 class="section-title">How TypeMaster Works</h2>
-                    <p class="section-description" style="color: var(--text-secondary);">Three simple steps to measure and amplify your typing capabilities.</p>
+                <div class="section-header">
+                    <h2 class="section-title">Why Choose TypeMaster?</h2>
+                    <p class="section-description">Unleash the ultimate typing productivity superpower in the information era.</p>
                 </div>
-                <div class="steps-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem;">
-                    <div class="step-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; box-shadow: var(--shadow-sm);">
-                        <div class="step-num" style="width: 45px; height: 45px; border-radius: 50%; background: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; margin: 0 auto 1.25rem;">1</div>
-                        <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem; color: var(--text-primary);">Choose Test</h3>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Select between 11 practice modes, 4 difficulty tiers, and multiple duration presets or enter custom practice texts.</p>
+                <div class="timeline-container">
+                    <!-- Timeline Card 1 -->
+                    <div class="timeline-card timeline-card-left">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⏱️</div>
+                        <h3 class="timeline-card-title">Save Hundreds of Hours</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Increasing typing speeds by only 20 WPM can cut daily drafting times in half, reclaiming dozen of hours every single month.</p>
                     </div>
-                    <div class="step-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; box-shadow: var(--shadow-sm);">
-                        <div class="step-num" style="width: 45px; height: 45px; border-radius: 50%; background: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; margin: 0 auto 1.25rem;">2</div>
-                        <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem; color: var(--text-primary);">Start Typing</h3>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Press any key inside the typing arena to launch the countdown timer. Focus on the home row keys to type smoothly.</p>
+                    <!-- Timeline Card 2 -->
+                    <div class="timeline-card timeline-card-right">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📈</div>
+                        <h3 class="timeline-card-title">Eliminate Cognitive Bottlenecks</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Express written thoughts, code reviews, and messages rapidly without your fingers struggling to keep up with your brain.</p>
                     </div>
-                    <div class="step-card" style="background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; box-shadow: var(--shadow-sm);">
-                        <div class="step-num" style="width: 45px; height: 45px; border-radius: 50%; background: var(--primary-color); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.25rem; margin: 0 auto 1.25rem;">3</div>
-                        <h3 style="font-size: 1.3rem; margin-bottom: 0.75rem; color: var(--text-primary);">Analyze Results</h3>
-                        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">Examine your Net WPM speed, keyboard error heatmap, diagnostic ratings, and download your certification PDF.</p>
+                    <!-- Timeline Card 3 -->
+                    <div class="timeline-card timeline-card-left">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">💻</div>
+                        <h3 class="timeline-card-title">Write Code Instantly</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Write boilerplate elements, bracket tags, and symbol sequences instantly, keeping your focus on backend software logic.</p>
+                    </div>
+                    <!-- Timeline Card 4 -->
+                    <div class="timeline-card timeline-card-right">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏆</div>
+                        <h3 class="timeline-card-title">Unlock Career Potential</h3>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem;">Stand out in documentation speeds, high-velocity technical support, and build certified typing evidence for remote roles.</p>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Live Typing Sandbox Demo Section -->
+        <section class="demo-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Test Drive TypeMaster</h2>
+                    <p class="section-description">Start typing the paragraph below to preview real-time WPM metrics instantly.</p>
+                </div>
+                <div class="demo-arena">
+                    <div class="demo-arena-header">
+                        <div style="font-weight: 700; color: var(--primary-color);">🖥️ Sandbox Simulator</div>
+                        <button class="btn btn-outline" id="demo-reset-btn" style="padding: 0.35rem 0.75rem; font-size: 0.8rem;">🔄 Reset</button>
+                    </div>
+                    <div class="demo-arena-body">
+                        <div class="demo-stats-grid">
+                            <div>
+                                <div id="demo-wpm" style="font-size: 1.75rem; font-weight: 800; color: var(--primary-color);">0</div>
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700;">Live WPM</div>
+                            </div>
+                            <div>
+                                <div id="demo-accuracy" style="font-size: 1.75rem; font-weight: 800; color: var(--primary-color);">100%</div>
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700;">Accuracy</div>
+                            </div>
+                            <div>
+                                <div id="demo-time" style="font-size: 1.75rem; font-weight: 800; color: var(--primary-color);">00:00</div>
+                                <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 700;">Elapsed Time</div>
+                            </div>
+                        </div>
+                        <div class="demo-text-display" id="demo-text-box">
+                            <!-- Populated by script -->
+                        </div>
+                        <input type="text" class="demo-input-field" id="demo-text-input" placeholder="Type here to start the sandbox..." autocomplete="off">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Preview Section -->
+        <section class="leaderboard-preview-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Global Leaderboard Rankings</h2>
+                    <p class="section-description">Meet the highest-velocity typists currently topping our global leaderboard.</p>
+                </div>
+                <div class="preview-leaderboard-card">
+                    <table class="preview-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>User</th>
+                                <th>WPM Score</th>
+                                <th>Accuracy</th>
+                                <th>Badges Earned</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>🥇 1</strong></td>
+                                <td>
+                                    <div class="preview-user-info">
+                                        <div class="preview-avatar" style="background-color: var(--secondary-color);">AK</div>
+                                        <strong>arjun_karthik</strong>
+                                    </div>
+                                </td>
+                                <td style="color: var(--primary-color); font-weight: 800;">120 WPM</td>
+                                <td>99%</td>
+                                <td>⚡ Speed Demon, 🎯 Accuracy Master</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🥈 2</strong></td>
+                                <td>
+                                    <div class="preview-user-info">
+                                        <div class="preview-avatar" style="background-color: var(--accent-color);">VR</div>
+                                        <strong>vishnureddy</strong>
+                                    </div>
+                                </td>
+                                <td style="color: var(--primary-color); font-weight: 800;">115 WPM</td>
+                                <td>98%</td>
+                                <td>⚡ Speed Demon</td>
+                            </tr>
+                            <tr>
+                                <td><strong>🥉 3</strong></td>
+                                <td>
+                                    <div class="preview-user-info">
+                                        <div class="preview-avatar" style="background-color: var(--success-color);">ST</div>
+                                        <strong>santhosh_t</strong>
+                                    </div>
+                                </td>
+                                <td style="color: var(--primary-color); font-weight: 800;">108 WPM</td>
+                                <td>97%</td>
+                                <td>⚡ Speed Demon</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="text-align: center; margin-top: 2rem;">
+                        <a href="result.html" class="btn btn-primary">View Full Leaderboard →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Achievements & Streak Showcase Section -->
+        <section class="badges-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Unlock Special Achievements</h2>
+                    <p class="section-description">Practice consistently to collect these premium badges on your certificate.</p>
+                </div>
+                <div class="badges-grid">
+                    <!-- Badge 1 -->
+                    <div class="badge-card">
+                        <div class="badge-art-frame">⚡</div>
+                        <h3 class="badge-card-title">Speed Demon</h3>
+                        <p class="badge-card-desc">Type at an average speed of 80 words per minute or above on any test.</p>
+                    </div>
+                    <!-- Badge 2 -->
+                    <div class="badge-card">
+                        <div class="badge-art-frame">🎯</div>
+                        <h3 class="badge-card-title">Accuracy Master</h3>
+                        <p class="badge-card-desc">Complete a typing session with an accuracy rate of 98% or above.</p>
+                    </div>
+                    <!-- Badge 3 -->
+                    <div class="badge-card">
+                        <div class="badge-art-frame">🔥</div>
+                        <h3 class="badge-card-title">Streak Champion</h3>
+                        <p class="badge-card-desc">Unlock this special badge by logging in and taking tests 7 days in a row.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Carousel Section -->
+        <section class="testimonials-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">What Typists Say</h2>
+                    <p class="section-description">Join thousands of students and developers who unlocked keyboard mastery.</p>
+                </div>
+                <div class="testimonial-carousel">
+                    <!-- Carousel Slide -->
+                    <div class="testimonial-glass-card" id="testimonial-card">
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                        <p class="testimonial-quote" id="testimonial-quote-text">"TypeMaster helped me boost my coding drafting speed from 45 WPM to 85 WPM in less than a month. The clean developer code paragraphs mode is a game-changer!"</p>
+                        <div class="testimonial-user">
+                            <div class="testimonial-user-photo" id="testimonial-user-avatar">SL</div>
+                            <div style="text-align: left;">
+                                <div class="testimonial-user-name" id="testimonial-user-name">Sarah Jenkins</div>
+                                <div class="testimonial-user-role" id="testimonial-user-role">Frontend Architect</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- FAQ Section -->
-        <section class="faq-section" id="faq-section" style="padding: 4rem 1rem;">
+        <section class="faq-section" id="faq-section">
             <div class="container" style="max-width: 800px;">
-                <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
+                <div class="section-header">
                     <h2 class="section-title">Frequently Asked Questions</h2>
-                    <p class="section-description" style="color: var(--text-secondary);">Everything you need to know about standard typing evaluations on TypeMaster.</p>
+                    <p class="section-description">Everything you need to know about typing practice and metrics.</p>
                 </div>
-                <div class="faq-accordion" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="faq-accordion">
                     <!-- FAQ 1 -->
-                    <div class="faq-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--card-bg); overflow: hidden;">
+                    <div class="faq-item">
                         <button class="faq-trigger" onclick="toggleFaq(this)" style="width: 100%; text-align: left; padding: 1.25rem 1.5rem; background: none; border: none; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
                             What is WPM?
                             <span class="faq-icon" style="font-size: 1.25rem; transition: var(--transition-fast);">+</span>
                         </button>
                         <div class="faq-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0, 1, 0, 1); padding: 0 1.5rem;">
-                            <p style="padding-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">WPM stands for Words Per Minute. It is calculated by dividing total typed characters (letters, spaces, punctuation) by 5, and then dividing that by the duration of the test in minutes. This ensures short and long words are normalized into standard metrics.</p>
+                            <p>WPM stands for Words Per Minute. It is calculated by dividing total typed characters (letters, spaces, punctuation) by 5, and then dividing that by the duration of the test in minutes. This ensures short and long words are normalized into standard metrics.</p>
                         </div>
                     </div>
 
                     <!-- FAQ 2 -->
-                    <div class="faq-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--card-bg); overflow: hidden;">
+                    <div class="faq-item">
                         <button class="faq-trigger" onclick="toggleFaq(this)" style="width: 100%; text-align: left; padding: 1.25rem 1.5rem; background: none; border: none; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
                             How is accuracy calculated?
                             <span class="faq-icon" style="font-size: 1.25rem; transition: var(--transition-fast);">+</span>
                         </button>
                         <div class="faq-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0, 1, 0, 1); padding: 0 1.5rem;">
-                            <p style="padding-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Accuracy is the percentage of correctly typed characters relative to the total characters typed. If you type 100 characters and make 2 errors, your accuracy is calculated as 98%. TypeMaster counts backspaced corrections as mistakes to encourage typing precision.</p>
+                            <p>Accuracy is the percentage of correctly typed characters relative to the total characters typed. If you type 100 characters and make 2 errors, your accuracy is calculated as 98%. TypeMaster counts backspaced corrections as mistakes to encourage typing precision.</p>
                         </div>
                     </div>
 
                     <!-- FAQ 3 -->
-                    <div class="faq-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--card-bg); overflow: hidden;">
+                    <div class="faq-item">
                         <button class="faq-trigger" onclick="toggleFaq(this)" style="width: 100%; text-align: left; padding: 1.25rem 1.5rem; background: none; border: none; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
                             Is TypeMaster free?
                             <span class="faq-icon" style="font-size: 1.25rem; transition: var(--transition-fast);">+</span>
                         </button>
                         <div class="faq-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0, 1, 0, 1); padding: 0 1.5rem;">
-                            <p style="padding-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Yes, TypeMaster is 100% free to use. You can access all 11 typing modes, view diagnostics, print performance certificates, and check the leaderboard. Registered accounts are also free and allow you to save your practice history to the cloud.</p>
+                            <p>Yes, TypeMaster is 100% free to use. You can access all 11 typing modes, view diagnostics, print performance certificates, and check the leaderboard. Registered accounts are also free and allow you to save your practice history to the cloud.</p>
                         </div>
                     </div>
 
                     <!-- FAQ 4 -->
-                    <div class="faq-item" style="border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--card-bg); overflow: hidden;">
+                    <div class="faq-item">
                         <button class="faq-trigger" onclick="toggleFaq(this)" style="width: 100%; text-align: left; padding: 1.25rem 1.5rem; background: none; border: none; font-size: 1.05rem; font-weight: 600; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
                             Can beginners use it?
                             <span class="faq-icon" style="font-size: 1.25rem; transition: var(--transition-fast);">+</span>
                         </button>
                         <div class="faq-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0, 1, 0, 1); padding: 0 1.5rem;">
-                            <p style="padding-bottom: 1.25rem; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6;">Absolutely. Beginners are encouraged to start with our Easy paragraph difficulty setting and focus on accuracy. Practicing home-row key layouts build muscle memory, and speed will follow naturally with consistency.</p>
+                            <p>Absolutely. Beginners are encouraged to start with our Easy paragraph difficulty setting and focus on accuracy. Practicing home-row key layouts build muscle memory, and speed will follow naturally with consistency.</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Stats Counter Section -->
-        <section class="stats-counter" style="background: var(--primary-gradient); padding: 4.5rem 1rem; color: white; border-top: 1px solid var(--border-color);">
-            <div class="container">
-                <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; text-align: center;">
-                    <div class="stat-counter-card">
-                        <div id="stat-tests-completed" style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">10K+</div>
-                        <div style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Tests Completed</div>
-                    </div>
-                    <div class="stat-counter-card">
-                        <div id="stat-registered-users" style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">5K+</div>
-                        <div style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Registered Users</div>
-                    </div>
-                    <div class="stat-counter-card">
-                        <div id="stat-countries" style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">120+</div>
-                        <div style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Countries Practicing</div>
-                    </div>
-                    <div class="stat-counter-card">
-                        <div id="stat-avg-wpm" style="font-size: 3rem; font-weight: 800; line-height: 1; margin-bottom: 0.5rem;">85 WPM</div>
-                        <div style="font-size: 0.95rem; opacity: 0.9; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">Average Peak WPM</div>
                     </div>
                 </div>
             </div>
@@ -341,6 +522,7 @@
                     <ul class="footer-links">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="typing.html">Typing Test</a></li>
+                        <li><a href="result.html">Leaderboard</a></li>
                         <li><a href="blog.html">Blog</a></li>
                     </ul>
                 </div>
@@ -362,6 +544,11 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 TypeMaster. All rights reserved. Powered by Spring Boot 3 & Java 17.</p>
+                <div class="footer-socials">
+                    <a href="https://github.com" aria-label="GitHub">🐙</a>
+                    <a href="https://twitter.com" aria-label="Twitter">🐦</a>
+                    <a href="https://linkedin.com" aria-label="LinkedIn">💼</a>
+                </div>
             </div>
         </div>
     </footer>
@@ -418,8 +605,145 @@
             return num + '+';
         }
 
+        // Testimonial Carousel Auto-Slider Logic
+        const testimonials = [
+            {
+                quote: "TypeMaster helped me boost my coding drafting speed from 45 WPM to 85 WPM in less than a month. The clean developer code paragraphs mode is a game-changer!",
+                avatar: "SL",
+                name: "Sarah Jenkins",
+                role: "Frontend Architect"
+            },
+            {
+                quote: "Being able to test touch typing with custom texts and keep track of sequential certification IDs is incredible. The analytics dashboard is top notch.",
+                avatar: "MR",
+                name: "Marcus Aurelius",
+                role: "Lead Software Dev"
+            },
+            {
+                quote: "As a student, writing term papers used to take forever. TypeMaster's training streaks made practice fun, and my WPM doubled in a few weeks!",
+                avatar: "ED",
+                name: "Emma Davis",
+                role: "Computer Science Student"
+            }
+        ];
+
+        let currentTestimonialIndex = 0;
+        function rotateTestimonial() {
+            currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonials.length;
+            const t = testimonials[currentTestimonialIndex];
+            
+            const card = document.getElementById('testimonial-card');
+            if (card) {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    document.getElementById('testimonial-quote-text').textContent = `"${t.quote}"`;
+                    document.getElementById('testimonial-user-avatar').textContent = t.avatar;
+                    document.getElementById('testimonial-user-name').textContent = t.name;
+                    document.getElementById('testimonial-user-role').textContent = t.role;
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0px)';
+                }, 300);
+            }
+        }
+        setInterval(rotateTestimonial, 6000);
+
+        // Lightweight Interactive Practice Sandbox Simulator Logic
+        const sandboxText = "Typing fast is an essential modern skill that boosts developer productivity and communication speeds.";
+        let sandboxStartTime = null;
+        let sandboxInterval = null;
+
+        function initSandbox() {
+            const textBox = document.getElementById('demo-text-box');
+            const inputField = document.getElementById('demo-text-input');
+            const resetBtn = document.getElementById('demo-reset-btn');
+            
+            if (!textBox || !inputField) return;
+
+            // Populate text box
+            textBox.innerHTML = '';
+            sandboxText.split('').forEach((char, index) => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                if (index === 0) span.className = 'active';
+                textBox.appendChild(span);
+            });
+
+            inputField.value = '';
+            document.getElementById('demo-wpm').textContent = '0';
+            document.getElementById('demo-accuracy').textContent = '100%';
+            document.getElementById('demo-time').textContent = '00:00';
+            
+            if (sandboxInterval) clearInterval(sandboxInterval);
+            sandboxStartTime = null;
+            sandboxInterval = null;
+
+            // Input handlers
+            inputField.removeEventListener('input', handleSandboxInput);
+            inputField.addEventListener('input', handleSandboxInput);
+            
+            if (resetBtn) {
+                resetBtn.removeEventListener('click', initSandbox);
+                resetBtn.addEventListener('click', initSandbox);
+            }
+        }
+
+        function handleSandboxInput(e) {
+            const inputField = e.target;
+            const typedVal = inputField.value;
+            const textBox = document.getElementById('demo-text-box');
+            const spans = textBox.querySelectorAll('span');
+            
+            if (!sandboxStartTime) {
+                sandboxStartTime = Date.now();
+                sandboxInterval = setInterval(updateSandboxTimer, 1000);
+            }
+
+            let correctCount = 0;
+            spans.forEach((span, index) => {
+                if (index < typedVal.length) {
+                    if (typedVal[index] === sandboxText[index]) {
+                        span.className = 'correct';
+                        correctCount++;
+                    } else {
+                        span.className = 'incorrect';
+                    }
+                } else if (index === typedVal.length) {
+                    span.className = 'active';
+                } else {
+                    span.className = '';
+                }
+            });
+
+            // Calculate live accuracy
+            const accuracy = typedVal.length > 0 ? Math.round((correctCount / typedVal.length) * 100) : 100;
+            document.getElementById('demo-accuracy').textContent = accuracy + '%';
+
+            // Calculate live WPM
+            const timeElapsedMin = (Date.now() - sandboxStartTime) / 60000;
+            if (timeElapsedMin > 0) {
+                const wpm = Math.round((correctCount / 5) / timeElapsedMin);
+                document.getElementById('demo-wpm').textContent = wpm;
+            }
+
+            // Stop sandbox if text completed
+            if (typedVal.length >= sandboxText.length) {
+                clearInterval(sandboxInterval);
+                inputField.blur();
+            }
+        }
+
+        function updateSandboxTimer() {
+            if (!sandboxStartTime) return;
+            const elapsedSeconds = Math.floor((Date.now() - sandboxStartTime) / 1000);
+            const m = String(Math.floor(elapsedSeconds / 60)).padStart(2, '0');
+            const s = String(elapsedSeconds % 60).padStart(2, '0');
+            document.getElementById('demo-time').textContent = `${m}:${s}`;
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             fetchSystemStats();
+            initSandbox();
         });
     </script>
 </body>

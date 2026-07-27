@@ -101,7 +101,7 @@
 
                 <!-- Action Buttons -->
                 <div class="result-actions">
-                    <button onclick="window.print()" class="btn btn-primary" id="print-btn">🖨️ Print / Download Certificate</button>
+                    <button onclick="downloadCertificate()" class="btn btn-primary" id="print-btn">📥 Download Certificate</button>
                     <a href="typing.html" class="btn btn-outline" id="retry-btn">🔄 Practice Again</a>
                     <a href="index.html" class="btn btn-outline" id="home-btn">🏠 Back to Home</a>
                 </div>
@@ -254,7 +254,7 @@
                     <button class="btn btn-outline share-btn share-wa" onclick="shareOnWhatsApp()">💬 WhatsApp</button>
                     <button class="btn btn-outline share-btn share-tw" onclick="shareOnTwitter()">🐦 Twitter / X</button>
                     <button class="btn btn-outline share-btn share-li" onclick="shareOnLinkedIn()">💼 LinkedIn</button>
-                    <button class="btn btn-secondary share-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+                    <button class="btn btn-secondary share-btn" onclick="downloadCertificate()">📥 Download Certificate</button>
                 </div>
             </div>
 
@@ -372,8 +372,42 @@
 
     <!-- App JavaScript -->
     <script src="assets/js/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="assets/js/stats.js"></script>
     <script>
+        function downloadCertificate() {
+            const certElement = document.getElementById('certificate-card');
+            if (!certElement) return;
+
+            const opt = {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            };
+
+            const btns = document.querySelectorAll('button[onclick="downloadCertificate()"]');
+            const originalTexts = Array.from(btns).map(btn => btn.innerHTML);
+            
+            btns.forEach(btn => {
+                btn.innerHTML = '⌛ Generating...';
+                btn.disabled = true;
+            });
+
+            html2canvas(certElement, opt).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `typemaster-certificate-${Date.now()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error('Error generating certificate image:', err);
+                alert('Failed to generate certificate. Please try again.');
+            }).finally(() => {
+                btns.forEach((btn, idx) => {
+                    btn.innerHTML = originalTexts[idx];
+                    btn.disabled = false;
+                });
+            });
+        }
         function formatResultTime(totalSeconds) {
             if (!totalSeconds) return "00:00";
             const mins = Math.floor(totalSeconds / 60);

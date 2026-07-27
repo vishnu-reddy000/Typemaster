@@ -960,6 +960,12 @@
 }
 
 /* Mobile responsive breakpoints for alignment */
+@media (max-width: 768px) {
+  .heatmap-container {
+    display: none !important;
+  }
+}
+
 @media (max-width: 580px) {
   .analytics-card {
     padding: 1rem !important;

@@ -1761,3 +1761,226 @@ body {
   text-transform: uppercase;
 }
 
+/* Profile Avatar Uploader & Username Edit */
+.avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.avatar-preview-container {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  cursor: pointer;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+  border: 3px solid var(--primary-color);
+  background: var(--background-color);
+  transition: var(--transition-normal);
+}
+.avatar-preview-container:hover {
+  transform: scale(1.04);
+  border-color: var(--primary-hover);
+}
+.avatar-preview-container:hover .avatar-overlay {
+  opacity: 1;
+}
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+.avatar-initials {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+.avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(2px);
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  border-radius: 50%;
+}
+.avatar-camera-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.avatar-upload-text {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+.avatar-info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.avatar-info-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.avatar-info-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.avatar-btn-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+  flex-wrap: wrap;
+}
+.avatar-btn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border: 1px solid transparent;
+}
+.avatar-btn-upload {
+  background: var(--primary-color);
+  color: #ffffff;
+}
+.avatar-btn-upload:hover {
+  background: var(--primary-hover);
+}
+.avatar-btn-remove {
+  background: transparent;
+  color: var(--error-color);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+.avatar-btn-remove:hover {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: var(--error-color);
+}
+.username-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.username-display-text {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  flex: 1;
+  min-width: 0;
+  word-break: break-all;
+}
+.edit-username-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  background: rgba(37,99,235,0.08);
+  border: 1px solid rgba(37,99,235,0.2);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.edit-username-btn:hover {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+.username-edit-form {
+  display: none;
+  margin-top: 0.75rem;
+  gap: 0.5rem;
+  flex-direction: column;
+}
+.username-edit-form.open {
+  display: flex;
+}
+.username-edit-input-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.username-edit-input {
+  flex: 1;
+  padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--background-color);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+  transition: var(--transition-fast);
+  min-width: 0;
+}
+.username-edit-input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+.username-save-btn {
+  padding: 0.6rem 1rem;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.username-save-btn:hover {
+  background: var(--primary-hover);
+}
+.username-cancel-btn {
+  padding: 0.6rem 0.9rem;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.username-cancel-btn:hover {
+  border-color: var(--error-color);
+  color: var(--error-color);
+}
+

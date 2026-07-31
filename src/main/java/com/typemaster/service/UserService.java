@@ -137,4 +137,50 @@ public class UserService {
 
         return new AuthResponse(true, "Password updated successfully!");
     }
+
+    /**
+     * Changes a user's username. Ensures the new username is not already taken.
+     */
+    public AuthResponse changeUsername(String currentUsername, String newUsername) {
+        if (currentUsername == null || currentUsername.trim().isEmpty()) {
+            return new AuthResponse(false, "Current username is required.");
+        }
+        if (newUsername == null || newUsername.trim().isEmpty()) {
+            return new AuthResponse(false, "New username cannot be empty.");
+        }
+
+        String trimmedNew = newUsername.trim();
+
+        if (trimmedNew.length() < 3) {
+            return new AuthResponse(false, "Username must be at least 3 characters long.");
+        }
+        if (trimmedNew.length() > 30) {
+            return new AuthResponse(false, "Username must not exceed 30 characters.");
+        }
+        if (!trimmedNew.matches("^[a-zA-Z0-9_]+$")) {
+            return new AuthResponse(false, "Username can only contain letters, numbers, and underscores.");
+        }
+
+        Optional<User> userOpt = userRepository.findByUsername(currentUsername.trim());
+        if (userOpt.isEmpty()) {
+            return new AuthResponse(false, "User not found.");
+        }
+
+        if (trimmedNew.equalsIgnoreCase(currentUsername.trim())) {
+            return new AuthResponse(false, "New username is the same as current username.");
+        }
+
+        if (userRepository.existsByUsername(trimmedNew)) {
+            return new AuthResponse(false, "Username '" + trimmedNew + "' is already taken.");
+        }
+
+        User user = userOpt.get();
+        user.setUsername(trimmedNew);
+        userRepository.save(user);
+
+        // Generate a new JWT token with updated username
+        String newToken = jwtTokenProvider.generateToken(user.getUsername(), user.getEmail(), user.getId());
+
+        return new AuthResponse(true, "Username updated successfully!", user.getId(), user.getUsername(), user.getEmail(), newToken);
+    }
 }

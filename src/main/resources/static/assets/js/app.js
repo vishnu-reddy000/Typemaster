@@ -82,6 +82,30 @@ function setTheme(themeId) {
     dropdown.value = themeId;
   }
 
+  // Sync custom dropdown
+  const customTrigger = document.getElementById('custom-dropdown-trigger');
+  if (customTrigger) {
+    const selectedTheme = THEMES.find(t => t.id === themeId);
+    if (selectedTheme) {
+      const triggerIconText = customTrigger.querySelector('.trigger-icon-text');
+      if (triggerIconText) {
+        triggerIconText.innerHTML = `${selectedTheme.icon} ${selectedTheme.name}`;
+      }
+    }
+  }
+  const customMenu = document.getElementById('custom-dropdown-menu');
+  if (customMenu) {
+    customMenu.querySelectorAll('.custom-dropdown-item').forEach(item => {
+      if (item.dataset.value === themeId) {
+        item.classList.add('active');
+        item.setAttribute('aria-selected', 'true');
+      } else {
+        item.classList.remove('active');
+        item.setAttribute('aria-selected', 'false');
+      }
+    });
+  }
+
   // Sync theme showcase cards if present on home page
   document.querySelectorAll('.theme-card').forEach(card => {
     if (card.dataset.theme === themeId) {
@@ -269,7 +293,6 @@ function renderAuthNavbar() {
     authContainer.innerHTML = `
       <div class="user-badge">
         <span class="user-name-text">👤 ${escapeHtml(user.username)}</span>
-        <a href="settings.html" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">⚙️ Settings</a>
         <button onclick="logoutUser()" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">Logout</button>
       </div>
     `;
@@ -294,16 +317,57 @@ function renderThemeNavbarSelector() {
   if (!themeContainer) return;
 
   const currentTheme = getActiveTheme();
+  const selectedTheme = THEMES.find(t => t.id === currentTheme) || THEMES[0];
+
   themeContainer.innerHTML = `
-    <select id="theme-select-dropdown" class="theme-dropdown" aria-label="Select App Theme">
-      ${THEMES.map(t => `<option value="${t.id}" ${t.id === currentTheme ? 'selected' : ''}>${t.icon} ${t.name}</option>`).join('')}
-    </select>
+    <div class="custom-theme-dropdown" id="custom-theme-dropdown">
+      <button class="custom-dropdown-trigger" id="custom-dropdown-trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="Select App Theme">
+        <span class="trigger-icon-text">${selectedTheme.icon} ${selectedTheme.name}</span>
+        <span class="trigger-arrow">▼</span>
+      </button>
+      <div class="custom-dropdown-menu" id="custom-dropdown-menu" role="listbox">
+        ${THEMES.map(t => `
+          <div class="custom-dropdown-item ${t.id === currentTheme ? 'active' : ''}" data-value="${t.id}" role="option" aria-selected="${t.id === currentTheme ? 'true' : 'false'}">
+            <span>${t.icon} ${t.name}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
   `;
 
-  const dropdown = $('#theme-select-dropdown');
-  if (dropdown) {
-    dropdown.addEventListener('change', (e) => {
-      setTheme(e.target.value);
+  const dropdownWrapper = $('#custom-theme-dropdown');
+  const trigger = $('#custom-dropdown-trigger');
+  const menu = $('#custom-dropdown-menu');
+
+  if (dropdownWrapper && trigger && menu) {
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = dropdownWrapper.classList.contains('open');
+      if (isOpen) {
+        dropdownWrapper.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      } else {
+        dropdownWrapper.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    const items = menu.querySelectorAll('.custom-dropdown-item');
+    items.forEach(item => {
+      item.addEventListener('click', (e) => {
+        const value = item.dataset.value;
+        setTheme(value);
+        dropdownWrapper.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (!dropdownWrapper.contains(e.target)) {
+        dropdownWrapper.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
     });
   }
 }

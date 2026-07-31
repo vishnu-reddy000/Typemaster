@@ -8,10 +8,11 @@
     <link rel="canonical" href="https://typemaster.com/">
     <title>TypeMaster - Master Your Typing Speed & Accuracy</title>
 
-    <!-- Google Fonts: Inter and Plus Jakarta Sans -->
+    <!-- Google Fonts: Consolidated Preloaded Import -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
 
     <!-- Open Graph Metadata -->
     <meta property="og:title" content="TypeMaster - Master Your Typing Speed & Accuracy">
@@ -76,10 +77,13 @@
     <link rel="apple-touch-icon" href="assets/images/logo.png?v=2">
 
     <!-- Global & Page Styles -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/home.css">
+    <link rel="stylesheet" href="assets/css/style.min.css">
+    <link rel="stylesheet" href="assets/css/home.min.css">
 </head>
 <body class="landing-page-body">
+    <!-- Accessibility Skip to Main Content Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Floating Animated Background Gradient Blobs -->
     <div class="bg-blobs-container">
         <div class="bg-blob bg-blob-1"></div>
@@ -92,7 +96,7 @@
         <div class="splash-overlay"></div>
         <div class="splash-content">
             <div class="splash-card">
-                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="splash-logo-img">
+                <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="splash-logo-img" width="190" height="48">
                 <div class="typewriter-quote">
                     "<span id="typewriter-text"></span><span class="typewriter-cursor">|</span>"
                 </div>
@@ -108,7 +112,7 @@
     <header class="navbar">
         <div class="container">
             <a href="index.html" class="logo" id="brand-logo">
-                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon">
+                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon" width="40" height="40">
             </a>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html" class="active">Home</a></li>
@@ -123,7 +127,7 @@
     </header>
 
     <!-- Main Content -->
-    <main>
+    <main id="main-content">
         <!-- Hero Section -->
         <section class="hero">
             <div class="container hero-grid">
@@ -550,7 +554,7 @@
     </footer>
 
     <!-- App JavaScript -->
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/app.min.js" defer></script>
     <script>
         function toggleFaq(btn) {
             const item = btn.closest('.faq-item');

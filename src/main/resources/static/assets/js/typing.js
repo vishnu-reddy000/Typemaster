@@ -39,6 +39,11 @@ function initTypingEngine() {
 
   if (!paragraphBoxEl || !hiddenInputEl) return;
 
+  // Exclude virtual keyboard keys from tab order to avoid keyboard traps (Lighthouse accessibility compliance)
+  document.querySelectorAll('#virtual-keyboard .key-btn').forEach(btn => {
+    btn.setAttribute('tabindex', '-1');
+  });
+
   if (durationSelectEl) {
     durationSelectEl.addEventListener('change', (e) => {
       handleDurationChange(e.target.value);

@@ -8,12 +8,18 @@
     <link rel="canonical" href="https://typemaster.com/contact">
     <title>Contact Us - TypeMaster</title>
 
+    <!-- Google Fonts: Consolidated Preloaded Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
     <link rel="apple-touch-icon" href="assets/images/logo.png?v=2">
 
     <!-- Global & Page Styles -->
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.min.css">
     <style>
         .contact-hero {
             padding: 5rem 1rem 3rem;
@@ -35,17 +41,17 @@
         }
         .contact-grid {
             display: grid;
-            grid-template-columns: 1.25fr 1fr;
+            grid-template-columns: 1.5fr 1fr;
             gap: 2.5rem;
+            margin-top: 3rem;
             margin-bottom: 4rem;
-            align-items: start;
         }
         .contact-card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-md);
             padding: 2.5rem;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
         }
         [data-theme="glassmorphism"] .contact-card {
             background: var(--glass-card-bg, rgba(255, 255, 255, 0.45));
@@ -53,20 +59,20 @@
             border: 1px solid var(--glass-card-border, rgba(255, 255, 255, 0.3));
         }
         .contact-form .form-group {
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
         }
         .contact-form label {
             display: block;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
             font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
         }
         .contact-form input,
         .contact-form textarea {
             width: 100%;
             padding: 0.75rem 1rem;
-            border: 1px solid var(--border-color);
+            border: 1.5px solid var(--border-color);
             border-radius: var(--radius-sm);
             background: var(--background-color);
             color: var(--text-primary);
@@ -159,11 +165,14 @@
     </style>
 </head>
 <body>
+    <!-- Accessibility Skip to Main Content Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Header / Navigation Bar -->
     <header class="navbar">
         <div class="container">
             <a href="index.html" class="logo" id="brand-logo">
-                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon">
+                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon" width="40" height="40">
             </a>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
@@ -177,7 +186,7 @@
         </div>
     </header>
 
-    <main>
+    <main id="main-content">
         <!-- Contact Hero Section -->
         <section class="contact-hero">
             <div class="container">
@@ -248,7 +257,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="footer-logo-img">
+                    <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="footer-logo-img" width="150" height="40">
                     <p style="font-weight: 700; color: #38bdf8; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.5rem;">TYPE BETTER. EVERY DAY.</p>
                     <p>A professional SaaS typing practice platform powered by Java Spring Boot, Spring Data JPA, and REST analytics.</p>
                 </div>
@@ -283,7 +292,7 @@
     </footer>
 
     <!-- App JavaScript -->
-    <script src="assets/js/app.js"></script>
+    <script src="assets/js/app.min.js" defer></script>
     <script>
         const form = document.getElementById('contact-form');
         const alertBox = document.getElementById('success-alert');

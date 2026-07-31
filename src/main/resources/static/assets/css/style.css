@@ -3,8 +3,7 @@
    Contains design tokens, typography (Poppins), CSS reset, navbar & footer.
    ========================================================================== */
 
-/* 1. Google Fonts Import - Poppins */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap');
+/* 1. Google Fonts Import - Poppins loaded in HTML head for non-blocking paint */
 
 /* 2. CSS Custom Properties / Design Tokens */
 :root {
@@ -24,8 +23,8 @@
   
   /* Typography Colors */
   --text-primary: #0f172a;        /* High contrast primary text */
-  --text-secondary: #64748b;      /* Muted secondary text */
-  --text-light: #94a3b8;          /* Light subtle text */
+  --text-secondary: #475569;      /* Slate 600 - High contrast secondary text (WCAG AA compliant) */
+  --text-light: #64748b;          /* Slate 500 - Light text with readable contrast (WCAG AA compliant) */
   
   /* Borders & Dividers */
   --border-color: #e2e8f0;
@@ -68,8 +67,8 @@
   --body-bg-radial: radial-gradient(circle at 50% 0%, #ffffff 0%, #f8fafc 100%);
   --card-bg: #ffffff;
   --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --text-light: #94a3b8;
+  --text-secondary: #475569;      /* WCAG AA compliant */
+  --text-light: #64748b;          /* WCAG AA compliant */
   --border-color: #e2e8f0;
   --border-focus: #93c5fd;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -89,6 +88,7 @@
   --active-char-glow: rgba(37, 99, 235, 0.4);
 }
 
+
 /* 2. Dark Theme (Clean Dark with Blue Accent) */
 [data-theme="dark"] {
   --primary-color: #4d9de0;       /* Soft Steel Blue */
@@ -102,8 +102,8 @@
   --body-bg-radial: radial-gradient(circle at 50% -10%, #1e293b 0%, #111827 65%, #0f172a 100%);
   --card-bg: #1e293b;             /* Dark card background */
   --text-primary: #f1f5f9;        /* Soft White Text */
-  --text-secondary: #94a3b8;      /* Muted slate */
-  --text-light: #64748b;          /* Subtle light text */
+  --text-secondary: #cbd5e1;      /* Muted slate (improved contrast) */
+  --text-light: #94a3b8;          /* Subtle light text (improved contrast) */
   --border-color: rgba(255, 255, 255, 0.1);
   --border-focus: #4d9de0;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
@@ -371,6 +371,103 @@
   background-color: var(--dropdown-option-bg) !important;
   color: var(--dropdown-option-text) !important;
 }
+
+/* Custom Theme Dropdown Styling */
+.custom-theme-dropdown {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-sans);
+}
+
+.custom-dropdown-trigger {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition-fast);
+  outline: none;
+  min-width: 110px;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+}
+
+.custom-dropdown-trigger:hover,
+.custom-dropdown-trigger:focus-visible {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.trigger-arrow {
+  font-size: 0.65rem;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
+}
+
+.custom-theme-dropdown.open .trigger-arrow {
+  transform: rotate(180deg);
+}
+
+.custom-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0.35rem;
+  min-width: 130px;
+  display: none;
+  flex-direction: column;
+  gap: 0.25rem;
+  z-index: 1000;
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  backdrop-filter: var(--glass-backdrop);
+}
+
+.custom-theme-dropdown.open .custom-dropdown-menu {
+  display: flex;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.custom-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.custom-dropdown-item:hover {
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--primary-color);
+}
+
+.custom-dropdown-item.active {
+  background: var(--primary-color);
+  color: #ffffff;
+}
+
+.custom-dropdown-item.active:hover {
+  background: var(--primary-hover);
+  color: #ffffff;
+}
+
 
 /* Home Page Theme Showcase Section */
 .theme-showcase {
@@ -1615,5 +1712,27 @@ body {
   to {
     opacity: 1;
   }
+}
+
+/* Skip Navigation Link for Accessibility (Lighthouse requirement) */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1.5rem;
+  background: var(--primary-color);
+  color: #ffffff !important;
+  padding: 0.75rem 1.5rem;
+  z-index: 1000000;
+  font-weight: 600;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  text-decoration: none;
+  transition: top 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--accent-color);
+  outline-offset: 2px;
 }
 

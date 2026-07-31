@@ -8,6 +8,12 @@
     <link rel="canonical" href="https://typemaster.com/typing">
     <title>TypeMaster - Typing Test Practice Arena</title>
 
+    <!-- Google Fonts: Consolidated Preloaded Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+
     <!-- Open Graph Metadata -->
     <meta property="og:title" content="TypeMaster - Typing Test Practice Arena">
     <meta property="og:description" content="Evaluate your WPM speed, mistakes, and accuracy in real-time. Practice coding scripts, symbols, quotes, and standard articles.">
@@ -20,16 +26,18 @@
     <link rel="apple-touch-icon" href="assets/images/logo.png?v=2">
 
     <!-- Global & Page Styles -->
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/typing.css">
+    <link rel="stylesheet" href="assets/css/style.min.css">
+    <link rel="stylesheet" href="assets/css/typing.min.css">
 </head>
 <body>
+    <!-- Accessibility Skip to Main Content Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Navigation Bar -->
     <header class="navbar">
         <div class="container">
             <a href="index.html" class="logo" id="brand-logo">
-                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon">
+                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon" width="40" height="40">
             </a>
             <ul class="nav-links" id="nav-menu">
                 <li><a href="index.html">Home</a></li>
@@ -44,7 +52,7 @@
     </header>
 
     <!-- Main Content Arena -->
-    <main>
+    <main id="main-content">
         <div class="container">
             <!-- SEO H1 Page Heading -->
             <div style="text-align: center; margin-bottom: 2rem; margin-top: 1rem;">
@@ -226,7 +234,7 @@
             <p class="focus-hint">💡 Tip: Start typing anywhere to launch the test. Paragraphs are fetched live from Spring Boot backend!</p>
 
             <!-- Responsive Interactive Virtual Keyboard Component -->
-            <div class="virtual-keyboard-wrapper" id="virtual-keyboard">
+            <div class="virtual-keyboard-wrapper" id="virtual-keyboard" aria-hidden="true">
                 <!-- Row 1: Numbers & Symbols -->
                 <div class="kb-row">
                     <button class="key-btn" data-key="`" data-shift="~">` <span>~</span></button>
@@ -370,7 +378,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="footer-logo-img">
+                    <img src="assets/images/logo.svg" alt="TypeMaster Official Logo" class="footer-logo-img" width="150" height="40">
                     <p style="font-weight: 700; color: #38bdf8; font-size: 0.85rem; letter-spacing: 0.1em; margin-bottom: 0.5rem;">TYPE BETTER. EVERY DAY.</p>
                     <p>A professional SaaS typing practice platform powered by Java Spring Boot, Spring Data JPA, and REST analytics.</p>
                 </div>
@@ -405,10 +413,10 @@
     </footer>
 
     <!-- JavaScript Files in strict dependency order -->
-    <script src="assets/js/app.js?v=1.0.1"></script>
-    <script src="assets/js/data.js?v=1.0.1"></script>
-    <script src="assets/js/stats.js?v=1.0.1"></script>
-    <script src="assets/js/timer.js?v=1.0.1"></script>
-    <script src="assets/js/typing.js?v=1.0.1"></script>
+    <script src="assets/js/app.min.js?v=1.0.1" defer></script>
+    <script src="assets/js/data.min.js?v=1.0.1" defer></script>
+    <script src="assets/js/stats.min.js?v=1.0.1" defer></script>
+    <script src="assets/js/timer.min.js?v=1.0.1" defer></script>
+    <script src="assets/js/typing.min.js?v=1.0.1" defer></script>
 </body>
 </html>

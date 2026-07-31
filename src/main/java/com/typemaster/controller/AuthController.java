@@ -63,4 +63,20 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
+    /**
+     * POST /api/auth/change-username
+     * Body: { "username": "currentName", "newUsername": "newName" }
+     */
+    @PostMapping("/change-username")
+    public ResponseEntity<AuthResponse> changeUsername(@RequestBody java.util.Map<String, String> body) {
+        String currentUsername = body.get("username");
+        String newUsername = body.get("newUsername");
+        AuthResponse response = userService.changeUsername(currentUsername, newUsername);
+        if (response.isSuccess()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 }

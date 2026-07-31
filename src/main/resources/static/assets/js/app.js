@@ -368,9 +368,10 @@ function renderThemeNavbarSelector() {
         dropdownWrapper.classList.remove('open');
         trigger.setAttribute('aria-expanded', 'false');
       }
-    });
+    }, { passive: true });
   }
 }
+
 
 /**
  * Dynamically inserts Mobile Nav Controls (Theme selector & Auth badge) inside mobile drawer menu (.nav-links).

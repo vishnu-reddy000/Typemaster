@@ -289,3 +289,43 @@ function stopTimer() {
 function resetTimer() {
   TimerManager.reset();
 }
+
+function pauseTimer() {
+  if (TimerManager.state.intervalId) {
+    clearInterval(TimerManager.state.intervalId);
+    TimerManager.state.intervalId = null;
+  }
+  TimerManager.state.isRunning = false;
+}
+
+function resumeTimer() {
+  if (TimerManager.state.isRunning) return; // already running
+  // Resume from current timeRemaining without resetting elapsed time
+  TimerManager.state.isRunning = true;
+  TimerManager.lockDurationDropdown(true);
+
+  TimerManager.state.intervalId = setInterval(() => {
+    if (TimerManager.state.timeRemaining <= 0) {
+      TimerManager.state.timeRemaining = 0;
+      TimerManager.updateUI();
+      TimerManager.stop();
+      if (typeof finishTest === 'function') finishTest();
+      return;
+    }
+
+    TimerManager.state.timeRemaining--;
+    TimerManager.state.timeElapsed++;
+    TimerManager.updateUI();
+
+    if (typeof onTimerTick === 'function') {
+      onTimerTick(TimerManager.state.timeRemaining, TimerManager.state.timeElapsed);
+    }
+
+    if (TimerManager.state.timeRemaining <= 0) {
+      TimerManager.state.timeRemaining = 0;
+      TimerManager.updateUI();
+      TimerManager.stop();
+      if (typeof finishTest === 'function') finishTest();
+    }
+  }, 1000);
+}

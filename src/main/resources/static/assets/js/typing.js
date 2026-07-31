@@ -137,7 +137,6 @@ function initTypingEngine() {
   }
 
   handleModeUI();
-  durationSelectEl = document.getElementById('duration-select');
   let savedDuration = null;
   try {
     savedDuration = localStorage.getItem('typeMaster_selectedDuration');
@@ -145,11 +144,6 @@ function initTypingEngine() {
 
   if (savedDuration && durationSelectEl) {
     durationSelectEl.value = savedDuration;
-  }
-  if (durationSelectEl) {
-    durationSelectEl.addEventListener('change', (e) => {
-      handleDurationChange(e.target.value);
-    });
   }
   const initialVal = (durationSelectEl && durationSelectEl.value) ? durationSelectEl.value : '1m';
   setTimerDuration(initialVal);
@@ -168,9 +162,14 @@ function handleModeUI() {
   if (topicGroupEl) {
     topicGroupEl.style.display = isCoding ? 'flex' : 'none';
   }
+  const wrapperEl = document.getElementById('paragraph-box-wrapper');
   if (paragraphBoxEl) {
     if (isCoding) paragraphBoxEl.classList.add('code-mode');
     else paragraphBoxEl.classList.remove('code-mode');
+  }
+  if (wrapperEl) {
+    if (isCoding) wrapperEl.classList.add('code-mode-wrapper');
+    else wrapperEl.classList.remove('code-mode-wrapper');
   }
 }
 
@@ -245,6 +244,8 @@ async function appendContinuousParagraph() {
 function renderParagraph() {
   if (!paragraphBoxEl) return;
   paragraphBoxEl.innerHTML = '';
+  // Reset scroll position for new paragraph
+  paragraphBoxEl.style.transform = 'translateY(0px)';
 
   const chars = currentParagraph.split('');
   chars.forEach((char, index) => {
@@ -328,6 +329,7 @@ function handleTypingInput(e) {
 
     if (charIndex < charSpans.length) {
       charSpans[charIndex].classList.add('active');
+      scrollActiveCharIntoView(charSpans[charIndex]);
     } else {
       appendContinuousParagraph();
     }
@@ -335,6 +337,40 @@ function handleTypingInput(e) {
 
   hiddenInputEl.value = '';
   updateLiveStats();
+}
+
+function scrollActiveCharIntoView(activeSpan) {
+  if (!activeSpan || !paragraphBoxEl) return;
+
+  const wrapper = document.getElementById('paragraph-box-wrapper');
+  if (!wrapper) return;
+
+  // Get position of active char relative to the paragraph-box (not the page)
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const charRect = activeSpan.getBoundingClientRect();
+  const lineHeight = parseFloat(getComputedStyle(paragraphBoxEl).lineHeight) || 42;
+  const wrapperHeight = wrapper.clientHeight;
+
+  // charTop relative to the wrapper
+  const charTopInWrapper = charRect.top - wrapperRect.top;
+
+  // If the cursor has moved into or past the last visible line, slide up by one line
+  if (charTopInWrapper >= wrapperHeight - lineHeight * 0.5) {
+    const currentTranslate = getCurrentTranslateY(paragraphBoxEl);
+    paragraphBoxEl.style.transform = `translateY(${currentTranslate - lineHeight}px)`;
+  }
+
+  // If backspacing back up to the first visible line area, slide down
+  if (charTopInWrapper < 0) {
+    const currentTranslate = getCurrentTranslateY(paragraphBoxEl);
+    paragraphBoxEl.style.transform = `translateY(${currentTranslate + lineHeight}px)`;
+  }
+}
+
+function getCurrentTranslateY(el) {
+  const style = window.getComputedStyle(el);
+  const matrix = new DOMMatrix(style.transform);
+  return matrix.m42; // translateY value
 }
 
 function handleBackspace() {
@@ -358,6 +394,7 @@ function handleBackspace() {
 
   prevSpan.classList.remove('correct', 'incorrect');
   prevSpan.classList.add('active');
+  scrollActiveCharIntoView(prevSpan);
 
   updateLiveStats();
 }
@@ -390,6 +427,7 @@ function handleEnterKey() {
 
     if (charIndex < charSpans.length) {
       charSpans[charIndex].classList.add('active');
+      scrollActiveCharIntoView(charSpans[charIndex]);
     } else {
       appendContinuousParagraph();
     }
@@ -854,14 +892,15 @@ function togglePauseTest() {
   if (!isTestStarted || isTestFinished) return;
 
   isTestPaused = !isTestPaused;
+  const wrapperEl = document.getElementById('paragraph-box-wrapper');
   if (isTestPaused) {
     pauseTimer();
     if (pauseBtnEl) pauseBtnEl.innerHTML = '▶️ Resume Test';
-    if (paragraphBoxEl) paragraphBoxEl.classList.add('paused');
+    if (wrapperEl) wrapperEl.classList.add('paused');
   } else {
     resumeTimer();
     if (pauseBtnEl) pauseBtnEl.innerHTML = '⏸️ Pause Test';
-    if (paragraphBoxEl) paragraphBoxEl.classList.remove('paused');
+    if (wrapperEl) wrapperEl.classList.remove('paused');
   }
 }
 
@@ -929,6 +968,7 @@ function restartTest() {
   isUntimedPracticeMode = false;
 
   if (hiddenInputEl) hiddenInputEl.value = '';
+  if (paragraphBoxEl) paragraphBoxEl.style.transform = 'translateY(0px)';
 
   loadNewParagraph();
 }

@@ -33,10 +33,9 @@ public class TestResultService {
     public SystemStatsDTO getSystemStats() {
         long testsCount = testResultRepository.count();
         long usersCount = userRepository.count();
-        long countriesCount = 120 + (usersCount / 15);
         Double avg = testResultRepository.getAverageWpm();
-        double avgWpm = (avg != null && avg > 0) ? avg : 85.0;
-        return new SystemStatsDTO(testsCount, usersCount, countriesCount, avgWpm);
+        double avgWpm = (avg != null && avg > 0) ? Math.round(avg * 10.0) / 10.0 : 0.0;
+        return new SystemStatsDTO(testsCount, usersCount, 0, avgWpm);
     }
 
     /**

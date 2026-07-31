@@ -148,7 +148,7 @@
                             <div class="preview-avatar" style="background-color: var(--success-color); margin-left: -8px;">AK</div>
                         </div>
                         <div class="hero-proof-text">
-                            Joined by <strong>5,000+ developers & students</strong> globally.
+                            Join our growing community of <strong>developers & students</strong> globally.
                         </div>
                     </div>
                 </div>
@@ -200,20 +200,16 @@
             <div class="container">
                 <div class="stats-grid">
                     <div class="stat-counter-card">
-                        <div id="stat-tests-completed" class="stat-counter-num">10K+</div>
+                        <div id="stat-tests-completed" class="stat-counter-num">—</div>
                         <div class="stat-counter-label">Tests Completed</div>
                     </div>
                     <div class="stat-counter-card">
-                        <div id="stat-registered-users" class="stat-counter-num">5K+</div>
+                        <div id="stat-registered-users" class="stat-counter-num">—</div>
                         <div class="stat-counter-label">Registered Users</div>
                     </div>
                     <div class="stat-counter-card">
-                        <div id="stat-countries" class="stat-counter-num">120+</div>
-                        <div class="stat-counter-label">Countries Active</div>
-                    </div>
-                    <div class="stat-counter-card">
-                        <div id="stat-avg-wpm" class="stat-counter-num">85 WPM</div>
-                        <div class="stat-counter-label">Average Peak WPM</div>
+                        <div id="stat-avg-wpm" class="stat-counter-num">—</div>
+                        <div class="stat-counter-label">Average WPM</div>
                     </div>
                 </div>
             </div>
@@ -584,13 +580,15 @@
                 if (response.ok) {
                     const data = await response.json();
                     
-                    document.getElementById('stat-tests-completed').textContent = formatStatNumber(data.totalTests);
-                    document.getElementById('stat-registered-users').textContent = formatStatNumber(data.totalUsers);
-                    document.getElementById('stat-countries').textContent = formatStatNumber(data.totalCountries);
-                    document.getElementById('stat-avg-wpm').textContent = Math.round(data.averageWpm) + ' WPM';
+                    document.getElementById('stat-tests-completed').textContent = data.totalTests > 0 ? data.totalTests + '+' : '0';
+                    document.getElementById('stat-registered-users').textContent = data.totalUsers > 0 ? data.totalUsers + '+' : '0';
+                    document.getElementById('stat-avg-wpm').textContent = data.averageWpm > 0 ? Math.round(data.averageWpm) + ' WPM' : '0 WPM';
                 }
             } catch (error) {
                 console.error('Failed to fetch system stats:', error);
+                document.getElementById('stat-tests-completed').textContent = '—';
+                document.getElementById('stat-registered-users').textContent = '—';
+                document.getElementById('stat-avg-wpm').textContent = '—';
             }
         }
 

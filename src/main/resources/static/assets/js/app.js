@@ -11,12 +11,7 @@ const STORAGE_KEY_HISTORY = 'typeMaster_userHistory';
 
 const THEMES = [
   { id: 'light', name: 'Light', icon: '☀️' },
-  { id: 'dark', name: 'Dark', icon: '🌙' },
-  { id: 'glassmorphism', name: 'Glassmorphism', icon: '✨' },
-  { id: 'emerald-pro', name: 'Emerald Pro', icon: '💎' },
-  { id: 'focus-mode', name: 'Focus Mode', icon: '🧘' },
-  { id: 'ocean-blue', name: 'Ocean Blue', icon: '🌊' },
-  { id: 'sunset', name: 'Sunset Rose', icon: '🌅' }
+  { id: 'dark', name: 'Dark', icon: '🌙' }
 ];
 
 /**
@@ -233,36 +228,54 @@ function initNavigation() {
  * Dynamically inserts Auth controls (Sign In/Sign Up or Profile/Logout) into the navbar.
  */
 function renderAuthNavbar() {
-  let authContainer = $('#auth-nav-container');
   const navbarContainer = $('.navbar .container');
-
   if (!navbarContainer) return;
 
+  // Create or reuse the right-side controls wrapper
+  let rightControls = $('#navbar-right-controls');
+  if (!rightControls) {
+    rightControls = document.createElement('div');
+    rightControls.id = 'navbar-right-controls';
+    rightControls.className = 'navbar-right-controls';
+    const mobileToggle = $('.mobile-toggle');
+    if (mobileToggle) {
+      navbarContainer.insertBefore(rightControls, mobileToggle);
+    } else {
+      navbarContainer.appendChild(rightControls);
+    }
+  }
+
+  // Theme dropdown slot
+  let themeSlot = rightControls.querySelector('#theme-nav-container');
+  if (!themeSlot) {
+    themeSlot = document.createElement('div');
+    themeSlot.id = 'theme-nav-container';
+    themeSlot.className = 'theme-selector-container';
+    rightControls.appendChild(themeSlot);
+  }
+
+  // Auth slot
+  let authContainer = rightControls.querySelector('#auth-nav-container');
   if (!authContainer) {
     authContainer = document.createElement('div');
     authContainer.id = 'auth-nav-container';
     authContainer.className = 'auth-nav-container';
-    const mobileToggle = $('.mobile-toggle');
-    if (mobileToggle) {
-      navbarContainer.insertBefore(authContainer, mobileToggle);
-    } else {
-      navbarContainer.appendChild(authContainer);
-    }
+    rightControls.appendChild(authContainer);
   }
 
   const user = getCurrentUser();
 
   if (user && user.username) {
     authContainer.innerHTML = `
-      <div class="user-badge" style="display: flex; align-items: center; gap: 0.5rem;">
-        <span class="user-name-text" style="font-weight: 600; font-size: 0.9rem; color: var(--primary-color);">👤 ${escapeHtml(user.username)}</span>
-        <a href="settings.html" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.25rem;">⚙️ Settings</a>
+      <div class="user-badge">
+        <span class="user-name-text">👤 ${escapeHtml(user.username)}</span>
+        <a href="settings.html" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">⚙️ Settings</a>
         <button onclick="logoutUser()" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">Logout</button>
       </div>
     `;
   } else {
     authContainer.innerHTML = `
-      <div class="auth-buttons" style="display: flex; align-items: center; gap: 0.5rem;">
+      <div class="auth-buttons">
         <a href="auth.html" class="btn btn-outline" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">Sign In</a>
         <a href="auth.html?mode=signup" class="btn btn-primary" style="padding: 0.4rem 0.85rem; font-size: 0.85rem;">Sign Up</a>
       </div>
@@ -271,41 +284,27 @@ function renderAuthNavbar() {
 }
 
 /**
- * Dynamically inserts Theme Selector into header navbar.
+ * Dynamically inserts Theme Selector into header navbar (inside navbar-right-controls).
  */
 function renderThemeNavbarSelector() {
-  const navbarContainer = $('.navbar .container');
-  if (!navbarContainer) return;
+  const rightControls = $('#navbar-right-controls');
+  if (!rightControls) return;
 
   let themeContainer = $('#theme-nav-container');
-  if (!themeContainer) {
-    themeContainer = document.createElement('div');
-    themeContainer.id = 'theme-nav-container';
-    themeContainer.className = 'theme-selector-container';
+  if (!themeContainer) return;
 
-    const currentTheme = getActiveTheme();
-    themeContainer.innerHTML = `
-      <select id="theme-select-dropdown" class="theme-dropdown" aria-label="Select App Theme">
-        ${THEMES.map(t => `<option value="${t.id}" ${t.id === currentTheme ? 'selected' : ''}>${t.icon} ${t.name}</option>`).join('')}
-      </select>
-    `;
+  const currentTheme = getActiveTheme();
+  themeContainer.innerHTML = `
+    <select id="theme-select-dropdown" class="theme-dropdown" aria-label="Select App Theme">
+      ${THEMES.map(t => `<option value="${t.id}" ${t.id === currentTheme ? 'selected' : ''}>${t.icon} ${t.name}</option>`).join('')}
+    </select>
+  `;
 
-    const authContainer = $('#auth-nav-container');
-    const mobileToggle = $('.mobile-toggle');
-    if (authContainer) {
-      navbarContainer.insertBefore(themeContainer, authContainer);
-    } else if (mobileToggle) {
-      navbarContainer.insertBefore(themeContainer, mobileToggle);
-    } else {
-      navbarContainer.appendChild(themeContainer);
-    }
-
-    const dropdown = $('#theme-select-dropdown');
-    if (dropdown) {
-      dropdown.addEventListener('change', (e) => {
-        setTheme(e.target.value);
-      });
-    }
+  const dropdown = $('#theme-select-dropdown');
+  if (dropdown) {
+    dropdown.addEventListener('change', (e) => {
+      setTheme(e.target.value);
+    });
   }
 }
 

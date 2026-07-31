@@ -89,38 +89,38 @@
   --active-char-glow: rgba(37, 99, 235, 0.4);
 }
 
-/* 2. Dark Theme (HYKROX Neon Glowing Cyan & Deep Pitch Black Aesthetic) */
+/* 2. Dark Theme (Clean Dark with Blue Accent) */
 [data-theme="dark"] {
-  --primary-color: #00e5ff;       /* Glowing Neon Cyan */
-  --primary-hover: #00b0ff;       /* Deeper Cyan */
-  --primary-btn-text: #050505;    /* Dark Text on glowing button */
-  --primary-gradient: linear-gradient(135deg, #00e5ff 0%, #00b0ff 50%, #0ea5e9 100%);
-  --secondary-color: #ffffff;     /* White highlight */
-  --secondary-btn-text: #080808;  /* Dark Text for secondary button */
-  --accent-color: #00e5ff;        /* Neon Cyan */
-  --background-color: #080808;    /* Deep Pitch Black */
-  --body-bg-radial: radial-gradient(circle at 50% -10%, #002d33 0%, #080808 65%, #030304 100%);
-  --card-bg: rgba(18, 18, 18, 0.85); /* Dark charcoal black cards */
-  --text-primary: #ffffff;       /* Pure White Text */
-  --text-secondary: #9ca3af;     /* Muted slate gray */
-  --text-light: #00e5ff;        /* Neon Cyan Highlight text */
-  --border-color: rgba(255, 255, 255, 0.12); /* Subtle dark border */
-  --border-focus: #00e5ff;       /* Neon Cyan focus */
-  --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 229, 255, 0.15);
-  --shadow-lg: 0 20px 50px -10px rgba(0, 0, 0, 0.9), 0 0 35px rgba(0, 229, 255, 0.25);
-  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #002d33 0%, #080808 65%, #030304 100%);
-  --mockup-header-bg: rgba(10, 10, 10, 0.95);
-  --glass-backdrop: blur(16px) saturate(180%);
-  --theme-nav-bg: rgba(10, 10, 10, 0.85);
-  --dropdown-option-bg: #121212;
-  --dropdown-option-text: #ffffff;
-  --key-bg: rgba(255, 255, 255, 0.06);
-  --key-text: #ffffff;
-  --key-border: rgba(255, 255, 255, 0.1);
-  --active-char-bg: rgba(0, 229, 255, 0.15);
-  --active-char-border: #00e5ff;
-  --active-char-glow: rgba(0, 229, 255, 0.55);
+  --primary-color: #4d9de0;       /* Soft Steel Blue */
+  --primary-hover: #3a82c4;       /* Darker Steel Blue */
+  --primary-btn-text: #ffffff;    /* White Text on button */
+  --primary-gradient: linear-gradient(135deg, #4d9de0 0%, #3a82c4 50%, #2563eb 100%);
+  --secondary-color: #e2e8f0;     /* Light gray highlight */
+  --secondary-btn-text: #1e293b;  /* Dark text for secondary button */
+  --accent-color: #60a5fa;        /* Calm blue accent */
+  --background-color: #111827;    /* Dark Navy Gray */
+  --body-bg-radial: radial-gradient(circle at 50% -10%, #1e293b 0%, #111827 65%, #0f172a 100%);
+  --card-bg: #1e293b;             /* Dark card background */
+  --text-primary: #f1f5f9;        /* Soft White Text */
+  --text-secondary: #94a3b8;      /* Muted slate */
+  --text-light: #64748b;          /* Subtle light text */
+  --border-color: rgba(255, 255, 255, 0.1);
+  --border-focus: #4d9de0;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.6);
+  --hero-bg-gradient: radial-gradient(circle at 50% -10%, #1e293b 0%, #111827 65%, #0f172a 100%);
+  --mockup-header-bg: #0f172a;
+  --glass-backdrop: blur(12px) saturate(140%);
+  --theme-nav-bg: #1e293b;
+  --dropdown-option-bg: #1e293b;
+  --dropdown-option-text: #f1f5f9;
+  --key-bg: #273548;
+  --key-text: #f1f5f9;
+  --key-border: rgba(255, 255, 255, 0.12);
+  --active-char-bg: rgba(77, 157, 224, 0.2);
+  --active-char-border: #4d9de0;
+  --active-char-glow: rgba(77, 157, 224, 0.3);
 }
 
 /* 3. Glassmorphism Theme (ZENITH Light Futuristic Glass Aesthetic) */
@@ -256,29 +256,29 @@
   --active-char-border: #0c82cf;
   --active-char-glow: rgba(12, 130, 207, 0.4);
 }
-/* 7. Neon Cyber Theme */
+/* 7. Neon Cyber Theme (Muted Dark Red) */
 [data-theme="neon"] {
-  --primary-color: #f43f5e;
-  --primary-hover: #fb7185;
-  --secondary-color: #fff1f2;
-  --secondary-btn-text: #090514;
-  --accent-color: #10b981;
-  --background-color: #090514;
-  --card-bg: #130c25;
-  --text-primary: #fff1f2;
-  --text-secondary: #fda4af;
-  --text-light: #f43f5e;
-  --border-color: #2e1065;
-  --border-focus: #f43f5e;
+  --primary-color: #c0392b;
+  --primary-hover: #e74c3c;
+  --secondary-color: #fdf2f2;
+  --secondary-btn-text: #2c0a08;
+  --accent-color: #27ae60;
+  --background-color: #1a1a2e;
+  --card-bg: #16213e;
+  --text-primary: #ecf0f1;
+  --text-secondary: #bdc3c7;
+  --text-light: #c0392b;
+  --border-color: #2d3561;
+  --border-focus: #c0392b;
   --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 6px 16px -2px rgba(244, 63, 94, 0.25);
-  --shadow-lg: 0 12px 28px -4px rgba(244, 63, 94, 0.4);
-  --hero-bg-gradient: linear-gradient(180deg, #05020c 0%, #090514 100%);
-  --mockup-header-bg: #05020c;
+  --shadow-md: 0 6px 16px -2px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.6);
+  --hero-bg-gradient: linear-gradient(180deg, #0f0c29 0%, #1a1a2e 100%);
+  --mockup-header-bg: #0f0c29;
   --glass-backdrop: none;
-  --theme-nav-bg: #130c25;
-  --dropdown-option-bg: #130c25;
-  --dropdown-option-text: #fff1f2;
+  --theme-nav-bg: #16213e;
+  --dropdown-option-bg: #16213e;
+  --dropdown-option-text: #ecf0f1;
 }
 
 /* 8. Carbon Dark Theme */
@@ -516,6 +516,7 @@ main {
   align-items: center;
   justify-content: space-between;
   height: 70px;
+  gap: 2rem;
 }
 
 .logo {
@@ -527,6 +528,7 @@ main {
   font-weight: 800;
   font-size: 1.4rem;
   color: var(--secondary-color);
+  flex-shrink: 0;
 }
 
 .logo-icon {
@@ -625,6 +627,8 @@ main {
   align-items: center;
   gap: 2rem;
   list-style: none;
+  flex: 1;
+  justify-content: center;
 }
 
 .nav-links a {
@@ -636,6 +640,7 @@ main {
   transition: var(--transition-fast);
   padding: 0.5rem 0;
   position: relative;
+  white-space: nowrap;
 }
 
 .nav-links a:hover,
@@ -654,6 +659,47 @@ main {
   border-radius: var(--radius-full);
 }
 
+/* Right-side navbar controls container */
+.navbar-right-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.theme-selector-container {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.auth-nav-container {
+  display: flex;
+  align-items: center;
+}
+
+.auth-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-name-text {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--primary-color);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .mobile-toggle {
   display: none;
   background: none;
@@ -662,6 +708,7 @@ main {
   color: var(--text-primary);
   cursor: pointer;
   padding: 0.4rem;
+  flex-shrink: 0;
 }
 
 /* 6. Reusable Button Components */
@@ -888,11 +935,11 @@ main {
     justify-content: space-between;
     padding: 0 1rem;
     height: 65px;
+    gap: 0;
   }
 
-  /* On mobile header top row, hide raw inline theme selector and auth container */
-  .navbar > .container > .theme-selector-container,
-  .navbar > .container > .auth-nav-container {
+  /* Hide right controls (theme + auth) on mobile — shown in drawer instead */
+  #navbar-right-controls {
     display: none !important;
   }
 
@@ -913,6 +960,8 @@ main {
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--shadow-lg);
     z-index: 1000;
+    flex: none;
+    justify-content: flex-start;
   }
 
   /* Mobile menu drawer controls */
@@ -1010,6 +1059,18 @@ main {
 
 /* 10c. Tablets & Small Laptops (769px - 1024px) */
 @media (min-width: 769px) and (max-width: 1024px) {
+  .nav-links {
+    gap: 1.25rem;
+  }
+
+  .nav-links a {
+    font-size: 0.875rem;
+  }
+
+  .user-name-text {
+    max-width: 80px;
+  }
+
   .stats-grid {
     grid-template-columns: repeat(4, 1fr) !important;
   }
@@ -1386,7 +1447,7 @@ body {
 .char.active {
   background-color: var(--active-char-bg, rgba(37, 99, 235, 0.15)) !important;
   border-left: 2.5px solid var(--active-char-border, var(--primary-color)) !important;
-  box-shadow: 0 0 15px var(--active-char-glow, rgba(37, 99, 235, 0.4)) !important;
+  box-shadow: none !important;
   border-radius: 3px;
 }
 
@@ -1412,7 +1473,7 @@ body {
   background: var(--primary-gradient, var(--primary-color)) !important;
   color: var(--primary-btn-text, #ffffff) !important;
   font-weight: 800 !important;
-  box-shadow: 0 0 18px var(--active-char-glow, rgba(37, 99, 235, 0.5)) !important;
+  box-shadow: var(--shadow-sm) !important;
   border-color: var(--primary-color) !important;
 }
 
@@ -1428,7 +1489,7 @@ select.theme-dropdown {
 select.duration-select:focus,
 select.theme-dropdown:focus {
   border-color: var(--border-focus) !important;
-  box-shadow: 0 0 12px var(--active-char-glow, rgba(37, 99, 235, 0.3)) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
 }
 
 /* ==========================================================================

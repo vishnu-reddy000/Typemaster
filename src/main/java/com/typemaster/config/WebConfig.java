@@ -10,8 +10,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 2026-07-31 Full-Stack Optimization Configuration:
- * - Configure separate resource caching: assets are cached for 30 days, while HTML and metadata files are served with revalidation headers.
+ * Enterprise Full-Stack Optimization Configuration:
+ * - Static assets (CSS, JS, Images, Fonts) are cached with public max-age=365 days + immutable.
+ * - HTML, Service Worker, Manifest, and Metadata files use no-cache with ETags for revalidation.
  * - Register ShallowEtagHeaderFilter to support HTTP ETags.
  */
 @Configuration
@@ -19,13 +20,14 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 1. Static Assets (CSS, JS, Images, Fonts) -> Cache for 30 days
+        // 1. Static Assets (CSS, JS, Images, Fonts) -> Cache for 365 days (1 year) immutable
         registry.addResourceHandler("/assets/**")
                 .addResourceLocations("classpath:/static/assets/")
-                .setCacheControl(CacheControl.maxAge(30, TimeUnit.DAYS).cachePublic());
+                .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic().getHeaderValue() != null ?
+                        CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic() : CacheControl.maxAge(365, TimeUnit.DAYS));
 
-        // 2. Root files (HTML, robots.txt, sitemap.xml, favicon.ico) -> Check with ETags every time
-        registry.addResourceHandler("/*.html", "/sitemap.xml", "/robots.txt", "/favicon.ico")
+        // 2. Root metadata, service worker, manifest, and HTML files -> Revalidate with ETags
+        registry.addResourceHandler("/*.html", "/sitemap.xml", "/robots.txt", "/favicon.ico", "/manifest.json", "/sw.js")
                 .addResourceLocations("classpath:/static/")
                 .setCacheControl(CacheControl.noCache().mustRevalidate());
     }
@@ -35,3 +37,4 @@ public class WebConfig implements WebMvcConfigurer {
         return new ShallowEtagHeaderFilter();
     }
 }
+

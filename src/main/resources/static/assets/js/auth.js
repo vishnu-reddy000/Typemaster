@@ -87,7 +87,8 @@ async function handleSignIn(event) {
             localStorage.setItem("typeMaster_user", JSON.stringify({
                 id: data.userId,
                 username: data.username,
-                email: data.email
+                email: data.email,
+                profilePicture: data.profilePicture || null
             }));
             if (data.token) {
                 localStorage.setItem("typeMaster_jwtToken", data.token);

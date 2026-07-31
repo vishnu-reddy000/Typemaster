@@ -290,9 +290,16 @@ function renderAuthNavbar() {
   const user = getCurrentUser();
 
   if (user && user.username) {
+    const avatarHtml = user.profilePicture
+      ? `<img src="${user.profilePicture}" alt="Avatar" class="navbar-avatar-img">`
+      : `<span class="navbar-avatar-initial">${escapeHtml(user.username.charAt(0).toUpperCase())}</span>`;
+
     authContainer.innerHTML = `
-      <div class="user-badge">
-        <span class="user-name-text">👤 ${escapeHtml(user.username)}</span>
+      <div class="user-badge" style="display: flex; align-items: center; gap: 0.6rem;">
+        <a href="settings.html" title="Account Settings" style="display: flex; align-items: center; gap: 0.4rem; text-decoration: none; color: inherit;">
+          ${avatarHtml}
+          <span class="user-name-text" style="font-weight: 600;">${escapeHtml(user.username)}</span>
+        </a>
         <button onclick="logoutUser()" class="btn btn-outline" style="padding: 0.35rem 0.65rem; font-size: 0.82rem;">Logout</button>
       </div>
     `;
@@ -778,3 +785,164 @@ document.addEventListener('DOMContentLoaded', () => {
   initWebSocketRealtimeSync();
   initThemeShowcase();
 });
+
+/* ==========================================================================
+   USERNAME EDITING HELPERS FOR SETTINGS PAGE
+   ========================================================================== */
+
+function openUsernameEdit() {
+  const user = getCurrentUser();
+  if (!user) return;
+
+  const form = document.getElementById("username-edit-form");
+  const input = document.getElementById("new-username-input");
+  const alertBox = document.getElementById("username-alert");
+
+  if (!form || !input) return;
+
+  input.value = user.username || "";
+  if (alertBox) {
+    alertBox.style.display = "none";
+    alertBox.className = "username-alert";
+    alertBox.textContent = "";
+  }
+
+  form.classList.add("open");
+  input.focus();
+  input.select();
+}
+
+function cancelUsernameEdit() {
+  const form = document.getElementById("username-edit-form");
+  const alertBox = document.getElementById("username-alert");
+
+  if (form) form.classList.remove("open");
+  if (alertBox) {
+    alertBox.style.display = "none";
+    alertBox.textContent = "";
+  }
+}
+
+async function saveUsername() {
+  const user = getCurrentUser();
+  if (!user || !user.username) {
+    window.location.href = "auth.html?notice=1&redirect=settings.html";
+    return;
+  }
+
+  const input = document.getElementById("new-username-input");
+  const saveBtn = document.getElementById("save-username-btn");
+  const alertBox = document.getElementById("username-alert");
+
+  if (!input || !saveBtn || !alertBox) return;
+
+  const newUsername = input.value.trim();
+  const currentUsername = user.username;
+
+  alertBox.style.display = "none";
+  alertBox.className = "username-alert";
+
+  if (!newUsername) {
+    showUsernameAlert("Username cannot be empty.", "error");
+    return;
+  }
+
+  if (newUsername.length < 3 || newUsername.length > 30) {
+    showUsernameAlert("Username must be between 3 and 30 characters.", "error");
+    return;
+  }
+
+  if (!/^[a-zA-Z0-9_]+$/.test(newUsername)) {
+    showUsernameAlert("Username can only contain letters, numbers, and underscores.", "error");
+    return;
+  }
+
+  if (newUsername === currentUsername) {
+    showUsernameAlert("New username is identical to current username.", "error");
+    return;
+  }
+
+  saveBtn.disabled = true;
+  const originalText = saveBtn.textContent;
+  saveBtn.textContent = "Saving...";
+
+  try {
+    const response = await fetch("/api/auth/change-username", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: currentUsername,
+        newUsername: newUsername
+      })
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      // Update LocalStorage User session
+      user.username = data.username || newUsername;
+      localStorage.setItem("typeMaster_user", JSON.stringify(user));
+
+      if (data.token) {
+        localStorage.setItem("typeMaster_jwtToken", data.token);
+      }
+
+      // Update history username in localStorage
+      try {
+        const historyData = localStorage.getItem("typeMaster_userHistory");
+        if (historyData) {
+          let history = JSON.parse(historyData);
+          if (Array.isArray(history)) {
+            history = history.map(item => {
+              if (item.username === currentUsername) {
+                item.username = newUsername;
+              }
+              return item;
+            });
+            localStorage.setItem("typeMaster_userHistory", JSON.stringify(history));
+          }
+        }
+      } catch (e) {
+        console.error("Failed to update local history username:", e);
+      }
+
+      // Update DOM text
+      const profileUsernameEl = document.getElementById("profile-username");
+      if (profileUsernameEl) profileUsernameEl.textContent = newUsername;
+
+      // Update Navbar User Badge
+      if (typeof renderAuthNavbar === "function") {
+        renderAuthNavbar();
+      }
+
+      showUsernameAlert("✓ Username updated successfully!", "success");
+
+      setTimeout(() => {
+        cancelUsernameEdit();
+      }, 1200);
+
+    } else {
+      showUsernameAlert(data.message || "Failed to update username.", "error");
+    }
+  } catch (err) {
+    console.error("Save Username Error:", err);
+    showUsernameAlert("Network or server error. Please try again.", "error");
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = originalText;
+  }
+}
+
+function showUsernameAlert(msg, type) {
+  const alertBox = document.getElementById("username-alert");
+  if (!alertBox) return;
+  alertBox.textContent = msg;
+  alertBox.className = "username-alert " + type;
+  alertBox.style.display = "block";
+}
+
+if (typeof window !== "undefined") {
+  window.openUsernameEdit = openUsernameEdit;
+  window.cancelUsernameEdit = cancelUsernameEdit;
+  window.saveUsername = saveUsername;
+}

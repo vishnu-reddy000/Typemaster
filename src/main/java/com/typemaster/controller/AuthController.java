@@ -79,4 +79,20 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
+    /**
+     * POST /api/auth/upload-avatar
+     * Body: { "username": "currentName", "profilePicture": "data:image/png;base64,..." }
+     */
+    @PostMapping("/upload-avatar")
+    public ResponseEntity<AuthResponse> uploadAvatar(@RequestBody java.util.Map<String, String> body) {
+        String username = body.get("username");
+        String profilePicture = body.get("profilePicture");
+        AuthResponse response = userService.updateProfilePicture(username, profilePicture);
+        if (response.isSuccess()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 }

@@ -23,6 +23,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "profile_picture", columnDefinition = "LONGTEXT")
+    private String profilePicture;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -68,6 +71,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public LocalDateTime getCreatedAt() {

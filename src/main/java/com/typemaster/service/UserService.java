@@ -19,12 +19,14 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final com.typemaster.repository.TestResultRepository testResultRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    public UserService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
+    public UserService(UserRepository userRepository, com.typemaster.repository.TestResultRepository testResultRepository, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
+        this.testResultRepository = testResultRepository;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -61,7 +63,9 @@ public class UserService {
         // Generate signed JWT token
         String jwtToken = jwtTokenProvider.generateToken(savedUser.getUsername(), savedUser.getEmail(), savedUser.getId());
 
-        return new AuthResponse(true, "Registration successful!", savedUser.getId(), savedUser.getUsername(), savedUser.getEmail(), jwtToken);
+        AuthResponse response = new AuthResponse(true, "Registration successful!", savedUser.getId(), savedUser.getUsername(), savedUser.getEmail(), jwtToken);
+        response.setProfilePicture(savedUser.getProfilePicture());
+        return response;
     }
 
     /**
@@ -110,7 +114,9 @@ public class UserService {
         // Generate signed JWT token
         String jwtToken = jwtTokenProvider.generateToken(user.getUsername(), user.getEmail(), user.getId());
 
-        return new AuthResponse(true, "Login successful!", user.getId(), user.getUsername(), user.getEmail(), jwtToken);
+        AuthResponse response = new AuthResponse(true, "Login successful!", user.getId(), user.getUsername(), user.getEmail(), jwtToken);
+        response.setProfilePicture(user.getProfilePicture());
+        return response;
     }
 
     /**
@@ -175,12 +181,44 @@ public class UserService {
         }
 
         User user = userOpt.get();
+        String oldUsername = user.getUsername();
         user.setUsername(trimmedNew);
         userRepository.save(user);
+
+        // Also update existing test results associated with this user
+        try {
+            testResultRepository.updateUsernameInTestResults(oldUsername, trimmedNew);
+        } catch (Exception e) {
+            // Non-critical if test results table update encounters edge case
+        }
 
         // Generate a new JWT token with updated username
         String newToken = jwtTokenProvider.generateToken(user.getUsername(), user.getEmail(), user.getId());
 
-        return new AuthResponse(true, "Username updated successfully!", user.getId(), user.getUsername(), user.getEmail(), newToken);
+        AuthResponse response = new AuthResponse(true, "Username updated successfully!", user.getId(), user.getUsername(), user.getEmail(), newToken);
+        response.setProfilePicture(user.getProfilePicture());
+        return response;
+    }
+
+    /**
+     * Updates a user's profile picture.
+     */
+    public AuthResponse updateProfilePicture(String username, String profilePicture) {
+        if (username == null || username.trim().isEmpty()) {
+            return new AuthResponse(false, "Username is required.");
+        }
+
+        Optional<User> userOpt = userRepository.findByUsername(username.trim());
+        if (userOpt.isEmpty()) {
+            return new AuthResponse(false, "User not found.");
+        }
+
+        User user = userOpt.get();
+        user.setProfilePicture(profilePicture);
+        User saved = userRepository.save(user);
+
+        AuthResponse response = new AuthResponse(true, "Profile picture updated successfully!", saved.getId(), saved.getUsername(), saved.getEmail());
+        response.setProfilePicture(saved.getProfilePicture());
+        return response;
     }
 }

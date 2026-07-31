@@ -11,6 +11,7 @@ public class AuthResponse {
     private String email;
     private Long userId;
     private String token;
+    private String profilePicture;
 
     public AuthResponse() {
     }
@@ -35,6 +36,16 @@ public class AuthResponse {
         this.username = username;
         this.email = email;
         this.token = token;
+    }
+
+    public AuthResponse(boolean success, String message, Long userId, String username, String email, String token, String profilePicture) {
+        this.success = success;
+        this.message = message;
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.token = token;
+        this.profilePicture = profilePicture;
     }
 
     public boolean isSuccess() {
@@ -83,5 +94,13 @@ public class AuthResponse {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

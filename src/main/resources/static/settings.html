@@ -237,6 +237,126 @@
             font-weight: 600;
             margin-top: 0.3rem;
             min-height: 1rem;
+        /* Profile Avatar Uploader */
+        .avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .avatar-preview-container {
+            position: relative;
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            cursor: pointer;
+            overflow: hidden;
+            flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.2);
+            border: 3px solid var(--primary-color);
+            background: var(--background-color);
+            transition: var(--transition-normal);
+        }
+        .avatar-preview-container:hover {
+            transform: scale(1.04);
+            border-color: var(--primary-hover);
+        }
+        .avatar-preview-container:hover .avatar-overlay {
+            opacity: 1;
+        }
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+        .avatar-initials {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+        .avatar-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(2px);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            border-radius: 50%;
+        }
+        .avatar-camera-icon {
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+        .avatar-upload-text {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+        }
+        .avatar-info-col {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .avatar-info-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .avatar-info-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        .avatar-btn-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.3rem;
+            flex-wrap: wrap;
+        }
+        .avatar-btn {
+            padding: 0.35rem 0.75rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-fast);
+            border: 1px solid transparent;
+        }
+        .avatar-btn-upload {
+            background: var(--primary-color);
+            color: #ffffff;
+        }
+        .avatar-btn-upload:hover {
+            background: var(--primary-hover);
+        }
+        .avatar-btn-remove {
+            background: transparent;
+            color: var(--error-color);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        .avatar-btn-remove:hover {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: var(--error-color);
         }
 
         /* Username Edit Row */
@@ -413,6 +533,26 @@
                     <!-- User Profile Card -->
                     <div class="settings-card">
                         <h2>👤 Profile Info</h2>
+                        <!-- Profile Avatar Section -->
+                        <div class="avatar-section">
+                            <div class="avatar-preview-container" onclick="triggerAvatarSelect()" title="Click to upload profile photo">
+                                <img id="avatar-img-preview" src="" alt="Profile Picture" class="avatar-img" style="display:none;">
+                                <div id="avatar-initials-fallback" class="avatar-initials">U</div>
+                                <div class="avatar-overlay">
+                                    <span class="avatar-camera-icon">📷</span>
+                                    <span class="avatar-upload-text">Upload</span>
+                                </div>
+                            </div>
+                            <input type="file" id="avatar-file-input" accept="image/png, image/jpeg, image/webp, image/gif" style="display: none;" onchange="handleAvatarFileSelect(event)">
+                            <div class="avatar-info-col">
+                                <div class="avatar-info-title">Profile Picture</div>
+                                <div class="avatar-info-desc">JPG, PNG, GIF or WEBP. Maximum file size 2MB.</div>
+                                <div class="avatar-btn-row">
+                                    <button type="button" class="avatar-btn avatar-btn-upload" onclick="triggerAvatarSelect()">📷 Upload Photo</button>
+                                    <button type="button" class="avatar-btn avatar-btn-remove" id="remove-avatar-btn" style="display: none;" onclick="removeAvatar()">🗑️ Remove</button>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Username with inline edit -->
                         <div class="profile-info-group">
                             <div class="profile-info-label">Username</div>
@@ -551,14 +691,330 @@
                 return;
             }
 
-            // Populate User Info
+            // Populate User Info & Avatar
             document.getElementById("profile-username").textContent = user.username;
             document.getElementById("profile-email").textContent = user.email || "Not Provided";
+            updateAvatarUI(user.profilePicture, user.username);
 
             // Setup Password Form
             const form = document.getElementById("password-change-form");
-            form.addEventListener("submit", handlePasswordUpdate);
+            if (form) form.addEventListener("submit", handlePasswordUpdate);
+
+            // Setup Username Edit Input Key Handlers
+            const usernameInput = document.getElementById("new-username-input");
+            if (usernameInput) {
+                usernameInput.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        saveUsername();
+                    } else if (e.key === "Escape") {
+                        cancelUsernameEdit();
+                    }
+                });
+            }
         });
+
+        /* ==========================================
+           AVATAR PROFILE PICTURE FUNCTIONS
+           ========================================== */
+
+        function updateAvatarUI(profilePic, username) {
+            const imgEl = document.getElementById("avatar-img-preview");
+            const initialsEl = document.getElementById("avatar-initials-fallback");
+            const removeBtn = document.getElementById("remove-avatar-btn");
+
+            if (!imgEl || !initialsEl) return;
+
+            if (profilePic) {
+                imgEl.src = profilePic;
+                imgEl.style.display = "block";
+                initialsEl.style.display = "none";
+                if (removeBtn) removeBtn.style.display = "inline-block";
+            } else {
+                imgEl.style.display = "none";
+                imgEl.src = "";
+                initialsEl.style.display = "flex";
+                const initial = (username || "U").charAt(0).toUpperCase();
+                initialsEl.textContent = initial;
+                if (removeBtn) removeBtn.style.display = "none";
+            }
+        }
+
+        function triggerAvatarSelect() {
+            const input = document.getElementById("avatar-file-input");
+            if (input) input.click();
+        }
+
+        async function handleAvatarFileSelect(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith("image/")) {
+                alert("Please select a valid image file (PNG, JPG, WEBP, GIF).");
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert("Selected image size exceeds 5MB. Please choose a smaller image.");
+                return;
+            }
+
+            try {
+                const base64Image = await compressImageFile(file, 256, 256, 0.85);
+                const user = getCurrentUser();
+                if (!user || !user.username) return;
+
+                // Show immediate local preview
+                updateAvatarUI(base64Image, user.username);
+
+                // Upload to backend
+                const response = await fetch("/api/auth/upload-avatar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        username: user.username,
+                        profilePicture: base64Image
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    user.profilePicture = base64Image;
+                    localStorage.setItem("typeMaster_user", JSON.stringify(user));
+                    if (typeof renderAuthNavbar === "function") renderAuthNavbar();
+                    showUsernameAlert("✓ Profile picture updated successfully!", "success");
+                } else {
+                    showUsernameAlert(data.message || "Failed to upload avatar.", "error");
+                }
+            } catch (err) {
+                console.error("Avatar Upload Error:", err);
+                showUsernameAlert("Error processing avatar image.", "error");
+            } finally {
+                event.target.value = "";
+            }
+        }
+
+        async function removeAvatar() {
+            const user = getCurrentUser();
+            if (!user || !user.username) return;
+
+            try {
+                const response = await fetch("/api/auth/upload-avatar", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        username: user.username,
+                        profilePicture: null
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    user.profilePicture = null;
+                    localStorage.setItem("typeMaster_user", JSON.stringify(user));
+                    updateAvatarUI(null, user.username);
+                    if (typeof renderAuthNavbar === "function") renderAuthNavbar();
+                    showUsernameAlert("✓ Profile picture removed.", "success");
+                }
+            } catch (err) {
+                console.error("Remove Avatar Error:", err);
+            }
+        }
+
+        function compressImageFile(file, maxWidth, maxHeight, quality) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement("canvas");
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxWidth) {
+                                height = Math.round((height * maxWidth) / width);
+                                width = maxWidth;
+                            }
+                        } else {
+                            if (height > maxHeight) {
+                                width = Math.round((width * maxHeight) / height);
+                                height = maxHeight;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL("image/jpeg", quality));
+                    };
+                    img.onerror = (err) => reject(err);
+                    img.src = e.target.result;
+                };
+                reader.onerror = (err) => reject(err);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function openUsernameEdit() {
+            const user = getCurrentUser();
+            if (!user) return;
+
+            const form = document.getElementById("username-edit-form");
+            const input = document.getElementById("new-username-input");
+            const alertBox = document.getElementById("username-alert");
+
+            if (!form || !input) return;
+
+            input.value = user.username || "";
+            if (alertBox) {
+                alertBox.style.display = "none";
+                alertBox.className = "username-alert";
+                alertBox.textContent = "";
+            }
+
+            form.classList.add("open");
+            input.focus();
+            input.select();
+        }
+
+        function cancelUsernameEdit() {
+            const form = document.getElementById("username-edit-form");
+            const alertBox = document.getElementById("username-alert");
+
+            if (form) form.classList.remove("open");
+            if (alertBox) {
+                alertBox.style.display = "none";
+                alertBox.textContent = "";
+            }
+        }
+
+        async function saveUsername() {
+            const user = getCurrentUser();
+            if (!user || !user.username) {
+                window.location.href = "auth.html?notice=1&redirect=settings.html";
+                return;
+            }
+
+            const input = document.getElementById("new-username-input");
+            const saveBtn = document.getElementById("save-username-btn");
+            const alertBox = document.getElementById("username-alert");
+
+            if (!input || !saveBtn || !alertBox) return;
+
+            const newUsername = input.value.trim();
+            const currentUsername = user.username;
+
+            alertBox.style.display = "none";
+            alertBox.className = "username-alert";
+
+            if (!newUsername) {
+                showUsernameAlert("Username cannot be empty.", "error");
+                return;
+            }
+
+            if (newUsername.length < 3 || newUsername.length > 30) {
+                showUsernameAlert("Username must be between 3 and 30 characters.", "error");
+                return;
+            }
+
+            if (!/^[a-zA-Z0-9_]+$/.test(newUsername)) {
+                showUsernameAlert("Username can only contain letters, numbers, and underscores.", "error");
+                return;
+            }
+
+            if (newUsername === currentUsername) {
+                showUsernameAlert("New username is identical to current username.", "error");
+                return;
+            }
+
+            saveBtn.disabled = true;
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = "Saving...";
+
+            try {
+                const response = await fetch("/api/auth/change-username", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        username: currentUsername,
+                        newUsername: newUsername
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.success) {
+                    // Update LocalStorage User session
+                    user.username = data.username || newUsername;
+                    localStorage.setItem("typeMaster_user", JSON.stringify(user));
+
+                    if (data.token) {
+                        localStorage.setItem("typeMaster_jwtToken", data.token);
+                    }
+
+                    // Update history username in localStorage
+                    try {
+                        const historyData = localStorage.getItem("typeMaster_userHistory");
+                        if (historyData) {
+                            let history = JSON.parse(historyData);
+                            if (Array.isArray(history)) {
+                                history = history.map(item => {
+                                    if (item.username === currentUsername) {
+                                        item.username = newUsername;
+                                    }
+                                    return item;
+                                });
+                                localStorage.setItem("typeMaster_userHistory", JSON.stringify(history));
+                            }
+                        }
+                    } catch (e) {
+                        console.error("Failed to update local history username:", e);
+                    }
+
+                    // Update DOM text
+                    document.getElementById("profile-username").textContent = newUsername;
+
+                    // Update Navbar User Badge
+                    if (typeof renderAuthNavbar === "function") {
+                        renderAuthNavbar();
+                    }
+
+                    showUsernameAlert("✓ Username updated successfully!", "success");
+
+                    setTimeout(() => {
+                        cancelUsernameEdit();
+                    }, 1200);
+
+                } else {
+                    showUsernameAlert(data.message || "Failed to update username.", "error");
+                }
+            } catch (err) {
+                console.error("Save Username Error:", err);
+                showUsernameAlert("Network or server error. Please try again.", "error");
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = originalText;
+            }
+        }
+
+        function showUsernameAlert(msg, type) {
+            const alertBox = document.getElementById("username-alert");
+            if (!alertBox) return;
+            alertBox.textContent = msg;
+            alertBox.className = "username-alert " + type;
+            alertBox.style.display = "block";
+        }
+
+        window.openUsernameEdit = openUsernameEdit;
+        window.cancelUsernameEdit = cancelUsernameEdit;
+        window.saveUsername = saveUsername;
+        window.triggerAvatarSelect = triggerAvatarSelect;
+        window.handleAvatarFileSelect = handleAvatarFileSelect;
+        window.removeAvatar = removeAvatar;
 
         function togglePasswordVisibility(inputId, btn) {
             const input = document.getElementById(inputId);

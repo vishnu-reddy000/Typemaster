@@ -25,4 +25,9 @@ public interface TestResultRepository extends JpaRepository<TestResult, Long> {
 
     @Query("SELECT AVG(t.wpm) FROM TestResult t")
     Double getAverageWpm();
+
+    @org.springframework.data.jpa.repository.Modifying
+    @org.springframework.transaction.annotation.Transactional
+    @Query("UPDATE TestResult t SET t.username = :newUsername WHERE t.username = :oldUsername")
+    int updateUsernameInTestResults(@org.springframework.data.repository.query.Param("oldUsername") String oldUsername, @org.springframework.data.repository.query.Param("newUsername") String newUsername);
 }

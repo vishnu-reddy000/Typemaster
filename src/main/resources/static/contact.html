@@ -174,12 +174,12 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <!-- Header / Navigation Bar -->
-    <header class="navbar">
+    <header class="navbar" role="banner">
         <div class="container">
-            <a href="index.html" class="logo" id="brand-logo">
-                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon" width="40" height="40">
+            <a href="index.html" class="logo" id="brand-logo" aria-label="TypeMaster Home">
+                <img src="assets/images/logo-icon.svg" alt="TypeMaster Logo" class="brand-logo-icon" width="40" height="40" fetchpriority="high" loading="eager" decoding="async">
             </a>
-            <ul class="nav-links" id="nav-menu">
+            <ul class="nav-links" id="nav-menu" role="navigation" aria-label="Main Navigation">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="typing.html">Typing Test</a></li>
                 <li><a href="result.html">Leaderboard</a></li>

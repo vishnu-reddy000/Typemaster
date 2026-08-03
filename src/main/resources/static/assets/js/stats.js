@@ -79,17 +79,35 @@ function getTypingRank(wpm) {
   return { name: "Bronze", badge: "🥉 Bronze" };
 }
 
+const _statsDomCache = {};
+
+function _getStatElement(id) {
+  if (!_statsDomCache[id]) {
+    _statsDomCache[id] = document.getElementById(id);
+  }
+  return _statsDomCache[id];
+}
+
+function _setTextIfChanged(el, val) {
+  if (el) {
+    const strVal = String(val);
+    if (el.textContent !== strVal) {
+      el.textContent = strVal;
+    }
+  }
+}
+
 function updateLiveStatsUI(stats) {
-  const wpmEl = document.getElementById('stat-wpm');
-  const rawWpmEl = document.getElementById('stat-raw-wpm');
-  const accuracyEl = document.getElementById('stat-accuracy');
-  const mistakesEl = document.getElementById('stat-mistakes');
-  const correctEl = document.getElementById('stat-correct');
-  const typedEl = document.getElementById('stat-typed');
-  const wordsEl = document.getElementById('stat-words');
-  const remainingEl = document.getElementById('stat-remaining');
-  const consistencyEl = document.getElementById('stat-consistency');
-  const rankEl = document.getElementById('stat-rank');
+  const wpmEl = _getStatElement('stat-wpm');
+  const rawWpmEl = _getStatElement('stat-raw-wpm');
+  const accuracyEl = _getStatElement('stat-accuracy');
+  const mistakesEl = _getStatElement('stat-mistakes');
+  const correctEl = _getStatElement('stat-correct');
+  const typedEl = _getStatElement('stat-typed');
+  const wordsEl = _getStatElement('stat-words');
+  const remainingEl = _getStatElement('stat-remaining');
+  const consistencyEl = _getStatElement('stat-consistency');
+  const rankEl = _getStatElement('stat-rank');
 
   const netWpm = stats.wpm ?? 0;
   const rawWpm = stats.rawWpm ?? netWpm;
@@ -102,14 +120,14 @@ function updateLiveStatsUI(stats) {
   const consistency = stats.consistency ?? calculateConsistency(accuracy, mistakes, stats.timeElapsed);
   const rankObj = getTypingRank(netWpm);
 
-  if (wpmEl) wpmEl.textContent = netWpm;
-  if (rawWpmEl) rawWpmEl.textContent = rawWpm;
-  if (accuracyEl) accuracyEl.textContent = `${accuracy}%`;
-  if (mistakesEl) mistakesEl.textContent = mistakes;
-  if (correctEl) correctEl.textContent = correctChars;
-  if (typedEl) typedEl.textContent = typedChars;
-  if (wordsEl) wordsEl.textContent = wordsTyped;
-  if (remainingEl) remainingEl.textContent = remainingChars;
-  if (consistencyEl) consistencyEl.textContent = `${consistency}%`;
-  if (rankEl) rankEl.textContent = rankObj.badge;
+  _setTextIfChanged(wpmEl, netWpm);
+  _setTextIfChanged(rawWpmEl, rawWpm);
+  _setTextIfChanged(accuracyEl, `${accuracy}%`);
+  _setTextIfChanged(mistakesEl, mistakes);
+  _setTextIfChanged(correctEl, correctChars);
+  _setTextIfChanged(typedEl, typedChars);
+  _setTextIfChanged(wordsEl, wordsTyped);
+  _setTextIfChanged(remainingEl, remainingChars);
+  _setTextIfChanged(consistencyEl, `${consistency}%`);
+  _setTextIfChanged(rankEl, rankObj.badge);
 }

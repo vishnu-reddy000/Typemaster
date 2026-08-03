@@ -2,6 +2,7 @@
  * TypeMaster - Typing Engine (typing.js)
  * Core logic for rendering paragraphs scaled by minute durations (1, 3, 5, 7, 9 min),
  * handling keyboard input, continuous typing, and submitting results to Spring Boot REST API.
+ * High-performance zero-lag typing engine optimized for 60 FPS.
  */
 
 let currentParagraph = "";
@@ -24,6 +25,22 @@ let topicSelectEl;
 let languageGroupEl;
 let topicGroupEl;
 
+// High-Performance Engine Caching & State Variables
+let charSpansCache = [];
+const virtualKeyMap = new Map();
+const shiftKeyElements = [];
+const currentlyHighlightedNextKeys = [];
+let currentFirstVisibleLine = 0;
+let currentTranslateY = 0;
+let cachedLineHeight = 0;
+let activeLoadSequence = 0;
+let isEngineInitialized = false;
+
+// Progress Bar & Wrapper Cached Elements
+let cachedFillEl = null;
+let cachedPercentEl = null;
+let cachedWrapperEl = null;
+
 function initTypingEngine() {
   paragraphBoxEl = document.getElementById('paragraph-box');
   hiddenInputEl = document.getElementById('hidden-input');
@@ -37,107 +54,115 @@ function initTypingEngine() {
   languageGroupEl = document.getElementById('language-group');
   topicGroupEl = document.getElementById('topic-group');
 
+  cachedFillEl = document.getElementById('typing-progress-fill');
+  cachedPercentEl = document.getElementById('typing-progress-percent');
+  cachedWrapperEl = document.getElementById('paragraph-box-wrapper');
+
   if (!paragraphBoxEl || !hiddenInputEl) return;
 
-  // Exclude virtual keyboard keys from tab order to avoid keyboard traps (Lighthouse accessibility compliance)
-  document.querySelectorAll('#virtual-keyboard .key-btn').forEach(btn => {
-    btn.setAttribute('tabindex', '-1');
-  });
+  if (!isEngineInitialized) {
+    isEngineInitialized = true;
 
-  if (durationSelectEl) {
-    durationSelectEl.addEventListener('change', (e) => {
-      handleDurationChange(e.target.value);
-    });
-  }
+    hiddenInputEl.addEventListener('input', handleTypingInput);
 
-  if (modeSelectEl) {
-    modeSelectEl.addEventListener('change', (e) => {
-      const val = e.target.value;
-      if (val === 'CUSTOM' && typeof setCustomPracticeText === 'function') {
-        showCustomTextModal();
+    if (typingArenaEl) {
+      typingArenaEl.addEventListener('click', () => {
+        if (hiddenInputEl) hiddenInputEl.focus();
+      });
+    }
+
+    if (paragraphBoxEl) {
+      paragraphBoxEl.addEventListener('click', () => {
+        if (hiddenInputEl) hiddenInputEl.focus();
+      });
+    }
+
+    if (durationSelectEl) {
+      durationSelectEl.addEventListener('change', (e) => {
+        handleDurationChange(e.target.value);
+      });
+    }
+
+    if (modeSelectEl) {
+      modeSelectEl.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if (val === 'CUSTOM' && typeof setCustomPracticeText === 'function') {
+          showCustomTextModal();
+          return;
+        }
+        handleModeUI();
+        restartTest();
+      });
+    }
+
+    if (languageSelectEl) {
+      languageSelectEl.addEventListener('change', () => {
+        restartTest();
+      });
+    }
+
+    if (topicSelectEl) {
+      topicSelectEl.addEventListener('change', () => {
+        restartTest();
+      });
+    }
+
+    // Global keydown capture: Auto-focus hiddenInputEl whenever user types anywhere on page
+    document.addEventListener('keydown', (e) => {
+      const activeEl = document.activeElement;
+      if (activeEl && (activeEl.tagName === 'INPUT' && activeEl.id !== 'hidden-input' || activeEl.tagName === 'SELECT' || activeEl.tagName === 'TEXTAREA')) {
         return;
       }
-      handleModeUI();
-      restartTest();
-    });
-  }
 
-  if (languageSelectEl) {
-    languageSelectEl.addEventListener('change', () => {
-      restartTest();
-    });
-  }
-
-  if (topicSelectEl) {
-    topicSelectEl.addEventListener('change', () => {
-      restartTest();
-    });
-  }
-
-  if (typingArenaEl) {
-    typingArenaEl.addEventListener('click', () => {
-      if (hiddenInputEl) hiddenInputEl.focus();
-    });
-  }
-
-  if (paragraphBoxEl) {
-    paragraphBoxEl.addEventListener('click', () => {
-      if (hiddenInputEl) hiddenInputEl.focus();
-    });
-  }
-
-  hiddenInputEl.addEventListener('input', handleTypingInput);
-
-  // Global keydown capture: Auto-focus hiddenInputEl whenever user types anywhere on page
-  document.addEventListener('keydown', (e) => {
-    const activeEl = document.activeElement;
-    if (activeEl && (activeEl.tagName === 'INPUT' && activeEl.id !== 'hidden-input' || activeEl.tagName === 'SELECT' || activeEl.tagName === 'TEXTAREA')) {
-      return;
-    }
-
-    if (e.altKey || e.ctrlKey || e.metaKey || e.key === 'Tab' || e.key === 'Escape' || e.key.startsWith('F')) {
-      return;
-    }
-
-    if (hiddenInputEl) {
-      if (document.activeElement !== hiddenInputEl) {
-        hiddenInputEl.focus();
+      if (e.altKey || e.ctrlKey || e.metaKey || e.key === 'Tab' || e.key === 'Escape' || e.key.startsWith('F')) {
+        return;
       }
 
-      if (e.key === 'Backspace') {
-        e.preventDefault();
-        handleBackspace();
-      } else if (e.key === 'Enter') {
-        e.preventDefault();
-        handleEnterKey();
+      if (hiddenInputEl) {
+        if (document.activeElement !== hiddenInputEl) {
+          hiddenInputEl.focus();
+        }
+
+        if (e.key === 'Backspace') {
+          e.preventDefault();
+          handleBackspace();
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          handleEnterKey();
+        }
       }
+    });
+
+    if (restartBtnEl) {
+      restartBtnEl.addEventListener('click', startTestExplicitly);
     }
-  });
+    if (newParaBtnEl) newParaBtnEl.addEventListener('click', loadNewParagraph);
 
-  if (restartBtnEl) {
-    restartBtnEl.addEventListener('click', startTestExplicitly);
-  }
-  if (newParaBtnEl) newParaBtnEl.addEventListener('click', loadNewParagraph);
+    const pauseBtnEl = document.getElementById('pause-btn');
+    if (pauseBtnEl) {
+      pauseBtnEl.addEventListener('click', togglePauseTest);
+    }
 
-  const pauseBtnEl = document.getElementById('pause-btn');
-  if (pauseBtnEl) {
-    pauseBtnEl.addEventListener('click', togglePauseTest);
-  }
+    const focusBtnEl = document.getElementById('focus-btn');
+    if (focusBtnEl) {
+      focusBtnEl.addEventListener('click', toggleFocusMode);
+    }
 
-  const focusBtnEl = document.getElementById('focus-btn');
-  if (focusBtnEl) {
-    focusBtnEl.addEventListener('click', toggleFocusMode);
-  }
+    const fullscreenBtnEl = document.getElementById('fullscreen-btn');
+    if (fullscreenBtnEl) {
+      fullscreenBtnEl.addEventListener('click', toggleFullscreenMode);
+    }
 
-  const fullscreenBtnEl = document.getElementById('fullscreen-btn');
-  if (fullscreenBtnEl) {
-    fullscreenBtnEl.addEventListener('click', toggleFullscreenMode);
-  }
+    const difficultySelectEl = document.getElementById('difficulty-select');
+    if (difficultySelectEl) {
+      difficultySelectEl.addEventListener('change', () => {
+        restartTest();
+      });
+    }
 
-  const difficultySelectEl = document.getElementById('difficulty-select');
-  if (difficultySelectEl) {
-    difficultySelectEl.addEventListener('change', () => {
-      restartTest();
+    window.addEventListener('resize', () => {
+      cachedLineHeight = 0;
+      cachedWrapperEl = null;
     });
   }
 
@@ -167,7 +192,7 @@ function handleModeUI() {
   if (topicGroupEl) {
     topicGroupEl.style.display = isCoding ? 'flex' : 'none';
   }
-  const wrapperEl = document.getElementById('paragraph-box-wrapper');
+  const wrapperEl = cachedWrapperEl || document.getElementById('paragraph-box-wrapper');
   if (paragraphBoxEl) {
     if (isCoding) paragraphBoxEl.classList.add('code-mode');
     else paragraphBoxEl.classList.remove('code-mode');
@@ -180,6 +205,8 @@ function handleModeUI() {
 
 async function loadNewParagraph() {
   resetTestState();
+  const loadId = ++activeLoadSequence;
+
   const currentDurationMins = getTimerDurationMinutes();
   const mode = modeSelectEl ? modeSelectEl.value : 'PARAGRAPH';
   const language = languageSelectEl ? languageSelectEl.value : 'JAVA';
@@ -187,10 +214,9 @@ async function loadNewParagraph() {
   const difficultySelectEl = document.getElementById('difficulty-select');
   const difficulty = difficultySelectEl ? difficultySelectEl.value : 'MEDIUM';
 
-  // 1. Render fallback snippet instantly so text is NEVER blank
+  // 1. Render fallback material instantly so text is NEVER blank
   if (typeof getFallbackMaterial === 'function') {
     let newMaterial = getFallbackMaterial(currentDurationMins, mode, language, topic, difficulty);
-    // Attempt 1 retry if exact same paragraph selected
     if (newMaterial === currentParagraph) {
       newMaterial = getFallbackMaterial(currentDurationMins, mode, language, topic, difficulty);
     }
@@ -200,11 +226,11 @@ async function loadNewParagraph() {
   }
   renderParagraph();
 
-  // 2. Optionally fetch live API content in background
+  // 2. Optionally fetch live API content in background ONLY if test hasn't started and no typing has occurred
   if (typeof fetchPracticeMaterial === 'function') {
     try {
       const liveData = await fetchPracticeMaterial(currentDurationMins, mode, language, topic, difficulty);
-      if (liveData && liveData.trim().length > 0 && !isTestStarted) {
+      if (liveData && liveData.trim().length > 0 && loadId === activeLoadSequence && !isTestStarted && charIndex === 0) {
         currentParagraph = liveData;
         renderParagraph();
       }
@@ -226,40 +252,48 @@ async function appendContinuousParagraph() {
   if (typeof fetchPracticeMaterial === 'function') {
     nextParaText = await fetchPracticeMaterial(currentDurationMins, mode, language, topic, difficulty);
   } else {
-    nextParaText = getRandomParagraph(currentDurationMins);
+    nextParaText = typeof getRandomParagraph === 'function' ? getRandomParagraph(currentDurationMins) : " Continue typing to build speed and mastery.";
   }
 
   const nextPara = (mode === 'CODING' ? "\n\n" : " ") + nextParaText;
   currentParagraph += nextPara;
-  
-  const chars = nextPara.split('');
-  chars.forEach((char) => {
-    const span = document.createElement('span');
-    span.classList.add('char');
-    span.textContent = char;
-    paragraphBoxEl.appendChild(span);
-  });
 
-  const charSpans = paragraphBoxEl.querySelectorAll('.char');
-  if (charIndex < charSpans.length) {
-    charSpans[charIndex].classList.add('active');
+  const fragment = document.createDocumentFragment();
+  const chars = nextPara.split('');
+  for (let i = 0; i < chars.length; i++) {
+    const span = document.createElement('span');
+    span.className = 'char';
+    span.textContent = chars[i];
+    fragment.appendChild(span);
+    charSpansCache.push(span);
+  }
+  paragraphBoxEl.appendChild(fragment);
+
+  if (charIndex < charSpansCache.length) {
+    charSpansCache[charIndex].classList.add('active');
   }
 }
 
 function renderParagraph() {
   if (!paragraphBoxEl) return;
   paragraphBoxEl.innerHTML = '';
-  // Reset scroll position for new paragraph
   paragraphBoxEl.style.transform = 'translateY(0px)';
+  currentTranslateY = 0;
+  currentFirstVisibleLine = 0;
+  charSpansCache.length = 0;
 
+  const fragment = document.createDocumentFragment();
   const chars = currentParagraph.split('');
-  chars.forEach((char, index) => {
+  for (let index = 0; index < chars.length; index++) {
     const span = document.createElement('span');
-    span.classList.add('char');
-    if (index === 0) span.classList.add('active');
-    span.textContent = char;
-    paragraphBoxEl.appendChild(span);
-  });
+    span.className = index === 0 ? 'char active' : 'char';
+    span.textContent = chars[index];
+    fragment.appendChild(span);
+    charSpansCache.push(span);
+  }
+  paragraphBoxEl.appendChild(fragment);
+  cachedLineHeight = 0;
+  highlightNextKey();
 }
 
 let sessionKeyPresses = {};
@@ -294,12 +328,12 @@ function handleTypingInput(e) {
   if (isTestFinished) return;
 
   const inputVal = hiddenInputEl.value;
-  const typedChar = inputVal.slice(-1);
-
-  if (!typedChar) return;
+  if (!inputVal) return;
+  hiddenInputEl.value = '';
 
   if (!isTestStarted) {
     isTestStarted = true;
+    document.body.classList.add('typing-active');
     startTimer(onTimerTick, finishTest);
     if (restartBtnEl) restartBtnEl.innerHTML = '↻ Restart Test';
     const statusBadge = document.getElementById('test-status-badge');
@@ -309,10 +343,13 @@ function handleTypingInput(e) {
     }
   }
 
-  const charSpans = paragraphBoxEl.querySelectorAll('.char');
-  if (charIndex < charSpans.length) {
+  const totalSpans = charSpansCache.length;
+  for (let i = 0; i < inputVal.length; i++) {
+    const typedChar = inputVal[i];
+    if (charIndex >= totalSpans) break;
+
     const expectedChar = currentParagraph[charIndex];
-    const currentSpan = charSpans[charIndex];
+    const currentSpan = charSpansCache[charIndex];
 
     currentSpan.classList.remove('active');
     totalTyped++;
@@ -331,65 +368,73 @@ function handleTypingInput(e) {
     }
 
     charIndex++;
-
-    if (charIndex < charSpans.length) {
-      charSpans[charIndex].classList.add('active');
-      scrollActiveCharIntoView(charSpans[charIndex]);
-    } else {
-      appendContinuousParagraph();
-    }
   }
 
-  hiddenInputEl.value = '';
+  if (charIndex < totalSpans) {
+    const nextSpan = charSpansCache[charIndex];
+    nextSpan.classList.add('active');
+    scrollActiveCharIntoView(nextSpan);
+  } else {
+    appendContinuousParagraph();
+  }
+
   updateLiveStats();
 }
 
 function scrollActiveCharIntoView(activeSpan) {
   if (!activeSpan || !paragraphBoxEl) return;
+  if (!cachedWrapperEl) cachedWrapperEl = document.getElementById('paragraph-box-wrapper');
+  if (!cachedWrapperEl) return;
 
-  const wrapper = document.getElementById('paragraph-box-wrapper');
-  if (!wrapper) return;
+  const spanTop = activeSpan.offsetTop;
 
-  // Get position of active char relative to the paragraph-box (not the page)
-  const wrapperRect = wrapper.getBoundingClientRect();
-  const charRect = activeSpan.getBoundingClientRect();
-  const lineHeight = parseFloat(getComputedStyle(paragraphBoxEl).lineHeight) || 42;
-  const wrapperHeight = wrapper.clientHeight;
-
-  // charTop relative to the wrapper
-  const charTopInWrapper = charRect.top - wrapperRect.top;
-
-  // If the cursor has moved into or past the last visible line, slide up by one line
-  if (charTopInWrapper >= wrapperHeight - lineHeight * 0.5) {
-    const currentTranslate = getCurrentTranslateY(paragraphBoxEl);
-    paragraphBoxEl.style.transform = `translateY(${currentTranslate - lineHeight}px)`;
+  if (!cachedLineHeight || cachedLineHeight <= 0) {
+    const computed = parseFloat(window.getComputedStyle(paragraphBoxEl).lineHeight);
+    cachedLineHeight = (computed && computed > 0) ? computed : 32;
   }
 
-  // If backspacing back up to the first visible line area, slide down
-  if (charTopInWrapper < 0) {
-    const currentTranslate = getCurrentTranslateY(paragraphBoxEl);
-    paragraphBoxEl.style.transform = `translateY(${currentTranslate + lineHeight}px)`;
+  const lineIndex = Math.floor(spanTop / cachedLineHeight);
+  const wrapperHeight = cachedWrapperEl.clientHeight || 150;
+  const visibleLines = Math.max(1, Math.floor(wrapperHeight / cachedLineHeight));
+
+  let targetFirstLine = currentFirstVisibleLine;
+
+  if (lineIndex < currentFirstVisibleLine) {
+    targetFirstLine = lineIndex;
+  } else if (lineIndex >= currentFirstVisibleLine + visibleLines) {
+    targetFirstLine = lineIndex - visibleLines + 1;
+  }
+
+  const totalHeight = paragraphBoxEl.scrollHeight;
+  const totalLines = Math.ceil(totalHeight / cachedLineHeight);
+  const maxFirstLine = Math.max(0, totalLines - visibleLines);
+  const clampedLine = Math.min(Math.max(0, targetFirstLine), maxFirstLine);
+
+  const targetTY = -(clampedLine * cachedLineHeight);
+
+  if (targetTY !== currentTranslateY) {
+    currentFirstVisibleLine = clampedLine;
+    currentTranslateY = targetTY;
+    requestAnimationFrame(() => {
+      paragraphBoxEl.style.transform = `translateY(${targetTY}px)`;
+    });
   }
 }
 
 function getCurrentTranslateY(el) {
-  const style = window.getComputedStyle(el);
-  const matrix = new DOMMatrix(style.transform);
-  return matrix.m42; // translateY value
+  return currentTranslateY;
 }
 
 function handleBackspace() {
   if (isTestFinished || charIndex <= 0) return;
   flashKeyFeedback('backspace', true);
 
-  const charSpans = paragraphBoxEl.querySelectorAll('.char');
-
-  if (charIndex < charSpans.length) {
-    charSpans[charIndex].classList.remove('active');
+  if (charIndex < charSpansCache.length) {
+    charSpansCache[charIndex].classList.remove('active');
   }
 
   charIndex--;
-  const prevSpan = charSpans[charIndex];
+  const prevSpan = charSpansCache[charIndex];
 
   if (prevSpan.classList.contains('correct')) {
     correctChars = Math.max(0, correctChars - 1);
@@ -409,13 +454,14 @@ function handleEnterKey() {
 
   if (!isTestStarted) {
     isTestStarted = true;
+    document.body.classList.add('typing-active');
     startTimer(onTimerTick, finishTest);
   }
 
-  const charSpans = paragraphBoxEl.querySelectorAll('.char');
-  if (charIndex < charSpans.length) {
+  const totalSpans = charSpansCache.length;
+  if (charIndex < totalSpans) {
     const expectedChar = currentParagraph[charIndex];
-    const currentSpan = charSpans[charIndex];
+    const currentSpan = charSpansCache[charIndex];
 
     currentSpan.classList.remove('active');
     totalTyped++;
@@ -430,9 +476,10 @@ function handleEnterKey() {
 
     charIndex++;
 
-    if (charIndex < charSpans.length) {
-      charSpans[charIndex].classList.add('active');
-      scrollActiveCharIntoView(charSpans[charIndex]);
+    if (charIndex < totalSpans) {
+      const nextSpan = charSpansCache[charIndex];
+      nextSpan.classList.add('active');
+      scrollActiveCharIntoView(nextSpan);
     } else {
       appendContinuousParagraph();
     }
@@ -443,15 +490,20 @@ function handleEnterKey() {
 }
 
 function updateProgressBar() {
-  const fillEl = document.getElementById('typing-progress-fill');
-  const percentEl = document.getElementById('typing-progress-percent');
-  if (!fillEl && !percentEl) return;
+  if (!cachedFillEl) cachedFillEl = document.getElementById('typing-progress-fill');
+  if (!cachedPercentEl) cachedPercentEl = document.getElementById('typing-progress-percent');
+  if (!cachedFillEl && !cachedPercentEl) return;
 
   const totalChars = (currentParagraph && currentParagraph.length) ? currentParagraph.length : 1;
   const progressPercent = Math.min(100, Math.max(0, Math.round((charIndex / totalChars) * 100)));
+  const percentStr = `${progressPercent}%`;
 
-  if (fillEl) fillEl.style.width = `${progressPercent}%`;
-  if (percentEl) percentEl.textContent = `${progressPercent}%`;
+  if (cachedFillEl && cachedFillEl.style.width !== percentStr) {
+    cachedFillEl.style.width = percentStr;
+  }
+  if (cachedPercentEl && cachedPercentEl.textContent !== percentStr) {
+    cachedPercentEl.textContent = percentStr;
+  }
 }
 
 function updateLiveStats() {
@@ -489,9 +541,12 @@ const SHIFT_SYMBOLS_MAP = {
 };
 
 function clearKeyHighlights() {
-  document.querySelectorAll('.key-btn').forEach(btn => {
-    btn.classList.remove('key-next');
-  });
+  if (currentlyHighlightedNextKeys.length > 0) {
+    for (let i = 0; i < currentlyHighlightedNextKeys.length; i++) {
+      currentlyHighlightedNextKeys[i].classList.remove('key-next');
+    }
+    currentlyHighlightedNextKeys.length = 0;
+  }
 }
 
 function cssEscape(str) {
@@ -501,18 +556,17 @@ function cssEscape(str) {
 
 function flashKeyFeedback(char, isCorrect) {
   if (!char) return;
-  const lowerChar = char.toLowerCase();
   const feedbackClass = isCorrect ? 'key-correct' : 'key-incorrect';
+  let keyBtn = null;
 
-  let keyBtn = document.querySelector(`.key-btn[data-key="${cssEscape(lowerChar)}"]`) ||
-               document.querySelector(`.key-btn[data-shift="${cssEscape(char)}"]`);
-
-  if (!keyBtn && char === ' ') {
-    keyBtn = document.querySelector('.key-btn[data-key=" "]');
-  } else if (!keyBtn && (char === 'enter' || char === '\n' || char === '\r')) {
-    keyBtn = document.querySelector('.key-btn[data-key="enter"]');
-  } else if (!keyBtn && char === 'backspace') {
-    keyBtn = document.querySelector('.key-btn[data-key="backspace"]');
+  if (char === ' ') {
+    keyBtn = virtualKeyMap.get(' ');
+  } else if (char === 'enter' || char === '\n' || char === '\r') {
+    keyBtn = virtualKeyMap.get('enter');
+  } else if (char === 'backspace') {
+    keyBtn = virtualKeyMap.get('backspace');
+  } else {
+    keyBtn = virtualKeyMap.get(char.toLowerCase()) || virtualKeyMap.get(char);
   }
 
   if (keyBtn) {
@@ -544,21 +598,18 @@ function highlightNextKey() {
     baseKey = 'tab';
   }
 
-  // Highlight target base key (Blue)
-  let targetBtn = document.querySelector(`.key-btn[data-key="${cssEscape(baseKey)}"]`);
-  if (!targetBtn && expectedChar) {
-    targetBtn = document.querySelector(`.key-btn[data-shift="${cssEscape(expectedChar)}"]`);
-  }
+  let targetBtn = virtualKeyMap.get(baseKey) || virtualKeyMap.get(expectedChar);
 
   if (targetBtn) {
     targetBtn.classList.add('key-next');
+    currentlyHighlightedNextKeys.push(targetBtn);
   }
 
-  // Highlight Shift keys if Shift is required
   if (needsShift) {
-    document.querySelectorAll('.key-btn[data-key="shift"]').forEach(shiftBtn => {
-      shiftBtn.classList.add('key-next');
-    });
+    for (let i = 0; i < shiftKeyElements.length; i++) {
+      shiftKeyElements[i].classList.add('key-next');
+      currentlyHighlightedNextKeys.push(shiftKeyElements[i]);
+    }
   }
 }
 
@@ -566,59 +617,78 @@ function initVirtualKeyboard() {
   const keyboardWrapper = document.getElementById('virtual-keyboard');
   if (!keyboardWrapper) return;
 
-  keyboardWrapper.addEventListener('click', (e) => {
-    const btn = e.target.closest('.key-btn');
-    if (!btn) return;
+  virtualKeyMap.clear();
+  shiftKeyElements.length = 0;
 
-    const keyVal = btn.dataset.key;
-    const shiftVal = btn.dataset.shift;
-
-    if (!hiddenInputEl) return;
-
-    if (keyVal === 'backspace') {
-      handleBackspace();
-    } else if (keyVal === 'enter') {
-      handleEnterKey();
-    } else if (keyVal === 'shift' || keyVal === 'capslock' || keyVal === 'tab') {
-      hiddenInputEl.focus();
-    } else {
-      let charToInsert = keyVal;
-      if (shiftVal && (btn.classList.contains('key-next') || e.shiftKey)) {
-        charToInsert = shiftVal;
+  const keyBtns = keyboardWrapper.querySelectorAll('.key-btn');
+  keyBtns.forEach(btn => {
+    btn.setAttribute('tabindex', '-1');
+    const dataKey = btn.dataset.key;
+    const dataShift = btn.dataset.shift;
+    if (dataKey) {
+      virtualKeyMap.set(dataKey.toLowerCase(), btn);
+      if (dataKey.toLowerCase() === 'shift') {
+        shiftKeyElements.push(btn);
       }
-      hiddenInputEl.value = charToInsert;
-      handleTypingInput();
-      hiddenInputEl.focus();
+    }
+    if (dataShift) {
+      virtualKeyMap.set(dataShift, btn);
     }
   });
 
-  // Physical keyboard keydown pressed highlight
-  document.addEventListener('keydown', (e) => {
-    let keyName = e.key.toLowerCase();
-    if (keyName === ' ') keyName = ' ';
+  if (!keyboardWrapper.dataset.listenerAttached) {
+    keyboardWrapper.dataset.listenerAttached = 'true';
+    keyboardWrapper.addEventListener('click', (e) => {
+      const btn = e.target.closest('.key-btn');
+      if (!btn) return;
 
-    let keyBtn = document.querySelector(`.key-btn[data-key="${cssEscape(keyName)}"]`) ||
-                 document.querySelector(`.key-btn[data-shift="${cssEscape(e.key)}"]`);
+      const keyVal = btn.dataset.key;
+      const shiftVal = btn.dataset.shift;
 
-    if (keyBtn) {
-      keyBtn.classList.add('key-pressed');
-    }
-  });
+      if (!hiddenInputEl) return;
 
-  // Physical keyboard keyup release highlight
-  document.addEventListener('keyup', (e) => {
-    let keyName = e.key.toLowerCase();
-    if (keyName === ' ') keyName = ' ';
+      if (keyVal === 'backspace') {
+        handleBackspace();
+      } else if (keyVal === 'enter') {
+        handleEnterKey();
+      } else if (keyVal === 'shift' || keyVal === 'capslock' || keyVal === 'tab') {
+        hiddenInputEl.focus();
+      } else {
+        let charToInsert = keyVal;
+        if (shiftVal && (btn.classList.contains('key-next') || e.shiftKey)) {
+          charToInsert = shiftVal;
+        }
+        hiddenInputEl.value = charToInsert;
+        handleTypingInput();
+        hiddenInputEl.focus();
+      }
+    });
 
-    let keyBtn = document.querySelector(`.key-btn[data-key="${cssEscape(keyName)}"]`) ||
-                 document.querySelector(`.key-btn[data-shift="${cssEscape(e.key)}"]`);
+    document.addEventListener('keydown', (e) => {
+      let keyName = e.key.toLowerCase();
+      if (keyName === ' ') keyName = ' ';
+      let keyBtn = virtualKeyMap.get(keyName) || virtualKeyMap.get(e.key);
 
-    if (keyBtn) {
-      keyBtn.classList.remove('key-pressed');
-    } else {
-      document.querySelectorAll('.key-pressed').forEach(btn => btn.classList.remove('key-pressed'));
-    }
-  });
+      if (keyBtn) {
+        keyBtn.classList.add('key-pressed');
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+      let keyName = e.key.toLowerCase();
+      if (keyName === ' ') keyName = ' ';
+      let keyBtn = virtualKeyMap.get(keyName) || virtualKeyMap.get(e.key);
+
+      if (keyBtn) {
+        keyBtn.classList.remove('key-pressed');
+      } else {
+        const pressedKeys = document.querySelectorAll('.key-pressed');
+        for (let i = 0; i < pressedKeys.length; i++) {
+          pressedKeys[i].classList.remove('key-pressed');
+        }
+      }
+    });
+  }
 
   highlightNextKey();
 }
@@ -710,12 +780,10 @@ function drawCanvasChart(canvasId, dataPoints, themeVarName, fallbackColor, maxY
 
   const gradient = ctx.createLinearGradient(0, paddingY, 0, height);
   try {
-    let fillColor = fillGradientColor || 'rgba(37, 99, 235, 0.25)';
-    if (!fillGradientColor && strokeColor) {
-      if (strokeColor === '#10b981') fillColor = 'rgba(16, 185, 129, 0.25)';
-      else if (strokeColor === '#ef4444') fillColor = 'rgba(239, 68, 68, 0.25)';
-      else if (strokeColor === '#f59e0b') fillColor = 'rgba(245, 158, 11, 0.25)';
-    }
+    let fillColor = 'rgba(37, 99, 235, 0.25)';
+    if (strokeColor === '#10b981') fillColor = 'rgba(16, 185, 129, 0.25)';
+    else if (strokeColor === '#ef4444') fillColor = 'rgba(239, 68, 68, 0.25)';
+    else if (strokeColor === '#f59e0b') fillColor = 'rgba(245, 158, 11, 0.25)';
     gradient.addColorStop(0, fillColor);
     gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
   } catch (e) {
@@ -823,7 +891,7 @@ async function finishTest() {
     updatePersonalBestRecord(finalWpm, finalAccuracy);
   }
 
-  // 2. Post test results to Spring Boot REST API
+  // 3. Post test results to Spring Boot REST API
   try {
     const postData = {
       ...testResults,
@@ -906,7 +974,7 @@ function togglePauseTest() {
   if (!isTestStarted || isTestFinished) return;
 
   isTestPaused = !isTestPaused;
-  const wrapperEl = document.getElementById('paragraph-box-wrapper');
+  const wrapperEl = cachedWrapperEl || document.getElementById('paragraph-box-wrapper');
   if (isTestPaused) {
     pauseTimer();
     if (pauseBtnEl) pauseBtnEl.innerHTML = '▶️ Resume Test';
@@ -980,6 +1048,9 @@ function restartTest() {
   isTestStarted = false;
   isTestFinished = false;
   isUntimedPracticeMode = false;
+  currentFirstVisibleLine = 0;
+  currentTranslateY = 0;
+  document.body.classList.remove('typing-active');
 
   if (hiddenInputEl) hiddenInputEl.value = '';
   if (paragraphBoxEl) paragraphBoxEl.style.transform = 'translateY(0px)';
@@ -996,6 +1067,9 @@ function resetTestState() {
   isTestStarted = false;
   isTestFinished = false;
   isUntimedPracticeMode = false;
+  currentFirstVisibleLine = 0;
+  currentTranslateY = 0;
+  document.body.classList.remove('typing-active');
 
   if (hiddenInputEl) hiddenInputEl.value = '';
 
@@ -1032,6 +1106,7 @@ function startTestExplicitly() {
 
   if (!isTestStarted) {
     isTestStarted = true;
+    document.body.classList.add('typing-active');
     startTimer(onTimerTick, finishTest);
     if (restartBtnEl) restartBtnEl.innerHTML = '↻ Restart Test';
     const statusBadge = document.getElementById('test-status-badge');
@@ -1056,7 +1131,6 @@ function handleDurationChange(val) {
     if (durationSelectEl) durationSelectEl.value = selectedVal;
   }
 
-  // Force immediate update of #stat-timer DOM element
   const timerEl = document.getElementById('stat-timer');
   if (timerEl) {
     timerEl.textContent = TimerManager.formatTime(TimerManager.getMaxSeconds());
@@ -1064,6 +1138,7 @@ function handleDurationChange(val) {
 
   restartTest();
 }
+
 window.handleDurationChange = handleDurationChange;
 window.restartTest = restartTest;
 window.handleModeUI = handleModeUI;

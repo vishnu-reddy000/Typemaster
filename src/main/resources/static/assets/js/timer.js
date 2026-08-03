@@ -222,30 +222,34 @@ const TimerManager = {
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   },
 
+  _timerEl: null,
+  _timerCardEl: null,
+
+  _getElements() {
+    if (!this._timerEl) this._timerEl = document.getElementById('stat-timer');
+    if (!this._timerCardEl) this._timerCardEl = document.querySelector('.timer-card');
+    return { timerEl: this._timerEl, timerCardEl: this._timerCardEl };
+  },
+
   /**
    * Updates Timer Card display in UI.
    */
   updateUI() {
-    const timerEl = document.getElementById('stat-timer');
-    const timerCardEl = document.querySelector('.timer-card');
+    const { timerEl, timerCardEl } = this._getElements();
 
     if (timerEl) {
-      timerEl.textContent = this.formatTime(this.state.timeRemaining);
-      timerEl.classList.remove('timer-pulse');
-      void timerEl.offsetWidth;
-      timerEl.classList.add('timer-pulse');
+      const formatted = this.formatTime(this.state.timeRemaining);
+      if (timerEl.textContent !== formatted) {
+        timerEl.textContent = formatted;
+      }
     }
 
     if (timerCardEl && this.config.maxSeconds > 0) {
       const ratio = this.state.timeRemaining / this.config.maxSeconds;
-      timerCardEl.classList.remove('timer-normal', 'timer-warning', 'timer-urgent');
-
-      if (ratio > 0.5) {
-        timerCardEl.classList.add('timer-normal');
-      } else if (ratio > 0.2) {
-        timerCardEl.classList.add('timer-warning');
-      } else {
-        timerCardEl.classList.add('timer-urgent');
+      const targetClass = ratio > 0.5 ? 'timer-normal' : (ratio > 0.2 ? 'timer-warning' : 'timer-urgent');
+      if (!timerCardEl.classList.contains(targetClass)) {
+        timerCardEl.classList.remove('timer-normal', 'timer-warning', 'timer-urgent');
+        timerCardEl.classList.add(targetClass);
       }
     }
   }

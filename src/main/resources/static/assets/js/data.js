@@ -4,6 +4,101 @@
  * with rich offline local fallback datasets.
  */
 
+/* ==========================================================================
+   Paragraph History Tracker — No repeat within 8 hours per device
+   Uses localStorage to remember which paragraphs were shown and when.
+   ========================================================================== */
+const PARA_HISTORY_KEY   = 'typeMaster_paraHistory';
+const PARA_COOLDOWN_MS   = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
+
+/**
+ * Returns a short fingerprint for a paragraph string (first 80 chars, trimmed).
+ */
+function _paraFingerprint(text) {
+  return (text || '').trim().substring(0, 80);
+}
+
+/**
+ * Load the seen-paragraph history from localStorage.
+ * Returns an object: { [fingerprint]: timestamp }
+ */
+function _loadParaHistory() {
+  try {
+    const raw = localStorage.getItem(PARA_HISTORY_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) {
+    return {};
+  }
+}
+
+/**
+ * Save the history back to localStorage, pruning entries older than 8 hours.
+ */
+function _saveParaHistory(history) {
+  const now = Date.now();
+  const pruned = {};
+  for (const fp in history) {
+    if (now - history[fp] < PARA_COOLDOWN_MS) {
+      pruned[fp] = history[fp];
+    }
+  }
+  try {
+    localStorage.setItem(PARA_HISTORY_KEY, JSON.stringify(pruned));
+  } catch (e) { /* storage full — ignore */ }
+}
+
+/**
+ * Returns true if this paragraph was seen within the last 8 hours on this device.
+ */
+function _wasRecentlySeen(text) {
+  const fp = _paraFingerprint(text);
+  const history = _loadParaHistory();
+  const seenAt = history[fp];
+  return seenAt && (Date.now() - seenAt < PARA_COOLDOWN_MS);
+}
+
+/**
+ * Mark a paragraph as seen right now.
+ */
+function _markAsSeen(text) {
+  const fp = _paraFingerprint(text);
+  const history = _loadParaHistory();
+  history[fp] = Date.now();
+  _saveParaHistory(history);
+}
+
+/**
+ * Pick a paragraph from a pool that hasn't been seen in 8 hours.
+ * If all have been seen recently, falls back to the least-recently-seen one.
+ */
+function _pickFresh(pool) {
+  if (!pool || pool.length === 0) return null;
+
+  // Find unseen candidates
+  const unseen = pool.filter(p => !_wasRecentlySeen(p));
+  if (unseen.length > 0) {
+    const pick = unseen[Math.floor(Math.random() * unseen.length)];
+    _markAsSeen(pick);
+    return pick;
+  }
+
+  // All have been seen recently — pick the one seen longest ago
+  const history = _loadParaHistory();
+  let oldest = null;
+  let oldestTime = Infinity;
+  for (const p of pool) {
+    const fp = _paraFingerprint(p);
+    const seenAt = history[fp] || 0;
+    if (seenAt < oldestTime) {
+      oldestTime = seenAt;
+      oldest = p;
+    }
+  }
+  const pick = oldest || pool[0];
+  _markAsSeen(pick);
+  return pick;
+}
+
 const FALLBACK_PARAGRAPHS = {
   1: [
     "The quick brown fox jumps over the lazy dog. Programming is the art of telling a computer what to do through clear, logical, and structured instructions. Developing great typing speed requires regular practice, focus, and patience.",
@@ -201,7 +296,9 @@ async function fetchPracticeMaterial(minutes = 1, mode = 'PARAGRAPH', language =
     if (!response.ok) throw new Error('API Response not OK');
     const data = await response.json();
     if (data && data.content && data.content.trim().length > 0) {
-      return data.content;
+      const apiText = data.content.trim();
+      _markAsSeen(apiText);
+      return apiText;
     }
   } catch (err) {
     console.log('Spring Boot API fetch optional fallback:', err.message);
@@ -244,20 +341,18 @@ function getFallbackMaterial(minutes = 1, mode = 'PARAGRAPH', language = 'JAVA',
 
   if (mode === 'PARAGRAPH' && DIFFICULTY_PARAGRAPHS[difficulty]) {
     const pool = DIFFICULTY_PARAGRAPHS[difficulty];
-    const idx = Math.floor(Math.random() * pool.length);
-    return pool[idx];
+    return _pickFresh(pool);
   }
 
   if (EXTRA_PRACTICE_DATASETS[mode]) {
     const dataset = EXTRA_PRACTICE_DATASETS[mode];
-    const randomIndex = Math.floor(Math.random() * dataset.length);
-    return dataset[randomIndex];
+    return _pickFresh(dataset);
   }
 
   const targetKey = (typeof minutes === 'number' && minutes < 1) ? 1 : (Math.round(minutes) || 1);
   const pool = FALLBACK_PARAGRAPHS[targetKey] || FALLBACK_PARAGRAPHS[1] || FALLBACK_PARAGRAPHS[3];
   if (Array.isArray(pool)) {
-    return pool[Math.floor(Math.random() * pool.length)];
+    return _pickFresh(pool);
   }
   return pool;
 }

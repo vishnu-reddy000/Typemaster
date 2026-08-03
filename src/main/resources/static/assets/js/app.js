@@ -505,7 +505,32 @@ function initSplashScreen() {
   const progressBarEl = document.getElementById('splash-progress-bar');
   const percentageEl = document.getElementById('splash-percentage');
 
-  if (!splashLoader || !typewriterTextEl) return;
+  if (!splashLoader) return;
+
+  const dismissSplash = () => {
+    if (splashLoader) {
+      splashLoader.style.pointerEvents = 'none';
+      splashLoader.style.opacity = '0';
+      splashLoader.style.display = 'none';
+      splashLoader.classList.add('fade-out');
+    }
+  };
+
+  // Fail-safe max timeout: Force dismiss after 1.2s max under any condition
+  const maxTimeout = setTimeout(dismissSplash, 1200);
+
+  // User interactive dismissal (click, touch, keydown)
+  ['click', 'touchstart', 'pointerdown', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, () => {
+      clearTimeout(maxTimeout);
+      dismissSplash();
+    }, { once: true, passive: true });
+  });
+
+  if (!typewriterTextEl) {
+    dismissSplash();
+    return;
+  }
 
   const currentPath = window.location.pathname.toLowerCase();
   let fullQuote = "Ideas mean nothing without execution.";
@@ -513,24 +538,11 @@ function initSplashScreen() {
   if (currentPath.includes('typing')) {
     fullQuote = "Work on your typing skills";
   } else if (currentPath.includes('result')) {
-    fullQuote = "Analyzing your typing performance... Please wait a moment.";
+    fullQuote = "Analyzing performance...";
   }
 
   let charIndex = 0;
   typewriterTextEl.textContent = "";
-
-  const dismissSplash = () => {
-    if (splashLoader && !splashLoader.classList.contains('fade-out')) {
-      splashLoader.style.pointerEvents = 'none';
-      splashLoader.classList.add('fade-out');
-      setTimeout(() => {
-        splashLoader.style.display = 'none';
-      }, 300);
-    }
-  };
-
-  splashLoader.addEventListener('click', dismissSplash);
-  document.addEventListener('keydown', dismissSplash, { once: true });
 
   // Fast Typewriter effect synchronized with progress bar
   const typingInterval = setInterval(() => {
@@ -545,10 +557,9 @@ function initSplashScreen() {
       clearInterval(typingInterval);
       if (progressBarEl) progressBarEl.style.width = '100%';
       if (percentageEl) percentageEl.textContent = '100%';
-
-      setTimeout(dismissSplash, 400);
+      setTimeout(dismissSplash, 150);
     }
-  }, 40);
+  }, 20);
 }
 
 /**

@@ -176,41 +176,42 @@
                 </div>
 
                 <!-- Hero Interactive Mockup Preview -->
-                <div class="hero-mockup">
+                <div class="hero-mockup" id="sandbox-simulator-arena" tabindex="0">
+                    <input type="text" id="sandbox-hidden-input" class="hidden-input" autocomplete="off" aria-label="Type here to test sandbox simulator" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: text; z-index: 15;">
                     <div class="mockup-header">
                         <div class="mockup-dots">
-                            <span class="mockup-dot dot-red"></span>
-                            <span class="mockup-dot dot-yellow"></span>
-                            <span class="mockup-dot dot-green"></span>
+                            <span class="mockup-dot dot-red" id="sandbox-reset-btn" title="Reset Sandbox Test" style="cursor: pointer;"></span>
+                            <span class="mockup-dot dot-yellow" title="Pause / Resume" id="sandbox-pause-btn" style="cursor: pointer;"></span>
+                            <span class="mockup-dot dot-green" title="Arena Active"></span>
                         </div>
                         <div style="font-size: 0.75rem; color: var(--text-light); font-weight: 700;">typing_arena.js</div>
                     </div>
                     <div class="mockup-body">
                         <div class="mockup-stats">
                             <div class="mockup-stat-item">
-                                <div class="mockup-stat-val">82</div>
+                                <div class="mockup-stat-val" id="sandbox-wpm">0</div>
                                 <div class="mockup-stat-label">WPM</div>
                             </div>
                             <div class="mockup-stat-item">
-                                <div class="mockup-stat-val">99%</div>
+                                <div class="mockup-stat-val" id="sandbox-accuracy">100%</div>
                                 <div class="mockup-stat-label">Accuracy</div>
                             </div>
                             <div class="mockup-stat-item">
-                                <div class="mockup-stat-val">00:15</div>
+                                <div class="mockup-stat-val" id="sandbox-timer">00:00</div>
                                 <div class="mockup-stat-label">Time</div>
                             </div>
                         </div>
-                        <div class="mockup-text">
-                            <span class="correct">Developing</span> <span class="correct">great</span> <span class="correct">typing</span> <span class="correct">speed</span> <span class="active">requires</span> practice, rhythm, and accuracy...
+                        <div class="mockup-text" id="sandbox-mockup-text">
+                            <span class="active">D</span>eveloping great typing speed requires practice, rhythm, and accuracy. Master your keyboard skills with live real-time metrics.
                         </div>
                     </div>
                     
                     <!-- Floating Badge Card Overlay -->
-                    <div class="mockup-floating-badge">
+                    <div class="mockup-floating-badge" id="sandbox-floating-badge" style="display: none;">
                         <div style="font-size: 1.5rem;">🏆</div>
                         <div>
-                            <div style="font-weight: 800; font-size: 0.85rem; color: var(--text-primary);">Speed Demon Unlocked</div>
-                            <div style="font-size: 0.75rem; color: var(--text-secondary);">Peak score exceeded 80 WPM</div>
+                            <div style="font-weight: 800; font-size: 0.85rem; color: var(--text-primary);" id="sandbox-badge-title">Speed Demon Unlocked</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary);" id="sandbox-badge-subtitle">Peak score exceeded 80 WPM</div>
                         </div>
                     </div>
                 </div>

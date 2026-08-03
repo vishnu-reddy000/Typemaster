@@ -351,6 +351,14 @@ header.navbar {
   font-weight: 600;
 }
 
+.mockup-text .incorrect {
+  color: var(--error-color, #ef4444);
+  background-color: var(--error-bg, rgba(239, 68, 68, 0.15));
+  border-radius: 3px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 .mockup-text .active {
   color: var(--primary-color);
   border-bottom: 2.5px solid var(--primary-color);

@@ -795,7 +795,221 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSoundToggleButton();
   initWebSocketRealtimeSync();
   initThemeShowcase();
+  initSandboxSimulator();
 });
+
+/* ==========================================================================
+   ENTERPRISE SANDBOX SIMULATOR ENGINE (HERO PREVIEW)
+   High-performance zero-lag typing engine matching Monkeytype & 10FastFingers
+   ========================================================================== */
+
+function initSandboxSimulator() {
+  const arenaEl = document.getElementById("sandbox-simulator-arena");
+  const inputEl = document.getElementById("sandbox-hidden-input");
+  const textEl = document.getElementById("sandbox-mockup-text");
+  const wpmEl = document.getElementById("sandbox-wpm");
+  const accuracyEl = document.getElementById("sandbox-accuracy");
+  const timerEl = document.getElementById("sandbox-timer");
+  const badgeEl = document.getElementById("sandbox-floating-badge");
+  const badgeTitleEl = document.getElementById("sandbox-badge-title");
+  const badgeSubtitleEl = document.getElementById("sandbox-badge-subtitle");
+  const resetBtnEl = document.getElementById("sandbox-reset-btn");
+  const pauseBtnEl = document.getElementById("sandbox-pause-btn");
+
+  if (!arenaEl || !inputEl || !textEl) return;
+
+  const defaultParagraph = "Developing great typing speed requires practice, rhythm, and accuracy. Master your keyboard skills with live real-time metrics and high performance analytics.";
+
+  let charSpans = [];
+  let isStarted = false;
+  let isFinished = false;
+  let isPaused = false;
+  let startTime = 0;
+  let elapsedSeconds = 0;
+  let timerInterval = null;
+  let totalKeystrokes = 0;
+  let mistakeCount = 0;
+
+  function renderText() {
+    textEl.innerHTML = "";
+    charSpans = [];
+    const chars = defaultParagraph.split("");
+    const fragment = document.createDocumentFragment();
+
+    chars.forEach((char, idx) => {
+      const span = document.createElement("span");
+      span.textContent = char;
+      if (idx === 0) span.className = "active";
+      fragment.appendChild(span);
+      charSpans.push(span);
+    });
+
+    textEl.appendChild(fragment);
+  }
+
+  function formatTimer(totalSecs) {
+    const mins = Math.floor(totalSecs / 60);
+    const secs = totalSecs % 60;
+    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  }
+
+  function updateMetrics(typedVal) {
+    totalKeystrokes = typedVal.length;
+    let correctCount = 0;
+    let errors = 0;
+
+    for (let i = 0; i < charSpans.length; i++) {
+      const span = charSpans[i];
+      if (i < typedVal.length) {
+        if (typedVal[i] === defaultParagraph[i]) {
+          span.className = "correct";
+          correctCount++;
+        } else {
+          span.className = "incorrect";
+          errors++;
+        }
+      } else {
+        span.className = i === typedVal.length ? "active" : "";
+      }
+    }
+
+    mistakeCount = errors;
+
+    const now = Date.now();
+    const currentElapsedSecs = isStarted && !isPaused ? Math.max(0, Math.floor((now - startTime) / 1000)) : elapsedSeconds;
+    const elapsedMins = currentElapsedSecs > 0 ? currentElapsedSecs / 60 : 0;
+
+    let netWpm = 0;
+    if (elapsedMins > 0) {
+      const rawWpm = (correctCount / 5) / elapsedMins;
+      netWpm = Math.max(0, Math.round(rawWpm));
+    }
+
+    let accuracy = 100;
+    if (totalKeystrokes > 0) {
+      accuracy = Math.min(100, Math.max(0, Math.round((correctCount / totalKeystrokes) * 100)));
+    }
+
+    if (wpmEl) wpmEl.textContent = isNaN(netWpm) ? "0" : String(netWpm);
+    if (accuracyEl) accuracyEl.textContent = isNaN(accuracy) ? "100%" : `${accuracy}%`;
+    if (timerEl) timerEl.textContent = formatTimer(currentElapsedSecs);
+
+    return { correctCount, netWpm, accuracy, currentElapsedSecs };
+  }
+
+  function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    startTime = Date.now() - (elapsedSeconds * 1000);
+    timerInterval = setInterval(() => {
+      if (!isStarted || isFinished || isPaused) return;
+      const now = Date.now();
+      elapsedSeconds = Math.max(0, Math.floor((now - startTime) / 1000));
+      updateMetrics(inputEl.value);
+    }, 200);
+  }
+
+  function stopTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }
+
+  function finishTest() {
+    isFinished = true;
+    stopTimer();
+    inputEl.disabled = true;
+
+    const { netWpm, accuracy } = updateMetrics(inputEl.value);
+
+    if (badgeEl) {
+      if (badgeTitleEl) badgeTitleEl.textContent = netWpm >= 50 ? "🏆 Speed Demon Unlocked" : "🎯 Practice Completed";
+      if (badgeSubtitleEl) badgeSubtitleEl.textContent = `Score: ${netWpm} WPM | ${accuracy}% Accuracy`;
+      badgeEl.style.display = "flex";
+    }
+
+    if (typeof saveUserHistoryResult === "function") {
+      saveUserHistoryResult({
+        wpm: netWpm,
+        rawWpm: netWpm,
+        accuracy: accuracy,
+        durationMinutes: 1,
+        mode: "PARAGRAPH",
+        language: "ENGLISH",
+        topic: "GENERAL",
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+
+  function resetSimulator() {
+    stopTimer();
+    isStarted = false;
+    isFinished = false;
+    isPaused = false;
+    startTime = 0;
+    elapsedSeconds = 0;
+    totalKeystrokes = 0;
+    mistakeCount = 0;
+
+    inputEl.value = "";
+    inputEl.disabled = false;
+
+    if (wpmEl) wpmEl.textContent = "0";
+    if (accuracyEl) accuracyEl.textContent = "100%";
+    if (timerEl) timerEl.textContent = "00:00";
+    if (badgeEl) badgeEl.style.display = "none";
+
+    renderText();
+    inputEl.focus();
+  }
+
+  inputEl.addEventListener("input", () => {
+    if (isFinished) return;
+
+    const val = inputEl.value;
+
+    if (!isStarted && val.length > 0) {
+      isStarted = true;
+      startTime = Date.now();
+      startTimer();
+    }
+
+    updateMetrics(val);
+
+    if (val.length >= defaultParagraph.length) {
+      finishTest();
+    }
+  });
+
+  arenaEl.addEventListener("click", () => {
+    if (!isFinished && inputEl) inputEl.focus();
+  });
+
+  if (resetBtnEl) {
+    resetBtnEl.addEventListener("click", (e) => {
+      e.stopPropagation();
+      resetSimulator();
+    });
+  }
+
+  if (pauseBtnEl) {
+    pauseBtnEl.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (!isStarted || isFinished) return;
+      isPaused = !isPaused;
+      if (isPaused) {
+        stopTimer();
+        pauseBtnEl.style.opacity = "0.5";
+      } else {
+        startTimer();
+        pauseBtnEl.style.opacity = "1";
+      }
+    });
+  }
+
+  renderText();
+}
 
 /* ==========================================================================
    USERNAME EDITING HELPERS FOR SETTINGS PAGE

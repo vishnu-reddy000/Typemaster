@@ -393,13 +393,13 @@ function handleNewsletterSubmit(e) {
 }
 
 /* ---- Init ---- */
-(function init() {
+document.addEventListener('DOMContentLoaded', () => {
   renderFeatured();
   renderBlogGrid();
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').catch(() => {});
   }
-})();
+});
 </script>
 </body>
 </html>

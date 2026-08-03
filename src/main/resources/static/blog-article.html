@@ -223,21 +223,23 @@
 /* ============================================================
    Blog Article Page Controller
    ============================================================ */
-const urlParams = new URLSearchParams(window.location.search);
-const slug = urlParams.get('slug');
+document.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const slug = urlParams.get('slug');
 
-if (!slug) {
-  document.getElementById('article-title').textContent = 'No article specified';
-  document.getElementById('article-body').innerHTML = '<p>Please select an article from the <a href="blog.html">blog home page</a>.</p>';
-} else {
-  const article = getArticleBySlug(slug);
-  if (!article) {
-    document.getElementById('article-title').textContent = 'Article not found';
-    document.getElementById('article-body').innerHTML = '<p>This article does not exist. Return to <a href="blog.html">blog home</a>.</p>';
+  if (!slug) {
+    document.getElementById('article-title').textContent = 'No article specified';
+    document.getElementById('article-body').innerHTML = '<p>Please select an article from the <a href="blog.html">blog home page</a>.</p>';
   } else {
-    renderArticle(article);
+    const article = typeof getArticleBySlug === 'function' ? getArticleBySlug(slug) : null;
+    if (!article) {
+      document.getElementById('article-title').textContent = 'Article not found';
+      document.getElementById('article-body').innerHTML = '<p>This article does not exist. Return to <a href="blog.html">blog home</a>.</p>';
+    } else {
+      renderArticle(article);
+    }
   }
-}
+});
 
 function renderArticle(art) {
   // Update meta

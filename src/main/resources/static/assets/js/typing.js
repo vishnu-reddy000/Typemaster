@@ -823,21 +823,30 @@ async function finishTest() {
     updatePersonalBestRecord(finalWpm, finalAccuracy);
   }
 
-  // 2. Post test results to Spring Boot REST API (only for registered users)
-  if (user && user.username) {
-    try {
-      await fetch('/api/results', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(testResults)
-      });
-    } catch (err) {
-      console.log('Failed to post test results:', err);
+  // 2. Post test results to Spring Boot REST API
+  try {
+    const postData = {
+      ...testResults,
+      username: (user && user.username) ? user.username : 'Anonymous'
+    };
+    const response = await fetch('/api/results', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postData)
+    });
+    if (response.ok) {
+      const savedData = await response.json();
+      if (savedData && savedData.id) {
+        saveTestResult({
+          ...savedData,
+          timeTaken: finalTimeElapsed
+        });
+      }
     }
-  } else {
-    console.log('Guest mode test finished. Score saved in localStorage only.');
+  } catch (err) {
+    console.log('Failed to post test results to backend API:', err);
   }
 
   if (typeof playSoundFX === 'function') playSoundFX('completion');

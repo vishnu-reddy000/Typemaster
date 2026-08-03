@@ -430,62 +430,73 @@
 
 .paragraph-box.code-mode .char {
   color: var(--text-light);
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .paragraph-box.code-mode .char.correct {
-  color: var(--success-color);
-  background-color: var(--success-bg);
+  color: var(--success-color) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 .paragraph-box.code-mode .char.incorrect {
-  color: var(--error-color);
-  background-color: var(--error-bg);
-  text-decoration: underline;
-  text-decoration-color: var(--error-color);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
+  color: var(--error-color) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  text-decoration: underline !important;
+  text-decoration-color: var(--error-color) !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 3px !important;
 }
 
 .paragraph-box.code-mode .char.active {
-  color: var(--primary-color);
-  background-color: rgba(37, 99, 235, 0.3);
-  box-shadow: 0 0 0 2px var(--primary-color);
-  animation: blinkHighlight 0.9s infinite ease-in-out alternate;
+  color: var(--primary-color) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
 }
 
 /* Base Untyped Character (Soft Gray) */
 .char {
   position: relative;
-  border-radius: 3px;
-  padding: 0.05rem 0.06rem;
+  border-radius: 0 !important;
+  padding: 0 !important;
   color: var(--text-light);
-  transition: color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  transition: color 0.08s ease;
 }
 
-/* Correctly Typed Character (Green) */
+/* Correctly Typed Character (Clean Green Text, No Background Box, No Shadow) */
 .char.correct {
-  color: var(--success-color);
-  background-color: var(--success-bg);
+  color: var(--success-color) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
   font-weight: 600;
 }
 
-/* Incorrectly Typed Character (Red with Underline) */
+/* Incorrectly Typed Character (Clean Red Text with Underline, No Background Box, No Shadow) */
 .char.incorrect {
-  color: var(--error-color);
-  background-color: var(--error-bg);
-  text-decoration: underline;
-  text-decoration-color: var(--error-color);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
+  color: var(--error-color) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  text-decoration: underline !important;
+  text-decoration-color: var(--error-color) !important;
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 3px !important;
   font-weight: 600;
 }
 
-/* Current Active Character (Blue with Realistic Blinking Cursor) */
+/* Current Active Character (Clean Blinking Cursor, No Background Box, No Shadow) */
 .char.active {
-  color: var(--primary-color);
-  background-color: rgba(37, 99, 235, 0.18);
+  color: var(--primary-color) !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
   font-weight: 700;
-  border-radius: 3px;
   position: relative;
 }
 
@@ -498,7 +509,7 @@
   width: 2.5px;
   background-color: var(--primary-color);
   border-radius: 2px;
-  box-shadow: 0 0 8px var(--primary-color);
+  box-shadow: none !important;
   animation: blinkCursor 0.9s step-end infinite;
   z-index: 2;
 }
@@ -545,10 +556,21 @@
   user-select: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .virtual-keyboard-wrapper,
   #virtual-keyboard {
-    display: none !important;
+    overflow-x: auto;
+    padding: 0.75rem 0.5rem;
+    gap: 0.3rem;
+  }
+  .key-btn {
+    height: 38px;
+    min-width: 22px;
+    font-size: 0.75rem;
+    padding: 0.1rem;
+  }
+  .key-btn span {
+    font-size: 0.5rem;
   }
 }
 

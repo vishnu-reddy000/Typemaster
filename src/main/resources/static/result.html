@@ -847,6 +847,10 @@
             renderPersonalBestPanel();
             renderHeatmapAndDiagnostic();
 
+            // Load local storage result immediately so page renders with zero delay
+            loadLatestResultLocal();
+
+            // Sync with backend API for registered users if logged in
             const user = getCurrentUser();
             if (user && user.username) {
                 const userParam = `?username=${encodeURIComponent(user.username)}`;
@@ -856,12 +860,15 @@
                         return response.json();
                     })
                     .then(data => {
-                        displayResults(data);
+                        if (data) {
+                            displayResults(data);
+                        }
                     })
                     .catch(err => {
-                        console.log('Falling back to local storage:', err);
-                        loadLatestResultLocal();
+                        console.log('Backend result sync fallback to local storage:', err);
                     });
+            }
+
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/sw.js').catch(() => {});
             }

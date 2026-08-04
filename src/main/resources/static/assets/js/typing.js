@@ -386,7 +386,7 @@ function handleTypingInput() {
     EngineState.isTestStarted = true;
     document.body.classList.add('typing-active');
     startTimer(onTimerTick, finishTest);
-    if (DOM.restartBtn) DOM.restartBtn.innerHTML = '↻ Restart Test';
+    if (DOM.restartBtn) DOM.restartBtn.innerHTML = 'Restart Test';
     if (DOM.statusBadge) {
       DOM.statusBadge.textContent = 'In Progress';
       DOM.statusBadge.className = 'badge badge-warning';
@@ -1038,11 +1038,11 @@ function togglePauseTest() {
   EngineState.isTestPaused = !EngineState.isTestPaused;
   if (EngineState.isTestPaused) {
     pauseTimer();
-    if (DOM.pauseBtn) DOM.pauseBtn.innerHTML = '▶️ Resume Test';
+    if (DOM.pauseBtn) DOM.pauseBtn.innerHTML = 'Resume Test';
     if (DOM.wrapper) DOM.wrapper.classList.add('paused');
   } else {
     resumeTimer();
-    if (DOM.pauseBtn) DOM.pauseBtn.innerHTML = '⏸️ Pause Test';
+    if (DOM.pauseBtn) DOM.pauseBtn.innerHTML = 'Pause Test';
     if (DOM.wrapper) DOM.wrapper.classList.remove('paused');
   }
 }
@@ -1064,13 +1064,13 @@ function toggleLiveCharts() {
   if (isHidden) {
     DOM.chartsPanel.style.display = 'grid';
     if (btnText) btnText.textContent = 'Hide Live Performance Graphs';
-    if (btnIcon) btnIcon.textContent = '🔽';
+    if (btnIcon) btnIcon.textContent = '';
     localStorage.setItem('typeMaster_showCharts', 'true');
     resetAnalyticsCharts();
   } else {
     DOM.chartsPanel.style.display = 'none';
     if (btnText) btnText.textContent = 'Show Live Performance Graphs';
-    if (btnIcon) btnIcon.textContent = '📊';
+    if (btnIcon) btnIcon.textContent = '';
     localStorage.setItem('typeMaster_showCharts', 'false');
   }
 }
@@ -1084,11 +1084,11 @@ function initChartsVisibility() {
   if (showCharts === 'true' && DOM.chartsPanel) {
     DOM.chartsPanel.style.display = 'grid';
     if (btnText) btnText.textContent = 'Hide Live Performance Graphs';
-    if (btnIcon) btnIcon.textContent = '🔽';
+    if (btnIcon) btnIcon.textContent = '';
   } else if (DOM.chartsPanel) {
     DOM.chartsPanel.style.display = 'none';
     if (btnText) btnText.textContent = 'Show Live Performance Graphs';
-    if (btnIcon) btnIcon.textContent = '📊';
+    if (btnIcon) btnIcon.textContent = '';
   }
 }
 
@@ -1152,7 +1152,7 @@ function resetTestState() {
     console.log('Analytics chart reset ignored:', e);
   }
 
-  if (DOM.restartBtn) DOM.restartBtn.innerHTML = '▶ Start Test';
+  if (DOM.restartBtn) DOM.restartBtn.innerHTML = 'Start Test';
   if (DOM.statusBadge) {
     DOM.statusBadge.textContent = 'Ready';
     DOM.statusBadge.className = 'badge badge-primary';
@@ -1173,7 +1173,7 @@ function startTestExplicitly() {
     EngineState.isTestStarted = true;
     document.body.classList.add('typing-active');
     startTimer(onTimerTick, finishTest);
-    if (DOM.restartBtn) DOM.restartBtn.innerHTML = '↻ Restart Test';
+    if (DOM.restartBtn) DOM.restartBtn.innerHTML = 'Restart Test';
     if (DOM.statusBadge) {
       DOM.statusBadge.textContent = 'In Progress';
       DOM.statusBadge.className = 'badge badge-warning';

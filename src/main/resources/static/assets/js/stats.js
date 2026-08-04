@@ -24,30 +24,30 @@ function calculateAccuracy(correctChars, totalTyped) {
 function getPerformanceFeedback(wpm, accuracy) {
   if (wpm >= 70 && accuracy >= 95) {
     return {
-      title: "Speed Demon! 🚀",
+      title: "Speed Demon!",
       message: "Outstanding performance! You are typing at an elite professional level with incredible precision.",
-      badgeIcon: "⚡",
+      badgeIcon: "",
       badgeClass: "elite"
     };
   } else if (wpm >= 50 && accuracy >= 90) {
     return {
-      title: "Master Typist! 🌟",
+      title: "Master Typist!",
       message: "Fantastic job! Your typing speed is well above average and your accuracy is impressive.",
-      badgeIcon: "🏆",
+      badgeIcon: "",
       badgeClass: "pro"
     };
   } else if (wpm >= 30 && accuracy >= 80) {
     return {
-      title: "Great Effort! 💪",
+      title: "Great Effort!",
       message: "Good job! You have solid speed and accuracy. Consistent daily practice will push you higher.",
-      badgeIcon: "🎯",
+      badgeIcon: "",
       badgeClass: "good"
     };
   } else {
     return {
-      title: "Keep Practicing! 📈",
+      title: "Keep Practicing!",
       message: "Every expert was once a beginner. Focus on accuracy first, and speed will follow naturally!",
-      badgeIcon: "🌱",
+      badgeIcon: "",
       badgeClass: "beginner"
     };
   }
@@ -71,12 +71,12 @@ function calculateConsistency(accuracy, mistakes, timeElapsedSeconds) {
 }
 
 function getTypingRank(wpm) {
-  if (wpm >= 110) return { name: "Master", badge: "🚀 Master" };
-  if (wpm >= 90) return { name: "Diamond", badge: "👑 Diamond" };
-  if (wpm >= 70) return { name: "Platinum", badge: "💎 Platinum" };
-  if (wpm >= 50) return { name: "Gold", badge: "🥇 Gold" };
-  if (wpm >= 30) return { name: "Silver", badge: "🥈 Silver" };
-  return { name: "Bronze", badge: "🥉 Bronze" };
+  if (wpm >= 110) return { name: "Master", badge: "Master" };
+  if (wpm >= 90) return { name: "Diamond", badge: "Diamond" };
+  if (wpm >= 70) return { name: "Platinum", badge: "Platinum" };
+  if (wpm >= 50) return { name: "Gold", badge: "Gold" };
+  if (wpm >= 30) return { name: "Silver", badge: "Silver" };
+  return { name: "Bronze", badge: "Bronze" };
 }
 
 const _statsDomCache = {};

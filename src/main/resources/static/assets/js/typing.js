@@ -921,6 +921,7 @@ async function finishTest() {
   if (EngineState.isTestFinished) return;
   EngineState.isTestFinished = true;
   stopTimer();
+  document.body.classList.add('test-ending');
 
   const finalTimeElapsed = getTimeElapsed() || getTimerDurationSeconds();
   const finalWpm = calculateWPM(EngineState.correctChars, finalTimeElapsed);
@@ -992,7 +993,9 @@ async function finishTest() {
   }
 
   if (typeof playSoundFX === 'function') playSoundFX('completion');
-  window.location.href = 'result.html';
+  setTimeout(() => {
+    window.location.href = 'result.html';
+  }, 250);
 }
 
 function showTimesUpModal() {
@@ -1112,7 +1115,7 @@ function restartTest() {
   EngineState.currentFirstVisibleLine = 0;
   EngineState.currentTranslateY = 0;
   EngineState.lastExpectedChar = null;
-  document.body.classList.remove('typing-active');
+  document.body.classList.remove('typing-active', 'test-ending');
 
   if (DOM.hiddenInput) DOM.hiddenInput.value = '';
   if (DOM.paragraphBox) DOM.paragraphBox.style.transform = 'translateY(0px)';
@@ -1135,7 +1138,7 @@ function resetTestState() {
   EngineState.sessionKeyPresses = {};
   EngineState.sessionKeyErrors = {};
   EngineState.sessionCharsByType = { letters: 0, numbers: 0, symbols: 0 };
-  document.body.classList.remove('typing-active');
+  document.body.classList.remove('typing-active', 'test-ending');
 
   if (DOM.hiddenInput) DOM.hiddenInput.value = '';
 

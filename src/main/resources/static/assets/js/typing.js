@@ -226,7 +226,8 @@ function initTypingEngine() {
 }
 
 function handleModeUI() {
-  const isCoding = DOM.modeSelect && DOM.modeSelect.value === 'CODING';
+  const mode = DOM.modeSelect ? DOM.modeSelect.value : 'PARAGRAPH';
+  const isCoding = mode === 'CODING';
   if (DOM.languageGroup) DOM.languageGroup.style.display = isCoding ? 'flex' : 'none';
   if (DOM.topicGroup) DOM.topicGroup.style.display = isCoding ? 'flex' : 'none';
 
@@ -237,6 +238,10 @@ function handleModeUI() {
   if (DOM.wrapper) {
     if (isCoding) DOM.wrapper.classList.add('code-mode-wrapper');
     else DOM.wrapper.classList.remove('code-mode-wrapper');
+  }
+
+  if (mode === 'CUSTOM') {
+    showCustomTextModal();
   }
 }
 
@@ -253,27 +258,22 @@ async function loadNewParagraph() {
   const topic = DOM.topicSelect ? DOM.topicSelect.value : 'ALL';
   const difficulty = DOM.difficultySelect ? DOM.difficultySelect.value : 'MEDIUM';
 
-  if (typeof getFallbackMaterial === 'function') {
-    let newMaterial = getFallbackMaterial(currentDurationMins, mode, language, topic, difficulty);
-    if (newMaterial === EngineState.currentParagraph) {
-      newMaterial = getFallbackMaterial(currentDurationMins, mode, language, topic, difficulty);
+  if (typeof PracticeModeManager !== 'undefined' && typeof PracticeModeManager.loadPracticeContent === 'function') {
+    let newMaterial = await PracticeModeManager.loadPracticeContent(currentDurationMins, mode, language, topic, difficulty);
+    if (newMaterial === EngineState.currentParagraph && mode !== 'CUSTOM') {
+      newMaterial = await PracticeModeManager.loadPracticeContent(currentDurationMins, mode, language, topic, difficulty);
     }
+    EngineState.currentParagraph = newMaterial;
+  } else if (typeof getFallbackMaterial === 'function') {
+    let newMaterial = getFallbackMaterial(currentDurationMins, mode, language, topic, difficulty);
     EngineState.currentParagraph = newMaterial;
   } else {
     EngineState.currentParagraph = "The quick brown fox jumps over the lazy dog. Practice typing every day to master your speed and accuracy.";
   }
-  renderParagraph();
 
-  if (typeof fetchPracticeMaterial === 'function') {
-    try {
-      const liveData = await fetchPracticeMaterial(currentDurationMins, mode, language, topic, difficulty);
-      if (liveData && liveData.trim().length > 0 && loadId === EngineState.activeLoadSequence && !EngineState.isTestStarted && EngineState.charIndex === 0) {
-        EngineState.currentParagraph = liveData;
-        renderParagraph();
-      }
-    } catch (err) {
-      console.log('Async API load optional fallback:', err);
-    }
+  if (loadId === EngineState.activeLoadSequence) {
+    renderParagraph();
+    if (DOM.hiddenInput) DOM.hiddenInput.focus();
   }
 }
 

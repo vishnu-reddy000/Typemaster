@@ -1044,6 +1044,9 @@ header.navbar {
 }
 
 .footer-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.25rem;
   color: var(--text-light);
   transition: color var(--transition-fast), transform var(--transition-fast);

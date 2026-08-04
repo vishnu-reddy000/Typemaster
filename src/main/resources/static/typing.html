@@ -70,6 +70,7 @@
                     <label for="mode-select" class="control-label">Practice Mode:</label>
                     <select id="mode-select" class="duration-select" onchange="handleModeUI(); restartTest();">
                         <option value="PARAGRAPH" selected>📝 Text Paragraph</option>
+                        <option value="CHILDREN_POETS">🧸 Children's Poets & Quotes</option>
                         <option value="CODING">💻 Coding Practice</option>
                         <option value="QUOTES">💬 Famous Quotes</option>
                         <option value="NUMBERS">🔢 Numbers Practice</option>
@@ -215,7 +216,7 @@
             <!-- Main Interactive Typing Arena -->
             <div class="typing-arena" id="typing-arena" tabindex="0">
                 <!-- Hidden Input element to capture keypresses on mobile & desktop -->
-                <input type="text" id="hidden-input" class="hidden-input" autocomplete="off" aria-label="Type here to start test" autofocus>
+                <input type="text" id="hidden-input" class="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Type here to start test" autofocus>
                 
                 <!-- Premium Animated Typing Progress Bar -->
                 <div class="typing-progress-wrapper">

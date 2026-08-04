@@ -37,21 +37,27 @@ public class DataInitializer implements CommandLineRunner {
             List<Paragraph> oldParagraphs = paragraphRepository.findByType("PARAGRAPH");
             paragraphRepository.deleteAll(oldParagraphs);
 
-            // --- 1 Minute Test Paragraphs ---
+            // --- Children's Poets & Quotes Paragraphs ---
             paragraphRepository.save(new Paragraph(
-                    "The quick brown fox jumps over the lazy dog. Programming is the art of telling a computer what to do through clear, logical, and structured instructions. Developing great typing speed requires regular practice, focus, and patience.", 1, "PARAGRAPH", "ENGLISH", "GENERAL"
+                    "Shel Silverstein was a beloved children's poet and author who inspired young readers with humor and heart. His famous poem advises: \"Listen to the MUSTN'TS, child, Listen to the DONT'S. Listen to the SHOULDN'TS, the IMPOSSIBLES, the WON'TS. Listen to the NEVER HAVES then listen close to me—Anything can happen, child, Anything can be.\" Books like 'Where the Sidewalk Ends' and 'The Giving Tree' teach children to embrace imagination.", 1, "PARAGRAPH", "ENGLISH", "GENERAL"
             ));
             paragraphRepository.save(new Paragraph(
-                    "Web development combines creativity with technical problem solving. HTML provides the structural backbone of every web page, CSS brings visual beauty through colors and layouts, and JavaScript delivers dynamic interactivity that powers modern applications.", 1, "PARAGRAPH", "ENGLISH", "GENERAL"
+                    "Theodor Seuss Geisel, known to millions as Dr. Seuss, revolutionized children's poetry with bouncy rhythms and catchy rhymes. In 'Oh, the Places You'll Go!', he wrote: \"You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose. You're on your own. And YOU are the one who'll decide where to go.\"", 1, "PARAGRAPH", "ENGLISH", "GENERAL"
             ));
             paragraphRepository.save(new Paragraph(
-                    "Consistency and accuracy are the secrets to becoming a faster typist. When practicing keyboarding skills, focus on keeping your posture straight and your hands relaxed over the home row keys without looking down.", 1, "PARAGRAPH", "ENGLISH", "GENERAL"
+                    "A. A. Milne created timeless children's poetry and stories in 'When We Were Very Young' and 'Now We Are Six', giving life to Winnie-the-Pooh and Christopher Robin. He offered everlasting encouragement through Pooh's words: \"Always remember: You're braver than you believe, stronger than you seem, and smarter than you think.\"", 1, "PARAGRAPH", "ENGLISH", "GENERAL"
             ));
             paragraphRepository.save(new Paragraph(
-                    "Database management systems organize large volumes of information for efficient retrieval. Using relational tables, primary keys, and SQL queries, applications store user profiles and application state securely.", 1, "PARAGRAPH", "ENGLISH", "GENERAL"
+                    "Robert Louis Stevenson captured the magical innocence of childhood in his famous poetry collection 'A Child's Garden of Verses'. In his popular poem 'The Swing', he writes: \"How do you like to go up in a swing, Up in the air so blue? Oh, I do think it the pleasantest thing Ever a child can do!\" His verses celebrate outdoor play, dreams, and curiosity.", 3, "PARAGRAPH", "ENGLISH", "GENERAL"
             ));
             paragraphRepository.save(new Paragraph(
-                    "Version control systems like Git allow developers to track code changes and collaborate effortlessly with teams. Branching, committing, and merging code ensures seamless feature additions without breaking production.", 1, "PARAGRAPH", "ENGLISH", "GENERAL"
+                    "Christina Rossetti was a celebrated Victorian poet who composed gentle and lyrical children's poems about nature and seasons. Her iconic poem asks: \"Who has seen the wind? Neither I nor you: But when the leaves hang trembling, The wind is passing through.\" Reading and typing her verses helps children appreciate the quiet beauty of the world.", 3, "PARAGRAPH", "ENGLISH", "GENERAL"
+            ));
+            paragraphRepository.save(new Paragraph(
+                    "Roald Dahl brought mischievous wit and playful rhyme to children's literature through works like 'Revolting Rhymes', 'Matilda', and 'Charlie and the Chocolate Factory'. He famously wrote: \"Above all, watch with glittering eyes the whole world around you because the greatest secrets are always hidden in the most unlikely places. Those who don't believe in magic will never find it.\"", 5, "PARAGRAPH", "ENGLISH", "GENERAL"
+            ));
+            paragraphRepository.save(new Paragraph(
+                    "Jack Prelutsky served as America's first Children's Poet Laureate, writing hundreds of funny and musical poems for kids in collections like 'The New Kid on the Block'. He described poetry with warmth: \"Poetry is an opening doorway, a journey into wonder.\" His playful verses turn typing and reading into a delightful adventure.", 5, "PARAGRAPH", "ENGLISH", "GENERAL"
             ));
 
             // --- 3 Minute Test Paragraphs ---

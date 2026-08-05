@@ -146,11 +146,6 @@ function initTypingEngine() {
 
     if (DOM.modeSelect) {
       DOM.modeSelect.addEventListener('change', (e) => {
-        const val = e.target.value;
-        if (val === 'CUSTOM' && typeof setCustomPracticeText === 'function') {
-          showCustomTextModal();
-          return;
-        }
         handleModeUI();
         restartTest();
       });
@@ -241,9 +236,7 @@ function handleModeUI() {
     else DOM.wrapper.classList.remove('code-mode-wrapper');
   }
 
-  if (mode === 'CUSTOM') {
-    showCustomTextModal();
-  }
+
 }
 
 // ==========================================================================

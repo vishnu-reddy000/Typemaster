@@ -129,7 +129,6 @@
                         <option value="3m">3 Minutes</option>
                         <option value="5m">5 Minutes</option>
                         <option value="10m">10 Minutes</option>
-                        <option value="CUSTOM">Custom Duration</option>
                     </select>
                 </div>
                 <div class="control-group">
@@ -231,23 +230,7 @@
         </div>
     </div>
 
-    <!-- Custom Test Duration Modal -->
-    <div class="timesup-modal-overlay" id="custom-duration-modal" style="display: none;">
-        <div class="timesup-modal-card" style="text-align: left; max-width: 450px;">
-            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-                <div style="font-size: 2rem;">⏱️</div>
-                <h3 class="timesup-title" style="margin: 0;">Custom Duration</h3>
-            </div>
-            <p class="timesup-message" style="margin-bottom: 1.25rem;">Enter custom test duration in seconds (10 to 600):</p>
-            
-            <input type="number" id="custom-duration-input" min="10" max="600" value="45" style="width: 100%; border: 1.5px solid var(--border-color); border-radius: var(--radius-md); padding: 0.75rem; font-family: var(--font-sans); font-size: 0.95rem; background: var(--background-color); color: var(--text-primary); outline: none; transition: border-color var(--transition-fast); margin-bottom: 1.5rem;">
-            
-            <div class="timesup-btn-group" style="display: flex; justify-content: flex-end; gap: 0.75rem;">
-                <button class="btn btn-outline btn-ripple" id="custom-duration-cancel-btn" style="padding: 0.6rem 1.25rem;">Cancel</button>
-                <button class="btn btn-primary btn-ripple" id="custom-duration-save-btn" style="padding: 0.6rem 1.25rem;">Set Duration</button>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Footer -->
     <footer class="footer">

@@ -496,22 +496,29 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
 }
 
 .cert-shield-badge {
   background: linear-gradient(135deg, #fef08a 0%, #eab308 50%, #b45309 100%);
   color: #0f2b5c;
-  padding: 0.6rem 1.25rem;
+  padding: 0.65rem 1.4rem;
   border-radius: var(--radius-full);
   border: 2px solid #ffffff;
   box-shadow: 0 4px 12px rgba(217, 119, 6, 0.35);
   font-size: 0.75rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  justify-content: center;
+  white-space: nowrap;
+  gap: 0.5rem;
+  line-height: 1;
+  max-width: 100%;
 }
 
 .cert-qr-block {

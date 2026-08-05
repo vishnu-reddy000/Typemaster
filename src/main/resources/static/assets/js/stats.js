@@ -22,33 +22,62 @@ function calculateAccuracy(correctChars, totalTyped) {
 }
 
 function getPerformanceFeedback(wpm, accuracy) {
-  if (wpm >= 70 && accuracy >= 95) {
+  const w = wpm || 0;
+  const a = accuracy || 0;
+
+  if (w >= 70 && a >= 95) {
     return {
       title: "Speed Demon!",
       message: "Outstanding performance! You are typing at an elite professional level with incredible precision.",
-      badgeIcon: "",
-      badgeClass: "elite"
+      badgeIcon: "🏆",
+      badgeClass: "elite",
+      certBadge: "🛡️ LEGENDARY PERFORMANCE 🛡️",
+      certDesc: "demonstrating legendary typing skills and exceptional accuracy"
     };
-  } else if (wpm >= 50 && accuracy >= 90) {
+  } else if (w >= 50 && a >= 88) {
     return {
       title: "Master Typist!",
       message: "Fantastic job! Your typing speed is well above average and your accuracy is impressive.",
-      badgeIcon: "",
-      badgeClass: "pro"
+      badgeIcon: "🥇",
+      badgeClass: "pro",
+      certBadge: "🛡️ EXCELLENT PERFORMANCE 🛡️",
+      certDesc: "demonstrating excellent typing skills and impressive accuracy"
     };
-  } else if (wpm >= 30 && accuracy >= 80) {
+  } else if (w >= 35 && a >= 80) {
     return {
       title: "Great Effort!",
       message: "Good job! You have solid speed and accuracy. Consistent daily practice will push you higher.",
-      badgeIcon: "",
-      badgeClass: "good"
+      badgeIcon: "🥈",
+      badgeClass: "good",
+      certBadge: "🛡️ GREAT PERFORMANCE 🛡️",
+      certDesc: "demonstrating great typing speed and solid accuracy"
+    };
+  } else if (w >= 20 && a >= 70) {
+    return {
+      title: "Good Progress!",
+      message: "Nice try! You are building good muscle memory. Keep practicing to boost your speed.",
+      badgeIcon: "🥉",
+      badgeClass: "fair",
+      certBadge: "🛡️ GOOD PERFORMANCE 🛡️",
+      certDesc: "demonstrating steady typing proficiency and good focus"
+    };
+  } else if (w >= 10 && a >= 50) {
+    return {
+      title: "Fair Effort!",
+      message: "You completed the test! Focus on accuracy and key placement to increase your speed.",
+      badgeIcon: "⭐",
+      badgeClass: "developing",
+      certBadge: "🛡️ FAIR PERFORMANCE 🛡️",
+      certDesc: "demonstrating developing typing skills and foundational accuracy"
     };
   } else {
     return {
       title: "Keep Practicing!",
       message: "Every expert was once a beginner. Focus on accuracy first, and speed will follow naturally!",
-      badgeIcon: "",
-      badgeClass: "beginner"
+      badgeIcon: "💡",
+      badgeClass: "beginner",
+      certBadge: "🛡️ NEEDS PRACTICE 🛡️",
+      certDesc: "taking early steps towards improving typing speed and accuracy"
     };
   }
 }

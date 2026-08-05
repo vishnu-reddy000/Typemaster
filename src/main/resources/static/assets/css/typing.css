@@ -492,13 +492,13 @@
   font-weight: 600;
 }
 
-/* Current Active Character (Blue Background, White Text, Rounded) */
+/* Current Active Character (Black Background, White Text, Rounded) */
 .char.active {
   color: #ffffff !important;
-  background-color: var(--primary-color) !important;
+  background-color: #000000 !important;
   border-radius: 4px !important;
   padding: 0 2px !important;
-  box-shadow: 0 0 12px rgba(37, 99, 235, 0.4) !important;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4) !important;
   font-weight: 700;
   position: relative;
   transition: color 0.1s ease, background-color 0.1s ease;

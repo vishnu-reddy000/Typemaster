@@ -160,7 +160,7 @@
                     <div class="cert-divider-line"></div>
 
                     <p class="cert-body-paragraph">
-                        for successfully completing the Typing Test on <strong>TypeMaster</strong> and demonstrating excellent typing skills and accuracy.
+                        for successfully completing the Typing Test on <strong>TypeMaster</strong> and <span id="cert-performance-desc">demonstrating excellent typing skills and accuracy</span>.
                     </p>
 
                     <!-- 5-Metric Stats Pill Bar -->
@@ -213,7 +213,7 @@
                             <div class="cert-signature-subtext">Keep Practicing, Keep Improving!</div>
                         </div>
                         <div class="cert-crest-block">
-                            <div class="cert-shield-badge">
+                            <div class="cert-shield-badge" id="cert-shield-badge">
                                 🛡️ EXCELLENT PERFORMANCE 🛡️
                             </div>
                         </div>
@@ -496,6 +496,15 @@
                 document.getElementById('result-icon').textContent = feedback.badgeIcon;
                 document.getElementById('result-title').textContent = feedback.title;
                 document.getElementById('result-message').textContent = feedback.message;
+
+                const shieldBadgeEl = document.getElementById('cert-shield-badge');
+                if (shieldBadgeEl && feedback.certBadge) {
+                    shieldBadgeEl.textContent = feedback.certBadge;
+                }
+                const certDescEl = document.getElementById('cert-performance-desc');
+                if (certDescEl && feedback.certDesc) {
+                    certDescEl.textContent = feedback.certDesc;
+                }
             }
 
             renderAchievementBadges(data.wpm, data.accuracy);

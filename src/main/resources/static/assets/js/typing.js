@@ -1199,8 +1199,20 @@ function resetTestState() {
 }
 
 function startTestExplicitly() {
-  restartTest();
-  if (DOM.hiddenInput) DOM.hiddenInput.focus();
+  if (!EngineState.isTestStarted && !EngineState.isTestFinished) {
+    EngineState.isTestStarted = true;
+    document.body.classList.add('typing-active');
+    startTimer(onTimerTick, finishTest);
+    if (DOM.restartBtn) DOM.restartBtn.innerHTML = 'Restart Test';
+    if (DOM.statusBadge) {
+      DOM.statusBadge.textContent = 'In Progress';
+      DOM.statusBadge.className = 'badge badge-warning';
+    }
+    if (DOM.hiddenInput) DOM.hiddenInput.focus();
+  } else {
+    restartTest();
+    if (DOM.hiddenInput) DOM.hiddenInput.focus();
+  }
 }
 
 function handleDurationChange(val) {

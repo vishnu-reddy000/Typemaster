@@ -7,7 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * REST Controller providing API endpoints for fetching typing practice paragraphs across all 12 practice modes.
+ * REST Controller providing API endpoints for fetching typing practice paragraphs across all categories
+ * with 9-hour non-repetition rotation algorithm.
  */
 @RestController
 @RequestMapping("/api/paragraphs")
@@ -23,7 +24,7 @@ public class ParagraphController {
 
     /**
      * Endpoint to fetch practice material (text paragraph, coding snippet, quotes, numbers, etc.).
-     * GET /api/paragraphs?duration={minutes}&mode={PARAGRAPH|CHILDREN_POETS|CODING|...}&language={JAVA|PYTHON|...}&topic={...}&difficulty={EASY|MEDIUM|...}
+     * GET /api/paragraphs?duration={minutes}&mode={PARAGRAPH|CODING|...}&language={JAVA|...}&topic={...}&difficulty={...}&userId={username}
      */
     @GetMapping
     public ResponseEntity<ParagraphDTO> getRandomParagraph(
@@ -31,8 +32,9 @@ public class ParagraphController {
             @RequestParam(name = "mode", required = false, defaultValue = "PARAGRAPH") String mode,
             @RequestParam(name = "language", required = false) String language,
             @RequestParam(name = "topic", required = false) String topic,
-            @RequestParam(name = "difficulty", required = false) String difficulty) {
-        ParagraphDTO paragraph = paragraphService.getPracticeMaterial(durationMinutes, mode, language, topic, difficulty);
+            @RequestParam(name = "difficulty", required = false) String difficulty,
+            @RequestParam(name = "userId", required = false) String userId) {
+        ParagraphDTO paragraph = paragraphService.getPracticeMaterial(durationMinutes, mode, language, topic, difficulty, userId);
         return ResponseEntity.ok(paragraph);
     }
 }

@@ -18,6 +18,7 @@ const EngineState = {
   isUntimedPracticeMode: false,
   isTestPaused: false,
   activeLoadSequence: 0,
+  nextPrefetchedParagraph: null,
 
   // Scrolling & Line Pre-computation (Zero Reflow during typing)
   currentFirstVisibleLine: 0,
@@ -274,7 +275,63 @@ async function loadNewParagraph() {
   if (loadId === EngineState.activeLoadSequence) {
     renderParagraph();
     if (DOM.hiddenInput) DOM.hiddenInput.focus();
+    prefetchNextParagraph();
   }
+}
+
+async function prefetchNextParagraph() {
+  try {
+    const currentDurationMins = getTimerDurationMinutes();
+    const mode = DOM.modeSelect ? DOM.modeSelect.value : 'PARAGRAPH';
+    const language = DOM.languageSelect ? DOM.languageSelect.value : 'JAVA';
+    const topic = DOM.topicSelect ? DOM.topicSelect.value : 'ALL';
+    const difficulty = DOM.difficultySelect ? DOM.difficultySelect.value : 'MEDIUM';
+
+    if (typeof PracticeModeManager !== 'undefined' && typeof PracticeModeManager.loadPracticeContent === 'function') {
+      EngineState.nextPrefetchedParagraph = await PracticeModeManager.loadPracticeContent(currentDurationMins, mode, language, topic, difficulty);
+    }
+  } catch (e) {
+    console.warn('Paragraph prefetch notice:', e);
+  }
+}
+
+async function loadNextParagraphSeamlessly() {
+  if (EngineState.isTestFinished) return;
+
+  if (typeof playSoundFX === 'function') playSoundFX('completion');
+
+  let nextText = EngineState.nextPrefetchedParagraph;
+  EngineState.nextPrefetchedParagraph = null;
+
+  if (!nextText) {
+    const currentDurationMins = getTimerDurationMinutes();
+    const mode = DOM.modeSelect ? DOM.modeSelect.value : 'PARAGRAPH';
+    const language = DOM.languageSelect ? DOM.languageSelect.value : 'JAVA';
+    const topic = DOM.topicSelect ? DOM.topicSelect.value : 'ALL';
+    const difficulty = DOM.difficultySelect ? DOM.difficultySelect.value : 'MEDIUM';
+
+    if (typeof PracticeModeManager !== 'undefined' && typeof PracticeModeManager.loadPracticeContent === 'function') {
+      nextText = await PracticeModeManager.loadPracticeContent(currentDurationMins, mode, language, topic, difficulty);
+    } else if (typeof getFallbackMaterial === 'function') {
+      nextText = getFallbackMaterial(currentDurationMins, mode, language, topic, difficulty);
+    } else {
+      nextText = "Practice typing every day to build speed, rhythm, and precision across all practice categories.";
+    }
+  }
+
+  EngineState.currentParagraph = nextText;
+  EngineState.charIndex = 0; // Reset position for next paragraph
+
+  // Note: EngineState.correctChars, EngineState.mistakes, EngineState.totalTyped remain cumulative across test duration!
+
+  renderParagraph();
+
+  if (DOM.hiddenInput) {
+    DOM.hiddenInput.value = '';
+    DOM.hiddenInput.focus();
+  }
+
+  prefetchNextParagraph();
 }
 
 function renderParagraph() {
@@ -395,7 +452,7 @@ function handleTypingInput() {
   if (EngineState.charIndex < totalSpans) {
     DOM.charSpans[EngineState.charIndex].classList.add('active');
   } else {
-    finishTest();
+    loadNextParagraphSeamlessly();
     return;
   }
 
@@ -459,7 +516,7 @@ function handleEnterKey() {
     if (EngineState.charIndex < totalSpans) {
       DOM.charSpans[EngineState.charIndex].classList.add('active');
     } else {
-      finishTest();
+      loadNextParagraphSeamlessly();
       return;
     }
   }

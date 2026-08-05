@@ -5,10 +5,10 @@
  */
 
 /* ==========================================================================
-   1. PARAGRAPH HISTORY TRACKER (Zero-Repeat Memory Engine)
+   1. PARAGRAPH HISTORY TRACKER (Zero-Repeat 9-Hour Memory Engine)
    ========================================================================== */
 const PARA_HISTORY_KEY = 'typeMaster_paraHistory';
-const PARA_COOLDOWN_MS = 8 * 60 * 60 * 1000; // 8 hours
+const PARA_COOLDOWN_MS = 9 * 60 * 60 * 1000; // 9 hours cooldown
 
 function _paraFingerprint(text) {
   return (text || '').trim().substring(0, 80);
@@ -583,7 +583,9 @@ async function fetchPracticeMaterial(minutes = 1, mode = 'PARAGRAPH', language =
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
-    const url = `/api/paragraphs?duration=${numMins}&mode=${mode}&language=${language}&topic=${topic}&difficulty=${difficulty}`;
+    const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+    const userId = currentUser && currentUser.username ? encodeURIComponent(currentUser.username) : 'anonymous_user';
+    const url = `/api/paragraphs?duration=${numMins}&mode=${mode}&language=${language}&topic=${topic}&difficulty=${difficulty}&userId=${userId}`;
     const response = await fetch(url, { signal: controller.signal });
     clearTimeout(timeoutId);
     if (!response.ok) throw new Error('API Response not OK');

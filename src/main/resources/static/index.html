@@ -84,9 +84,7 @@
     }
     </script>
 
-    <!-- PWA & Theme Manifest -->
     <meta name="theme-color" content="#0f172a">
-    <link rel="manifest" href="manifest.json">
 
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
@@ -772,7 +770,14 @@
             fetchSystemStats();
             initSandbox();
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js').catch(() => {});
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    for (let r of registrations) r.unregister();
+                }).catch(() => {});
+                if (window.caches) {
+                    caches.keys().then(names => {
+                        for (let n of names) caches.delete(n);
+                    });
+                }
             }
         });
     </script>

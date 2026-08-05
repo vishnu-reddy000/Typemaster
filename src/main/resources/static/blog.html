@@ -21,9 +21,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
 
-  <!-- PWA & Theme Manifest -->
   <meta name="theme-color" content="#0f172a">
-  <link rel="manifest" href="manifest.json">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
@@ -391,7 +389,14 @@ document.addEventListener('DOMContentLoaded', () => {
   renderFeatured();
   renderBlogGrid();
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      for (let r of registrations) r.unregister();
+    }).catch(() => {});
+    if (window.caches) {
+      caches.keys().then(names => {
+        for (let n of names) caches.delete(n);
+      });
+    }
   }
 });
 </script>

@@ -614,15 +614,7 @@ function getFallbackMaterial(minutes = 1, mode = 'PARAGRAPH', language = 'JAVA',
     if (availableSnippets.length === 0) {
       availableSnippets.push("System.out.println(\"Hello, World!\");");
     }
-
-    const numBlocks = typeof minutes === 'number' ? Math.max(1, minutes) : 1;
-    let result = [];
-    for (let i = 0; i < numBlocks; i++) {
-      if (i > 0) result.push(`\n\n// --- Program Block ${i + 1} ---\n`);
-      const snippet = availableSnippets[i % availableSnippets.length];
-      result.push(snippet);
-    }
-    return result.join('');
+    return availableSnippets[Math.floor(Math.random() * availableSnippets.length)];
   }
 
   if (mode === 'CUSTOM') {

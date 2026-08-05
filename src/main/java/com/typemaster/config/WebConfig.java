@@ -26,10 +26,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic().getHeaderValue() != null ?
                         CacheControl.maxAge(365, TimeUnit.DAYS).cachePublic() : CacheControl.maxAge(365, TimeUnit.DAYS));
 
-        // 2. Root metadata, service worker, manifest, and HTML files -> Revalidate with ETags
-        registry.addResourceHandler("/*.html", "/sitemap.xml", "/robots.txt", "/favicon.ico", "/manifest.json", "/sw.js")
+        // 2. Root metadata and HTML files -> Disable offline caching completely
+        registry.addResourceHandler("/*.html", "/sitemap.xml", "/robots.txt", "/favicon.ico")
                 .addResourceLocations("classpath:/static/")
-                .setCacheControl(CacheControl.noCache().mustRevalidate());
+                .setCacheControl(CacheControl.noStore().mustRevalidate());
     }
 
     @Bean

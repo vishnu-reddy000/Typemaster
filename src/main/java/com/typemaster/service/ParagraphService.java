@@ -81,7 +81,7 @@ public class ParagraphService {
             Collections.shuffle(pool, random);
             Paragraph selected = pool.get(0);
 
-            return new ParagraphDTO(selected.getId(), selected.getContent(), duration, targetMode, selected.getLanguage(), selected.getTopic());
+            return new ParagraphDTO(selected.getId(), selected.getContent().trim(), duration, targetMode, selected.getLanguage(), selected.getTopic());
         }
     }
 }

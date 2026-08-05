@@ -320,39 +320,7 @@ function precomputeLineMap() {
   EngineState.charLineMap = lineMap;
 }
 
-async function appendContinuousParagraph() {
-  const currentDurationMins = getTimerDurationMinutes();
-  const mode = DOM.modeSelect ? DOM.modeSelect.value : 'PARAGRAPH';
-  const language = DOM.languageSelect ? DOM.languageSelect.value : 'JAVA';
-  const topic = DOM.topicSelect ? DOM.topicSelect.value : 'ALL';
-  const difficulty = DOM.difficultySelect ? DOM.difficultySelect.value : 'MEDIUM';
 
-  let nextParaText = "";
-  if (typeof fetchPracticeMaterial === 'function') {
-    nextParaText = await fetchPracticeMaterial(currentDurationMins, mode, language, topic, difficulty);
-  } else {
-    nextParaText = typeof getRandomParagraph === 'function' ? getRandomParagraph(currentDurationMins) : " Continue typing to build speed and mastery.";
-  }
-
-  const nextPara = (mode === 'CODING' ? "\n\n" : " ") + nextParaText;
-  EngineState.currentParagraph += nextPara;
-
-  const fragment = document.createDocumentFragment();
-  const chars = nextPara.split('');
-  for (let i = 0; i < chars.length; i++) {
-    const span = document.createElement('span');
-    span.className = 'char';
-    span.textContent = chars[i];
-    fragment.appendChild(span);
-    DOM.charSpans.push(span);
-  }
-  DOM.paragraphBox.appendChild(fragment);
-
-  if (EngineState.charIndex < DOM.charSpans.length) {
-    DOM.charSpans[EngineState.charIndex].classList.add('active');
-  }
-  precomputeLineMap();
-}
 
 // ==========================================================================
 // 5. CRITICAL INPUT HANDLER (0ms Latency, Zero Layout Reflow)
@@ -414,9 +382,11 @@ function handleTypingInput() {
     if (isMatch) {
       currentSpan.classList.add('correct');
       EngineState.correctChars++;
+      if (typeof playSoundFX === 'function') playSoundFX('keypress');
     } else {
       currentSpan.classList.add('incorrect');
       EngineState.mistakes++;
+      if (typeof playSoundFX === 'function') playSoundFX('error');
     }
 
     EngineState.charIndex++;
@@ -425,7 +395,8 @@ function handleTypingInput() {
   if (EngineState.charIndex < totalSpans) {
     DOM.charSpans[EngineState.charIndex].classList.add('active');
   } else {
-    appendContinuousParagraph();
+    finishTest();
+    return;
   }
 
   const lastTypedChar = rawVal[inputLen - 1];
@@ -436,6 +407,7 @@ function handleTypingInput() {
 function handleBackspace() {
   if (EngineState.isTestFinished || EngineState.charIndex <= 0) return;
   fastKeyFlash('backspace');
+  if (typeof playSoundFX === 'function') playSoundFX('keypress');
 
   if (EngineState.charIndex < DOM.charSpans.length) {
     DOM.charSpans[EngineState.charIndex].classList.remove('active');
@@ -458,6 +430,7 @@ function handleBackspace() {
 
 function handleEnterKey() {
   if (EngineState.isTestFinished) return;
+  if (typeof playSoundFX === 'function') playSoundFX('keypress');
 
   if (!EngineState.isTestStarted) {
     EngineState.isTestStarted = true;
@@ -486,7 +459,8 @@ function handleEnterKey() {
     if (EngineState.charIndex < totalSpans) {
       DOM.charSpans[EngineState.charIndex].classList.add('active');
     } else {
-      appendContinuousParagraph();
+      finishTest();
+      return;
     }
   }
 
@@ -993,9 +967,19 @@ async function finishTest() {
   }
 
   if (typeof playSoundFX === 'function') playSoundFX('completion');
-  setTimeout(() => {
-    window.location.href = 'result.html';
-  }, 250);
+
+  document.body.classList.remove('typing-active');
+
+  const wpmEl = document.getElementById('timesup-wpm');
+  const accEl = document.getElementById('timesup-accuracy');
+  const corrEl = document.getElementById('timesup-correct');
+  const errEl = document.getElementById('timesup-mistakes');
+  if (wpmEl) wpmEl.textContent = `${finalWpm}`;
+  if (accEl) accEl.textContent = `${finalAccuracy}%`;
+  if (corrEl) corrEl.textContent = `${EngineState.correctChars}`;
+  if (errEl) errEl.textContent = `${EngineState.mistakes}`;
+
+  showTimesUpModal();
 }
 
 function showTimesUpModal() {
@@ -1165,24 +1149,7 @@ function resetTestState() {
 }
 
 function startTestExplicitly() {
-  if (EngineState.isTestStarted && !EngineState.isTestFinished) {
-    restartTest();
-    return;
-  }
-
   restartTest();
-
-  if (!EngineState.isTestStarted) {
-    EngineState.isTestStarted = true;
-    document.body.classList.add('typing-active');
-    startTimer(onTimerTick, finishTest);
-    if (DOM.restartBtn) DOM.restartBtn.innerHTML = 'Restart Test';
-    if (DOM.statusBadge) {
-      DOM.statusBadge.textContent = 'In Progress';
-      DOM.statusBadge.className = 'badge badge-warning';
-    }
-  }
-
   if (DOM.hiddenInput) DOM.hiddenInput.focus();
 }
 

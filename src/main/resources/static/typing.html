@@ -21,9 +21,7 @@
     <meta property="og:url" content="https://typemaster.com/typing">
     <meta property="og:image" content="https://typemaster.com/assets/images/logo.png">
 
-    <!-- PWA & Theme Manifest -->
     <meta name="theme-color" content="#0f172a">
-    <link rel="manifest" href="manifest.json">
 
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
@@ -140,7 +138,7 @@
                 </div>
             </div>
 
-            <!-- Live Dashboard Stats Grid (10 Premium Cards) -->
+            <!-- Clean Live Dashboard Stats Bar (Timer, WPM, Correct, Incorrect) -->
             <div class="stats-grid">
                 <div class="stat-card timer-card">
                     <div class="stat-value" id="stat-timer">01:00</div>
@@ -150,22 +148,6 @@
                     <div class="stat-value" id="stat-wpm">0</div>
                     <div class="stat-label">Net WPM (Speed)</div>
                 </div>
-                <div class="stat-card raw-wpm-card">
-                    <div class="stat-value" id="stat-raw-wpm">0</div>
-                    <div class="stat-label">Raw WPM</div>
-                </div>
-                <div class="stat-card accuracy-card">
-                    <div class="stat-value" id="stat-accuracy">100%</div>
-                    <div class="stat-label">Accuracy</div>
-                </div>
-                <div class="stat-card rank-card">
-                    <div class="stat-value" id="stat-rank">Bronze</div>
-                    <div class="stat-label">Typing Rank</div>
-                </div>
-                <div class="stat-card consistency-card">
-                    <div class="stat-value" id="stat-consistency">100%</div>
-                    <div class="stat-label">Consistency</div>
-                </div>
                 <div class="stat-card correct-card">
                     <div class="stat-value" id="stat-correct">0</div>
                     <div class="stat-label">Correct Chars</div>
@@ -174,43 +156,6 @@
                     <div class="stat-value" id="stat-mistakes">0</div>
                     <div class="stat-label">Incorrect Chars</div>
                 </div>
-                <div class="stat-card words-card">
-                    <div class="stat-value" id="stat-words">0</div>
-                    <div class="stat-label">Words Typed</div>
-                </div>
-                <div class="stat-card remaining-card">
-                    <div class="stat-value" id="stat-remaining">0</div>
-                    <div class="stat-label">Remaining Chars</div>
-                </div>
-            </div>
-
-            <!-- Optional Live Real-Time Analytics Graphs Toggle -->
-            <div class="charts-toggle-container">
-                <button class="btn btn-outline btn-ripple charts-toggle-btn" id="toggle-charts-btn" onclick="toggleLiveCharts()">
-                    <span id="charts-toggle-text">Show Live Performance Graphs</span>
-                </button>
-            </div>
-
-            <!-- Live Real-Time Analytics Graphs (WPM & Accuracy Canvas) -->
-            <div class="charts-panel" id="charts-panel" style="display: none;">
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <span class="chart-title">Live Speed Performance (WPM Over Time)</span>
-                        <span class="chart-badge wpm-badge" id="live-wpm-badge">0 WPM</span>
-                    </div>
-                    <div class="chart-canvas-container">
-                        <canvas id="wpm-chart" height="130"></canvas>
-                    </div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-header">
-                        <span class="chart-title">Live Accuracy Performance (% Over Time)</span>
-                        <span class="chart-badge accuracy-badge" id="live-accuracy-badge">100%</span>
-                    </div>
-                    <div class="chart-canvas-container">
-                        <canvas id="accuracy-chart" height="130"></canvas>
-                    </div>
-                </div>
             </div>
 
             <!-- Main Interactive Typing Arena -->
@@ -218,17 +163,6 @@
                 <!-- Hidden Input element to capture keypresses on mobile & desktop -->
                 <input type="text" id="hidden-input" class="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Type here to start test" autofocus>
                 
-                <!-- Premium Animated Typing Progress Bar -->
-                <div class="typing-progress-wrapper">
-                    <div class="typing-progress-header">
-                        <span class="typing-progress-title">Typing Progress</span>
-                        <span class="typing-progress-percent" id="typing-progress-percent">0%</span>
-                    </div>
-                    <div class="typing-progress-track">
-                        <div class="typing-progress-fill" id="typing-progress-fill"></div>
-                    </div>
-                </div>
-
                 <!-- Character Spans Container -->
                 <div class="paragraph-box-wrapper" id="paragraph-box-wrapper">
                     <div class="paragraph-box" id="paragraph-box">
@@ -237,107 +171,45 @@
                 </div>
             </div>
 
-            <p class="focus-hint">Tip: Start typing anywhere to launch the test. Paragraphs are fetched live from Spring Boot backend!</p>
-
-            <!-- Responsive Interactive Virtual Keyboard Component -->
-            <div class="virtual-keyboard-wrapper" id="virtual-keyboard" aria-hidden="true">
-                <!-- Row 1: Numbers & Symbols -->
-                <div class="kb-row">
-                    <button class="key-btn" data-key="`" data-shift="~">` <span>~</span></button>
-                    <button class="key-btn" data-key="1" data-shift="!">1 <span>!</span></button>
-                    <button class="key-btn" data-key="2" data-shift="@">2 <span>@</span></button>
-                    <button class="key-btn" data-key="3" data-shift="#">3 <span>#</span></button>
-                    <button class="key-btn" data-key="4" data-shift="$">4 <span>$</span></button>
-                    <button class="key-btn" data-key="5" data-shift="%">5 <span>%</span></button>
-                    <button class="key-btn" data-key="6" data-shift="^">6 <span>^</span></button>
-                    <button class="key-btn" data-key="7" data-shift="&">&amp; <span>&amp;</span></button>
-                    <button class="key-btn" data-key="8" data-shift="*">8 <span>*</span></button>
-                    <button class="key-btn" data-key="9" data-shift="(">9 <span>(</span></button>
-                    <button class="key-btn" data-key="0" data-shift=")">0 <span>)</span></button>
-                    <button class="key-btn" data-key="-" data-shift="_">- <span>_</span></button>
-                    <button class="key-btn" data-key="=" data-shift="+">= <span>+</span></button>
-                    <button class="key-btn key-backspace wide-1-5" data-key="backspace">⌫ Backspace</button>
-                </div>
-
-                <!-- Row 2: QWERTY -->
-                <div class="kb-row">
-                    <button class="key-btn key-tab wide-1-5" data-key="tab">Tab</button>
-                    <button class="key-btn" data-key="q">Q</button>
-                    <button class="key-btn" data-key="w">W</button>
-                    <button class="key-btn" data-key="e">E</button>
-                    <button class="key-btn" data-key="r">R</button>
-                    <button class="key-btn" data-key="t">T</button>
-                    <button class="key-btn" data-key="y">Y</button>
-                    <button class="key-btn" data-key="u">U</button>
-                    <button class="key-btn" data-key="i">I</button>
-                    <button class="key-btn" data-key="o">O</button>
-                    <button class="key-btn" data-key="p">P</button>
-                    <button class="key-btn" data-key="[" data-shift="{">[ <span>{</span></button>
-                    <button class="key-btn" data-key="]" data-shift="}">] <span>}</span></button>
-                    <button class="key-btn" data-key="\" data-shift="|">\ <span>|</span></button>
-                </div>
-
-                <!-- Row 3: ASDF -->
-                <div class="kb-row">
-                    <button class="key-btn key-caps wide-1-75" data-key="capslock">Caps Lock</button>
-                    <button class="key-btn" data-key="a">A</button>
-                    <button class="key-btn" data-key="s">S</button>
-                    <button class="key-btn" data-key="d">D</button>
-                    <button class="key-btn" data-key="f">F</button>
-                    <button class="key-btn" data-key="g">G</button>
-                    <button class="key-btn" data-key="h">H</button>
-                    <button class="key-btn" data-key="j">J</button>
-                    <button class="key-btn" data-key="k">K</button>
-                    <button class="key-btn" data-key="l">L</button>
-                    <button class="key-btn" data-key=";" data-shift=":">; <span>:</span></button>
-                    <button class="key-btn" data-key="'" data-shift='"'>' <span>"</span></button>
-                    <button class="key-btn key-enter wide-2" data-key="enter">↵ Enter</button>
-                </div>
-
-                <!-- Row 4: ZXCV -->
-                <div class="kb-row">
-                    <button class="key-btn key-shift wide-2-25" data-key="shift">⇧ Shift</button>
-                    <button class="key-btn" data-key="z">Z</button>
-                    <button class="key-btn" data-key="x">X</button>
-                    <button class="key-btn" data-key="c">C</button>
-                    <button class="key-btn" data-key="v">V</button>
-                    <button class="key-btn" data-key="b">B</button>
-                    <button class="key-btn" data-key="n">N</button>
-                    <button class="key-btn" data-key="m">M</button>
-                    <button class="key-btn" data-key="," data-shift="&lt;">, <span>&lt;</span></button>
-                    <button class="key-btn" data-key="." data-shift="&gt;">. <span>&gt;</span></button>
-                    <button class="key-btn" data-key="/" data-shift="?">/ <span>?</span></button>
-                    <button class="key-btn key-shift wide-2-25" data-key="shift">⇧ Shift</button>
-                </div>
-
-                <!-- Row 5: Space Bar -->
-                <div class="kb-row">
-                    <button class="key-btn key-space wide-space" data-key=" ">Space</button>
-                </div>
-            </div>
-
             <!-- Action Controls -->
-            <div class="arena-actions">
-                <button class="btn btn-primary btn-ripple" id="restart-btn">Start Test</button>
-                <button class="btn btn-outline btn-ripple" id="pause-btn">Pause Test</button>
+            <div class="arena-actions" style="margin-top: 1.5rem;">
+                <button class="btn btn-primary btn-ripple" id="restart-btn">Restart / New Paragraph</button>
                 <button class="btn btn-outline btn-ripple" id="new-para-btn">Random Paragraph</button>
-                <button class="btn btn-outline btn-ripple" id="focus-btn">Focus Mode</button>
-                <button class="btn btn-outline btn-ripple" id="fullscreen-btn">Fullscreen</button>
                 <button class="btn btn-outline btn-ripple" id="sound-toggle-btn" onclick="toggleSoundFX()">Sound FX: ON</button>
             </div>
             <button class="exit-focus-btn" id="exit-focus-btn" style="display: none;" onclick="toggleFocusMode()">Exit Focus Mode</button>
         </div>
     </main>
 
-    <!-- Time's Up Interactive Prompt Modal -->
+    <!-- Test Completed Results Modal -->
     <div class="timesup-modal-overlay" id="timesup-modal" style="display: none;">
-        <div class="timesup-modal-card">
-            <h3 class="timesup-title">Time's Up! Test Completed</h3>
-            <p class="timesup-message">Your test duration has ended. Would you like to view your performance results, continue practicing without a timer, or restart?</p>
-            <div class="timesup-btn-group">
-                <button class="btn btn-primary btn-ripple" id="timesup-results-btn">View My Results</button>
-                <button class="btn btn-outline btn-ripple" id="timesup-continue-btn">Continue Typing</button>
-                <button class="btn btn-secondary btn-ripple" id="timesup-restart-btn">Restart Test</button>
+        <div class="timesup-modal-card" style="max-width: 520px;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎉</div>
+            <h3 class="timesup-title" id="timesup-title">Test Completed!</h3>
+            <p class="timesup-message" style="margin-bottom: 1rem;">Here is your typing performance summary:</p>
+            
+            <div id="timesup-summary-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; text-align: center;">
+                <div style="background: var(--background-color); padding: 0.85rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color);">
+                    <div style="font-size: 2.2rem; font-weight: 800; color: var(--primary-color);" id="timesup-wpm">0</div>
+                    <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Net WPM (Speed)</div>
+                </div>
+                <div style="background: var(--background-color); padding: 0.85rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color);">
+                    <div style="font-size: 2.2rem; font-weight: 800; color: var(--success-color);" id="timesup-accuracy">100%</div>
+                    <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Accuracy</div>
+                </div>
+                <div style="background: var(--background-color); padding: 0.85rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color);">
+                    <div style="font-size: 1.6rem; font-weight: 800; color: var(--success-color);" id="timesup-correct">0</div>
+                    <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Correct Chars</div>
+                </div>
+                <div style="background: var(--background-color); padding: 0.85rem; border-radius: var(--radius-md); border: 1.5px solid var(--border-color);">
+                    <div style="font-size: 1.6rem; font-weight: 800; color: var(--error-color);" id="timesup-mistakes">0</div>
+                    <div style="font-size: 0.72rem; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em;">Incorrect Chars</div>
+                </div>
+            </div>
+
+            <div class="timesup-btn-group" style="display: flex; gap: 0.75rem;">
+                <button class="btn btn-primary btn-ripple" id="timesup-restart-btn" style="flex: 1; padding: 0.75rem;">Try Again / New Test</button>
+                <button class="btn btn-outline btn-ripple" id="timesup-results-btn" style="flex: 1; padding: 0.75rem;">View Analytics →</button>
             </div>
         </div>
     </div>
@@ -424,7 +296,14 @@
     <script src="assets/js/typing.min.js?v=1.0.1" defer></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(() => {});
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                for (let r of registrations) r.unregister();
+            }).catch(() => {});
+            if (window.caches) {
+                caches.keys().then(names => {
+                    for (let n of names) caches.delete(n);
+                });
+            }
         }
     </script>
 </body>

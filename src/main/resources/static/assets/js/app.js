@@ -622,14 +622,46 @@ function getAudioContext() {
     }
   }
   if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume();
+    audioCtx.resume().catch(() => {});
   }
   return audioCtx;
+}
+
+// User-gesture unlocker for Web Audio API autoplay policy
+function unlockAudioContext() {
+  const ctx = getAudioContext();
+  if (ctx && ctx.state === 'suspended') {
+    ctx.resume().catch(() => {});
+  }
+}
+
+if (typeof window !== 'undefined') {
+  ['click', 'keydown', 'pointerdown', 'touchstart'].forEach(evt => {
+    window.addEventListener(evt, unlockAudioContext, { passive: true });
+  });
 }
 
 function isSoundEnabled() {
   const val = localStorage.getItem('typeMaster_soundEnabled');
   return val === null ? true : val === 'true';
+}
+
+function getSoundVolume() {
+  const val = localStorage.getItem('typeMaster_soundVolume');
+  return val !== null ? parseFloat(val) : 0.35;
+}
+
+function setSoundVolume(vol) {
+  const num = Math.min(1, Math.max(0.01, parseFloat(vol)));
+  localStorage.setItem('typeMaster_soundVolume', String(num));
+}
+
+function getSoundPack() {
+  return localStorage.getItem('typeMaster_soundPack') || 'mechanical';
+}
+
+function setSoundPack(pack) {
+  localStorage.setItem('typeMaster_soundPack', pack);
 }
 
 function toggleSoundFX() {
@@ -649,38 +681,81 @@ function updateSoundToggleButton() {
   btn.classList.toggle('active', enabled);
 }
 
-function playSoundFX(type) {
-  if (!isSoundEnabled()) return;
+function playSoundFX(type, customPack) {
+  if (!isSoundEnabled() && type !== 'preview') return;
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
+    if (ctx.state === 'suspended') {
+      ctx.resume().catch(() => {});
+    }
 
     const now = ctx.currentTime;
+    const pack = customPack || getSoundPack();
+    const volume = getSoundVolume();
 
-    if (type === 'keypress') {
+    if (type === 'keypress' || type === 'preview') {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(600, now);
-      osc.frequency.exponentialRampToValueAtTime(200, now + 0.03);
-      gain.gain.setValueAtTime(0.08, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+
+      if (pack === 'typewriter') {
+        // Metallic typewriter striker clack
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(550, now);
+        osc.frequency.exponentialRampToValueAtTime(110, now + 0.045);
+        gain.gain.setValueAtTime(volume * 0.85, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+      } else if (pack === 'digital') {
+        // Vibrant bubble pop
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1400, now);
+        osc.frequency.exponentialRampToValueAtTime(450, now + 0.03);
+        gain.gain.setValueAtTime(volume * 0.75, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+      } else if (pack === 'minimal') {
+        // Clean modern click
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(750, now);
+        osc.frequency.exponentialRampToValueAtTime(250, now + 0.035);
+        gain.gain.setValueAtTime(volume * 0.7, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      } else {
+        // Default: Mechanical (Cherry MX Clicky Dual Oscillator)
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(950, now);
+        osc.frequency.exponentialRampToValueAtTime(180, now + 0.035);
+        gain.gain.setValueAtTime(volume * 0.8, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      }
+
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(now);
-      osc.stop(now + 0.03);
+      osc.stop(now + 0.05);
     } else if (type === 'error') {
-      const osc = ctx.createOscillator();
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(140, now);
-      osc.frequency.linearRampToValueAtTime(70, now + 0.08);
-      gain.gain.setValueAtTime(0.12, now);
-      gain.gain.linearRampToValueAtTime(0.001, now + 0.08);
-      osc.connect(gain);
+
+      osc1.type = 'sawtooth';
+      osc2.type = 'square';
+
+      osc1.frequency.setValueAtTime(180, now);
+      osc1.frequency.linearRampToValueAtTime(80, now + 0.1);
+      osc2.frequency.setValueAtTime(120, now);
+      osc2.frequency.linearRampToValueAtTime(60, now + 0.1);
+
+      gain.gain.setValueAtTime(volume * 0.7, now);
+      gain.gain.linearRampToValueAtTime(0.001, now + 0.1);
+
+      osc1.connect(gain);
+      osc2.connect(gain);
       gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + 0.08);
+
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + 0.1);
+      osc2.stop(now + 0.1);
     } else if (type === 'completion') {
       const freqs = [523.25, 659.25, 783.99, 1046.50];
       freqs.forEach((freq, index) => {
@@ -689,12 +764,12 @@ function playSoundFX(type) {
         const startTime = now + index * 0.07;
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(freq, startTime);
-        gain.gain.setValueAtTime(0.1, startTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.2);
+        gain.gain.setValueAtTime(volume * 0.7, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.25);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start(startTime);
-        osc.stop(startTime + 0.2);
+        osc.stop(startTime + 0.25);
       });
     } else if (type === 'achievement') {
       const freqs = [440, 554.37, 659.25, 880];
@@ -704,18 +779,30 @@ function playSoundFX(type) {
         const startTime = now + index * 0.09;
         osc.type = 'sine';
         osc.frequency.setValueAtTime(freq, startTime);
-        gain.gain.setValueAtTime(0.12, startTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.25);
+        gain.gain.setValueAtTime(volume * 0.75, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.28);
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.start(startTime);
-        osc.stop(startTime + 0.25);
+        osc.stop(startTime + 0.28);
       });
     }
   } catch (e) {
     console.log('Audio FX error:', e);
   }
 }
+
+// Global Window Exports
+window.getAudioContext = getAudioContext;
+window.unlockAudioContext = unlockAudioContext;
+window.isSoundEnabled = isSoundEnabled;
+window.getSoundVolume = getSoundVolume;
+window.setSoundVolume = setSoundVolume;
+window.getSoundPack = getSoundPack;
+window.setSoundPack = setSoundPack;
+window.toggleSoundFX = toggleSoundFX;
+window.updateSoundToggleButton = updateSoundToggleButton;
+window.playSoundFX = playSoundFX;
 
 /* ==========================================================================
    REAL-TIME WEBSOCKET AUTO-UPDATE & BROADCAST SYNC ENGINE

@@ -14,9 +14,7 @@
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@500;600;700;800&family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto+Mono:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
 
-    <!-- PWA & Theme Manifest -->
     <meta name="theme-color" content="#0f172a">
-    <link rel="manifest" href="manifest.json">
 
     <!-- Favicon & Touch Icons -->
     <link rel="icon" type="image/png" href="assets/images/logo.png?v=2">
@@ -585,6 +583,48 @@
                             <div class="profile-info-value" id="profile-email">Loading...</div>
                         </div>
                     </div>
+
+                    <!-- Audio & Typing Sound Effects Card -->
+                    <div class="settings-card">
+                        <h2>🔊 Audio &amp; Sound FX Preferences</h2>
+                        <p>Customize your typing keypress sounds, select sound packs, and adjust volume levels.</p>
+
+                        <!-- Master Toggle -->
+                        <div class="form-group" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+                            <div>
+                                <label style="margin-bottom: 0.2rem; font-weight: 700;">Sound FX Master Toggle</label>
+                                <span style="font-size: 0.8rem; color: var(--text-secondary);">Enable keypress sounds and completion chimes</span>
+                            </div>
+                            <button type="button" class="btn btn-outline" id="settings-sound-toggle-btn" onclick="handleSettingsSoundToggle()" style="padding: 0.4rem 0.9rem; font-size: 0.85rem; font-weight: 700;">
+                                🔊 Sound FX: ON
+                            </button>
+                        </div>
+
+                        <!-- Sound Pack Selector -->
+                        <div class="form-group" style="margin-bottom: 1.25rem;">
+                            <label for="settings-sound-pack-select">Typing Sound Pack</label>
+                            <select id="settings-sound-pack-select" class="duration-select" onchange="handleSettingsSoundPackChange(this.value)">
+                                <option value="mechanical" selected>⌨️ Mechanical Keyboard (Cherry MX Clicky)</option>
+                                <option value="typewriter">📜 Classic Typewriter (Vintage Metal)</option>
+                                <option value="digital">🧼 Digital Pop (Soft Bubble)</option>
+                                <option value="minimal">🔔 Minimal Crisp (Modern Beep)</option>
+                            </select>
+                        </div>
+
+                        <!-- Volume Slider -->
+                        <div class="form-group" style="margin-bottom: 1.25rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem;">
+                                <label for="settings-volume-slider" style="margin-bottom: 0;">Volume Level</label>
+                                <span id="settings-volume-value" style="font-weight: 700; color: var(--primary-color); font-size: 0.85rem;">15%</span>
+                            </div>
+                            <input type="range" id="settings-volume-slider" min="0" max="100" value="15" style="width: 100%; accent-color: var(--primary-color); cursor: pointer;" oninput="handleSettingsVolumeChange(this.value)">
+                        </div>
+
+                        <!-- Test Audio Preview Button -->
+                        <button type="button" class="btn btn-primary" onclick="testSoundPreview()" style="width: 100%; justify-content: center; padding: 0.65rem; font-size: 0.88rem; margin-top: 0.5rem;">
+                            🔊 Test Sound Effect
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Right: Password Settings Card -->
@@ -697,6 +737,7 @@
             document.getElementById("profile-username").textContent = user.username;
             document.getElementById("profile-email").textContent = user.email || "Not Provided";
             updateAvatarUI(user.profilePicture, user.username);
+            if (typeof initSoundSettingsUI === "function") initSoundSettingsUI();
 
             // Setup Password Form
             const form = document.getElementById("password-change-form");
@@ -1018,6 +1059,75 @@
         window.handleAvatarFileSelect = handleAvatarFileSelect;
         window.removeAvatar = removeAvatar;
 
+        // Sound Settings Handlers
+        function initSoundSettingsUI() {
+            const toggleBtn = document.getElementById('settings-sound-toggle-btn');
+            const packSelect = document.getElementById('settings-sound-pack-select');
+            const volSlider = document.getElementById('settings-volume-slider');
+            const volValue = document.getElementById('settings-volume-value');
+
+            if (toggleBtn) {
+                const enabled = typeof isSoundEnabled === 'function' ? isSoundEnabled() : true;
+                toggleBtn.textContent = enabled ? '🔊 Sound FX: ON' : '🔇 Sound FX: OFF';
+                toggleBtn.classList.toggle('active', enabled);
+            }
+
+            if (packSelect) {
+                const currentPack = typeof getSoundPack === 'function' ? getSoundPack() : 'mechanical';
+                packSelect.value = currentPack;
+            }
+
+            if (volSlider && volValue) {
+                const currentVol = typeof getSoundVolume === 'function' ? getSoundVolume() : 0.15;
+                const pct = Math.round(currentVol * 100);
+                volSlider.value = pct;
+                volValue.textContent = pct + '%';
+            }
+        }
+
+        function handleSettingsSoundToggle() {
+            if (typeof toggleSoundFX === 'function') {
+                const next = toggleSoundFX();
+                const toggleBtn = document.getElementById('settings-sound-toggle-btn');
+                if (toggleBtn) {
+                    toggleBtn.textContent = next ? '🔊 Sound FX: ON' : '🔇 Sound FX: OFF';
+                    toggleBtn.classList.toggle('active', next);
+                }
+            }
+        }
+
+        function handleSettingsSoundPackChange(val) {
+            if (typeof setSoundPack === 'function') {
+                setSoundPack(val);
+            }
+            if (typeof playSoundFX === 'function') {
+                playSoundFX('preview', val);
+            }
+        }
+
+        function handleSettingsVolumeChange(val) {
+            const volPct = parseInt(val, 10);
+            const floatVal = volPct / 100;
+            if (typeof setSoundVolume === 'function') {
+                setSoundVolume(floatVal);
+            }
+            const volValue = document.getElementById('settings-volume-value');
+            if (volValue) volValue.textContent = volPct + '%';
+        }
+
+        function testSoundPreview() {
+            if (typeof playSoundFX === 'function') {
+                const packSelect = document.getElementById('settings-sound-pack-select');
+                const selectedPack = packSelect ? packSelect.value : 'mechanical';
+                playSoundFX('preview', selectedPack);
+            }
+        }
+
+        window.handleSettingsSoundToggle = handleSettingsSoundToggle;
+        window.handleSettingsSoundPackChange = handleSettingsSoundPackChange;
+        window.handleSettingsVolumeChange = handleSettingsVolumeChange;
+        window.testSoundPreview = testSoundPreview;
+
         function togglePasswordVisibility(inputId, btn) {
             const input = document.getElementById(inputId);
             if (!input) return;
@@ -1097,7 +1207,14 @@
             }
         }
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').catch(() => {});
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                for (let r of registrations) r.unregister();
+            }).catch(() => {});
+            if (window.caches) {
+                caches.keys().then(names => {
+                    for (let n of names) caches.delete(n);
+                });
+            }
         }
     </script>
 </body>
